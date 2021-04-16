@@ -1,4 +1,4 @@
-# Project-1-2-Group-22
+# Desmond
 
 To build the project and conduct tests, clone the repository and run:
 	
