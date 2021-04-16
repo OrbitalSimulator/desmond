@@ -15,7 +15,7 @@ import java.lang.System;
 
 class ProbeSimulatorTest {
 
-    static final double ACCURACY = 1E11; // in meters (might need to tweak that)
+    static final double ACCURACY = 1E15; // in meters (might need to tweak that)
 
     @Test void testTrajectoryOneDayX() {
 
