@@ -6,6 +6,8 @@ src/test/TestDTG.java
  src.test.TestDTG
 src/test/TestVisualiser.java
  src.test.TestVisualiser
+src/test/Vector3dTest.java
+ src.test.Vector3dTest
 src/test/TestCelestialBody.java
  src.test.TestCelestialBody
 src/test/TestCoordinate.java
@@ -22,5 +24,7 @@ src/test/TestState.java
  src.test.TestState
 src/test/package-info.java
  src.test.package-info
+src/test/ProbeSimulatorTest.java
+ src.test.ProbeSimulatorTest
 src/test/TestRate.java
  src.test.TestRate

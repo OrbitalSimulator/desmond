@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="src.test.TestSimulation" tests="2" skipped="0" failures="0" errors="0" timestamp="2021-04-16T11:27:31" hostname="pop-os" time="2.381">
+<testsuite name="src.test.TestSimulation" tests="2" skipped="0" failures="0" errors="0" timestamp="2021-04-16T11:43:02" hostname="pop-os" time="2.354">
   <properties/>
-  <testcase name="testTimeArrayTraj()" classname="src.test.TestSimulation" time="0.773"/>
-  <testcase name="testFinalTimeTraj()" classname="src.test.TestSimulation" time="1.606"/>
+  <testcase name="testTimeArrayTraj()" classname="src.test.TestSimulation" time="0.641"/>
+  <testcase name="testFinalTimeTraj()" classname="src.test.TestSimulation" time="1.71"/>
   <system-out><![CDATA[Final positionX: 8.569328863702513E11 y: -1.2493022716897788E12 z: -1.838286941261663E10
 Final positionX: 8.588236950026453E11 y: -1.2481403147793928E12 z: -1.821731228852048E10
 ]]></system-out>

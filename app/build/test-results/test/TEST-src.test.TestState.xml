@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="src.test.TestState" tests="1" skipped="0" failures="0" errors="0" timestamp="2021-04-16T11:27:30" hostname="pop-os" time="0.034">
+<testsuite name="src.test.TestState" tests="1" skipped="0" failures="0" errors="0" timestamp="2021-04-16T11:43:02" hostname="pop-os" time="0.016">
   <properties/>
-  <testcase name="testAddMulMethod()" classname="src.test.TestState" time="0.034"/>
+  <testcase name="testAddMulMethod()" classname="src.test.TestState" time="0.016"/>
   <system-out><![CDATA[
 (V: X: 1.0 y: 2.0 z: 3.0 |P: X: 4.0 y: 5.0 z: 6.0 | Time: 0.0),
 

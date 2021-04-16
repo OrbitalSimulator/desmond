@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="src.test.TestEulerSolver" tests="3" skipped="0" failures="0" errors="0" timestamp="2021-04-16T11:27:31" hostname="pop-os" time="0.027">
+<testsuite name="src.test.TestEulerSolver" tests="3" skipped="0" failures="0" errors="0" timestamp="2021-04-16T11:43:02" hostname="pop-os" time="0.03">
   <properties/>
-  <testcase name="testSingleStep()" classname="src.test.TestEulerSolver" time="0.005"/>
-  <testcase name="testFunction2()" classname="src.test.TestEulerSolver" time="0.009"/>
-  <testcase name="testFunction3()" classname="src.test.TestEulerSolver" time="0.009"/>
+  <testcase name="testSingleStep()" classname="src.test.TestEulerSolver" time="0.008"/>
+  <testcase name="testFunction2()" classname="src.test.TestEulerSolver" time="0.015"/>
+  <testcase name="testFunction3()" classname="src.test.TestEulerSolver" time="0.003"/>
   <system-out><![CDATA[Single step: 
 (V: X: -14.205116696061488 y: -4.954714721197586 z: 0.39942376216744196 |P: X: -6.806783381332816E8 y: 1.0800055289240103E9 z: 6564013.151113932 | Time: 1.0),
 (V: X: 38925.85161703165 y: 2978.3697578652873 z: -3327.961878297275 |P: X: 6086781.838314573 y: -6.8017997500346634E10 z: -5.702745687678685E9 | Time: 1.0),

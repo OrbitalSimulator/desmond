@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="src.test.TestNewtonGravityFunction" tests="1" skipped="0" failures="0" errors="0" timestamp="2021-04-16T11:27:30" hostname="pop-os" time="0.009">
+<testsuite name="src.test.TestNewtonGravityFunction" tests="1" skipped="0" failures="0" errors="0" timestamp="2021-04-16T11:43:02" hostname="pop-os" time="0.039">
   <properties/>
-  <testcase name="testNewtonGravityFunc()" classname="src.test.TestNewtonGravityFunction" time="0.009"/>
+  <testcase name="testNewtonGravityFunc()" classname="src.test.TestNewtonGravityFunction" time="0.039"/>
   <system-out><![CDATA[
 (V: X: -14.20511669610689 y: -4.954714716629277 z: 0.3994237625449041 |P: X: -6.806783239281648E8 y: 1.080005533878725E9 z: 6564012.75169017 | Time: 0.0),
 (V: X: 38925.85189044652 y: 2978.342247012996 z: -3327.96415141474 |P: X: 6047855.986424127 y: -6.801800047868888E10 z: -5.702742359714534E9 | Time: 0.0),

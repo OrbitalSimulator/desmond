@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="src.test.TestDTG" tests="2" skipped="0" failures="0" errors="0" timestamp="2021-04-16T11:27:33" hostname="pop-os" time="0.005">
+<testsuite name="src.test.TestDTG" tests="2" skipped="0" failures="0" errors="0" timestamp="2021-04-16T11:43:05" hostname="pop-os" time="0.005">
   <properties/>
   <testcase name="testDTG()" classname="src.test.TestDTG" time="0.003"/>
-  <testcase name="testCompare()" classname="src.test.TestDTG" time="0.001"/>
+  <testcase name="testCompare()" classname="src.test.TestDTG" time="0.002"/>
   <system-out><![CDATA[true
 ]]></system-out>
   <system-err><![CDATA[]]></system-err>
