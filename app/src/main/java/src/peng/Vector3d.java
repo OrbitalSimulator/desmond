@@ -2,19 +2,20 @@ package src.peng;
 
 import java.lang.Math;
 
-//TODO (Travis Dawson) Clean up Vector3d
 public class Vector3d implements Vector3dInterface
 {
     protected double x;
     protected double y;
     protected double z;
     
-    /**
-     * Constructor of vector3d
-     * @param x x-value
-     * @param y y-value
-     * @param z z-value
-     */
+
+    public Vector3d()
+    {
+        this.x = 0;
+        this.y = 0;
+        this.z = 0;
+    }
+    
     public Vector3d(double x, double y, double z)
     {
         this.x = x;
@@ -22,104 +23,14 @@ public class Vector3d implements Vector3dInterface
         this.z = z;
     }
 
-    /**
-     * Accessor method
-     * @return x-value
-     */
-    public double getX()
-    {
-        return this.x;
-    }
-
-    /**
-     * Accessor method
-     * @return y-value
-     */
-    public double getY()
-    {
-        return this.y;
-    }
-
-    /**
-     * Accessor method
-     * @return z-value
-     */
-    public double getZ()
-    {
-        return this.z;
-    }
-
-    /**
-     * Setter method
-     * @param x Set x-value
-     */
-    public void setX(double x)
-    {
-        this.x = x;
-    }
-
-    /**
-     * Setter method
-     * @param y Set y-value
-     */
-    public void setY(double y)
-    {
-        this.y = y;
-    }
-
-    /**
-     * Setter method
-     * @param z Set z-value
-     */
-    public void setZ(double z)
-    {
-        this.z = z;
-    }
-
-    /**
-     * Vector addition
-     * @param other vector to add
-     */
-    public Vector3d add(Vector3dInterface other)
-    {
-        return new Vector3d(this.x + other.getX(), this.y + other.getY(), this.z + other.getZ());
-    }
-
-    /**
-     * Vector subtraction
-     * @param other vector to subtract
-     */
-    public Vector3d sub(Vector3dInterface other)
-    {
-        return new Vector3d(this.x - other.getX(), this.y - other.getY(), this.z - other.getZ());
-    }
-
-    /**
-     * Vector multiplication
-     * @param scaler Vector to multiply with.
-     */
-    public Vector3d mul(double scaler)
-    {
-        return new Vector3d(this.x * scaler, this.y * scaler, this.z * scaler);
-    }
-
-    /**
-     * Dot product operation
-     * @param other Vector to perform dot product with
-     * @return Scaler quantity representing dot product
-     */
-    public double dotProduct(Vector3dInterface other)
-    {
-        return (this.x*other.getX()) + (this.y*other.getY() + (this.z*other.getZ()));
-    }
-
+    
     /**
      * Scalar x vector multiplication, followed by an addition
      * 
     * @param scalar the double used in the multiplication step
     * @param other  the vector used in the multiplication step
     * @return the result of the multiplication step added to this vector,
-    * Should yeild a+ h*b
+    * Should yield a+ h*b
     */
     public Vector3d addMul(double scaler, Vector3dInterface other)
     {
@@ -171,6 +82,43 @@ public class Vector3d implements Vector3dInterface
     {
         return new Vector3d(this.x, this.y, this.z);
     }
+    
+    /**
+     * Vector addition
+     * @param other vector to add
+     */
+    public Vector3d add(Vector3dInterface other)
+    {
+        return new Vector3d(this.x + other.getX(), this.y + other.getY(), this.z + other.getZ());
+    }
+
+    /**
+     * Vector subtraction
+     * @param other vector to subtract
+     */
+    public Vector3d sub(Vector3dInterface other)
+    {
+        return new Vector3d(this.x - other.getX(), this.y - other.getY(), this.z - other.getZ());
+    }
+
+    /**
+     * Vector multiplication
+     * @param scaler Vector to multiply with.
+     */
+    public Vector3d mul(double scaler)
+    {
+        return new Vector3d(this.x * scaler, this.y * scaler, this.z * scaler);
+    }
+
+    /**
+     * Dot product operation
+     * @param other Vector to perform dot product with
+     * @return Scaler quantity representing dot product
+     */
+    public double dotProduct(Vector3dInterface other)
+    {
+        return (this.x*other.getX()) + (this.y*other.getY() + (this.z*other.getZ()));
+    }
 
     @Override
     /**
@@ -185,5 +133,35 @@ public class Vector3d implements Vector3dInterface
             return true;
         }
         return false;
+    }
+    
+    public double getX()
+    {
+        return x;
+    }
+
+    public double getY()
+    {
+        return y;
+    }
+
+    public double getZ()
+    {
+        return z;
+    }
+
+    public void setX(double x)
+    {
+        this.x = x;
+    }
+
+    public void setY(double y)
+    {
+        this.y = y;
+    }
+
+    public void setZ(double z)
+    {
+        this.z = z;
     }
 }
