@@ -2,11 +2,12 @@ package src.test;
 
 import org.junit.jupiter.api.Test;
 
+import expData.EphemerisReader;
 import src.univ.CelestialBody;
 import src.univ.Coordinate;
 import src.univ.DTG;
 import src.visu.Visualiser;
-import src.data.EphemerisReader;
+
 
 class TestVisualiser 
 {
@@ -18,10 +19,9 @@ class TestVisualiser
 		// Find all files that start with "Ephemeris_" and end with ".txt"
 		String[] paths = new String[11];
 		for(int i = 0; i < noOfCB; i++)
-		{
-			
+		{	
 			StringBuilder s =  new StringBuilder();
-			s.append("/src/main/java/src/data/Ephemeris_");
+			s.append("/src/test/java/expData/Ephemeris_");
 			s.append(i);
 			s.append(".txt");
 			paths[i] = s.toString();
