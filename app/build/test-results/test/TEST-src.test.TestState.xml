@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="src.test.TestState" tests="1" skipped="0" failures="0" errors="0" timestamp="2021-04-16T11:43:02" hostname="pop-os" time="0.016">
+  <properties/>
+  <testcase name="testAddMulMethod()" classname="src.test.TestState" time="0.016"/>
+  <system-out><![CDATA[
+(V: X: 1.0 y: 2.0 z: 3.0 |P: X: 4.0 y: 5.0 z: 6.0 | Time: 0.0),
+
+(V: X: 13.0 y: 16.0 z: 19.0 |P: X: 12.0 y: 15.0 z: 18.0 | Time: 2.0),
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
