@@ -71,7 +71,7 @@ public class Vector3d implements Vector3dInterface
      */
     public String toString() 
     {
-        return "X: "+ this.x + " y: "+this.y + " z: "+this.z;
+        return "("+ this.x + ","+this.y + ","+this.z+")";
     }
 
     /**
