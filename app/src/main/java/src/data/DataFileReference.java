@@ -14,17 +14,15 @@ public class DataFileReference
 	public DTG End_Time;
 	public int No_of_Steps;
 	
-	public DataFileReference generateFileReferece(CelestialBody[] data)
+	public DataFileReference(CelestialBody[] data)
 	{
-		DataFileReference ref = new DataFileReference();
-		ref.Name = data[0].name;       
-		ref.Mass = data[0].mass;       
-		ref.Radius = data[0].radius;     
-		ref.Image_Path = data[0].image; 
-		ref.Icon_Path = data[0].icon;  
-		ref.Start_Time = data[0].time;    
-		ref.End_Time = data[data.length-1].time;      
-		ref.No_of_Steps = data.length;   
-		return ref;
+		Name = data[0].name;       
+		Mass = data[0].mass;       
+		Radius = data[0].radius;     
+		Image_Path = data[0].image; 
+		Icon_Path = data[0].icon;  
+		Start_Time = data[0].time;    
+		End_Time = data[data.length-1].time;      
+		No_of_Steps = data.length;   
 	}
 }
