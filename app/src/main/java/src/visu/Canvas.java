@@ -40,7 +40,6 @@ public class Canvas extends JPanel
 	private double zoom_rate = 1E-10;
 	private Dimension screen;
 	private CelestialBody[][] U;
-	private ArrayList<Coordinate[]> T;
 	private int time;						// Current time
 	private int endTime;
 	private boolean follow = false;
@@ -57,7 +56,6 @@ public class Canvas extends JPanel
 		yOffset = 0;
 		xOrigin = getWidth()/ 2;
 		yOrigin = getHeight()/ 2;
-		T = new ArrayList<Coordinate[]>();
 	}
 	
 	@Override
@@ -148,12 +146,6 @@ public class Canvas extends JPanel
 				g.fillOval(x, y, 2, 2);
 			}
 		}
-	}
-	
-	public void addTrajectory(Coordinate[] c)
-	{
-		T.add(c);
-		repaint();
 	}
 	
 	public void incrementTime(int interval)

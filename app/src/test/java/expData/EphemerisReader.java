@@ -12,7 +12,6 @@ import java.util.LinkedList;
 
 import src.peng.Vector3d;
 import src.univ.CelestialBody;
-import src.univ.Coordinate;
 import src.univ.DTG;
 
 /**
@@ -29,7 +28,6 @@ public class EphemerisReader
 	private String startOfEph = "$$SOE";
 	private String endOfEph  = "$$EOE";
 	private LinkedList<CelestialBody> bodies;
-	private LinkedList<Coordinate> coords;
 	
 	//0  Ephemeris_Sol.txt
 	//1  Ephemeris_Merc.txt
@@ -46,7 +44,6 @@ public class EphemerisReader
 	public EphemerisReader(String fileName)
 	{
 		this.fileName = fileName;
-		coords = new LinkedList<Coordinate>();
 		bodies = new LinkedList<CelestialBody>();
 		
 		// This opens the file and creates a new file reader
@@ -145,15 +142,6 @@ public class EphemerisReader
 		{
 			System.out.println("File " + fileName + " Not Found");
 			e.printStackTrace();
-		}
-		
-		// This prints everything to the terminal on debug
-		if(DEBUG)
-		{
-			for(Coordinate c: coords)
-			{
-				System.out.println(c.toString());
-			}
 		}
 	}
 	

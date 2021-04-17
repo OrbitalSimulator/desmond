@@ -38,12 +38,12 @@ public class CelestialBody
 	 * @param coordinate
 	 * @return
 	 */
-	public boolean collision(Coordinate c)
+	public boolean collision(Vector3d object)
 	{
 		// Calculate distance from origin ( (a1-a2)^2 + (b1-b2)^2 + (c1-c2)^2)^1/2 
-		double deltaA = Math.pow((location.getX() - c.getX()), 2);
-		double deltaB = Math.pow((location.getY() - c.getY()), 2);
-		double deltaC = Math.pow((location.getZ() - c.getZ()), 2);
+		double deltaA = Math.pow((location.getX() - object.getX()), 2);
+		double deltaB = Math.pow((location.getY() - object.getY()), 2);
+		double deltaC = Math.pow((location.getZ() - object.getZ()), 2);
 		double dist = deltaA + deltaB + deltaC;
 		dist = Math.sqrt(dist);
 		if(dist < radius)
