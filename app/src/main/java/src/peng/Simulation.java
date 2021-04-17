@@ -5,8 +5,6 @@ import src.visu.Visualiser;
 
 public class Simulation 
 {	
-	public boolean DISPLAY_VISUALISER = true;
-	
 	/*
 	 * Simulate the solar system, including a probe fired from Earth at 00:00h on 1 April 2020.
 	 *
