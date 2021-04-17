@@ -1,30 +1,4 @@
-src/test/TestEulerSolver.java
- src.test.TestEulerSolver
-src/test/TestVector.java
- src.test.TestVector
-src/test/TestDTG.java
- src.test.TestDTG
-src/test/TestVisualiser.java
- src.test.TestVisualiser
-src/test/Vector3dTest.java
- src.test.Vector3dTest
-src/test/TestCelestialBody.java
- src.test.TestCelestialBody
-src/test/TestCoordinate.java
- src.test.TestCoordinate
-src/test/TestSimulation.java
- src.test.TestSimulation
-src/test/TestUniverse.java
- src.test.TestUniverse
-src/test/TestNewtonGravityFunction.java
- src.test.TestNewtonGravityFunction
-src/test/TestFunction.java
- src.test.TestFunction
-src/test/TestState.java
- src.test.TestState
 src/test/package-info.java
  src.test.package-info
-src/test/ProbeSimulatorTest.java
- src.test.ProbeSimulatorTest
-src/test/TestRate.java
- src.test.TestRate
+expData/EphemerisReader.java
+ expData.EphemerisReader
