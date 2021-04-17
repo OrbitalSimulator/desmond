@@ -26,6 +26,17 @@ public class DTG
 		this.sec = 0;
 	}
 	
+	public DTG(String string)
+	{
+		// TODO (Leon) Add DTG from string Implementation
+		this.yr = 0; 
+		this.mth = 0;
+		this.day = 0;
+		this.hr = 0; 
+		this.min = 0;
+		this.sec = 0;
+	}
+	
 	public DTG(int yr, int mth, int day, int hr, int min, int sec)       
 	{                  
 		this.yr = yr;   
