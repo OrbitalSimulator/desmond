@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 
+import src.peng.Vector3d;
 import src.univ.CelestialBody;
 import src.univ.Coordinate;
 import src.univ.DTG;
@@ -20,9 +21,9 @@ class TestCelestialBody
 	void testCollision() 
 	{
 		// Arrange (set up everything for your test)
-		double radius = 100;												// make a new celestial body	
-		Coordinate centre = new Coordinate();								// with a radius 50 and		
-		CelestialBody cb = new CelestialBody(centre, centre, 0, radius);	// a centre of 0,0,0
+		double radius = 100;											// make a new celestial body	
+		Vector3d centre = new Vector3d();								// with a radius 50 and	a centre of 0,0,0
+		CelestialBody cb = new CelestialBody(centre, centre, 0, radius, null, null, null, new DTG());
 		
 		Coordinate[] input = new Coordinate[10];
 		for(int i = 0; i < input.length; i++)
