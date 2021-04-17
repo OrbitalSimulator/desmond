@@ -5,8 +5,6 @@ import src.peng.StateInterface;
 import src.peng.Vector3dInterface;
 import src.peng.State;
 
-import java.nio.file.FileSystem;
-import java.nio.file.FileSystems;
 import java.util.ArrayList;
 
 //Class containing universal constants
@@ -62,7 +60,7 @@ public class Universe
             //Iterate through each planet contained in a single state
             for(int j=0; j< temp.velocity.size(); j++)
             {
-                U2[j][i] = U[j].copyOf(temp.position.get(j),temp.velocity.get(j), new DTG());	//TODO (Leon) DTG as ms to be able to convert here
+                U2[j][i] = U[j].updateCopy(temp.position.get(j),temp.velocity.get(j), new DTG());	//TODO (Leon) DTG as ms to be able to convert here
             }
         }
     }
