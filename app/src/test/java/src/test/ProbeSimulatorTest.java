@@ -94,7 +94,6 @@ class ProbeSimulatorTest {
       Vector3dInterface probe_relative_velocity = new Vector3d(52500.0,-27000.0,0); // 12.0 months
       double day = 24*60*60;
       Simulation simulator = new Simulation();
-      simulator.DISPLAY_VISUALISER = false;
       Vector3dInterface[] trajectory = simulator.trajectory(probe_relative_position, probe_relative_velocity, day, day);
       return trajectory;
 
@@ -107,7 +106,6 @@ class ProbeSimulatorTest {
       double day = 24*60*60;
       double year = 365.25*day;
       Simulation simulator = new Simulation();
-      simulator.DISPLAY_VISUALISER = false;
       Vector3dInterface[] trajectory = simulator.trajectory(probe_relative_position, probe_relative_velocity, year, day);
       return trajectory;
 
