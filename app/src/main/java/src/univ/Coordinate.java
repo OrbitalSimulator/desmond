@@ -10,24 +10,24 @@ import src.peng.Vector3d;
  */
 public class Coordinate extends Vector3d
 {
-	public DTG t;
+	public DTG time;
 	
 	public Coordinate()
 	{
 		super(0,0,0);
-		t = new DTG();
+		time = new DTG();
 	}
 	
 	public Coordinate(Vector3d v3d, DTG t)
 	{
 		super(v3d.getX(),v3d.getY(),v3d.getZ());
-		this.t = t;
+		this.time = t;
 	}
 	
 	public Coordinate(double x, double y, double z, DTG t)
 	{
 		super(x,y,z);
-		this.t = t;
+		this.time = t;
 	}
 	
 	public void set(double x, double y, double z)
@@ -49,7 +49,7 @@ public class Coordinate extends Vector3d
 		this.x = x;
 		this.y = y;
 		this.z = z;
-		this.t = t;
+		this.time = t;
 	}
 	
 	public void set(Vector3d v3d, DTG t)
@@ -57,19 +57,19 @@ public class Coordinate extends Vector3d
 		x = v3d.getX();
 		y = v3d.getY();
 		z = v3d.getZ();
-		this.t = t;
+		this.time = t;
 	}
 	
 	public DTG difference(Coordinate c)
 	{
-		DTG difference = this.t.sub(c.t);
+		DTG difference = this.time.sub(c.time);
 		return difference;
 	}
 	
 	public String toString()
 	{
 		StringBuilder s = new StringBuilder();
-		s.append("X:" + x + " Y:" + y + " Z:" + z + " T:" + t);
+		s.append("(" + x + "," + y + "," + z + "," + time);
 		return s.toString();
 	}
 	
