@@ -4,9 +4,7 @@ import org.junit.jupiter.api.Test;
 
 import expData.EphemerisReader;
 import src.univ.CelestialBody;
-import src.univ.DTG;
 import src.visu.Visualiser;
-
 
 class TestVisualiser 
 {
