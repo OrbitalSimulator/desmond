@@ -13,9 +13,8 @@ public class App
 	
 	public static void main(String[] args) 
     {
-
+		runSimulation();
     }
-
 
 	public static void runSimulation()
 	{
