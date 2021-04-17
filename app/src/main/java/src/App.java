@@ -1,18 +1,21 @@
 package src;
 
+import src.data.ConfigFileManager;
 import src.peng.Simulation;
 import src.peng.Vector3d;
+import src.univ.CelestialBody;
 
 public class App 
 {
     // TODO APP add GUI startup and selection implementation
 	
+	
+	
 	public static void main(String[] args) 
     {
-		runSimulation();
+
     }
 
-	//TODO APP Sort out simulation vs ephemeris selection
 
 	public static void runSimulation()
 	{
@@ -26,5 +29,4 @@ public class App
 				-857.448354683806), tf, h);
 		System.out.println("done");
 	}
-
 }

@@ -1,7 +1,6 @@
 package src.peng;
 
 import src.univ.Universe;
-import src.visu.Visualiser;
 
 public class Simulation 
 {	
@@ -66,10 +65,10 @@ public class Simulation
 		Vector3d[] output = new Vector3d[states.length];				//Instantiate Vector array to length of states
 
 		int index = 0;     
-		for(int i=0; i< states.length; i++) 						//Iterates through the states
+		for(int i=0; i< states.length; i++) 							//Iterates through the states
 		{  
-			State temp = (State)states[i];							//Cast the StateInterface into a state object
-			int probeIndex = temp.position.size() -1;				//Access each state and derive the probe location.
+			State temp = (State)states[i];								//Cast the StateInterface into a state object
+			int probeIndex = temp.position.size() -1;					//Access each state and derive the probe location.
 			output[index] = temp.position.get(probeIndex);				//determine last element of each state = probe
 			index++;
 		}

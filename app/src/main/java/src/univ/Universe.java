@@ -3,6 +3,7 @@ package src.univ;
 import src.peng.Vector3d;
 import src.peng.StateInterface;
 import src.peng.Vector3dInterface;
+import src.data.ConfigFileManager;
 import src.peng.State;
 
 import java.util.ArrayList;
@@ -10,14 +11,34 @@ import java.util.ArrayList;
 //Class containing universal constants
 public class Universe
 {
-    public static final boolean DEBUG = false;
-
     public  CelestialBody[] U; 
     public  CelestialBody[][] U2;
    
     public Universe(Vector3dInterface p0, Vector3dInterface v0)
     {
-
+		try
+		{
+			ConfigFileManager config = new ConfigFileManager();
+			CelestialBody[] temp = config.load("UniverseConfig");
+			U = new CelestialBody[temp.length+1];
+			for(int i = 0; i < temp.length; i++)
+			{
+				U[i] = temp[i];
+			}
+			U[U.length-1] = new CelestialBody((Vector3d)p0,
+							    (Vector3d)v0,
+							    15000,
+							    700,
+							    "Probe",
+							    "/src/main/java/misc/craftIcon.png",
+							    "/src/main/java/misc/craftIcon.png",
+							    new DTG());
+		}
+		catch (Exception e)
+		{
+			System.out.println("Unable to load config file");
+			e.printStackTrace();
+		}
     }
  
     public Universe(CelestialBody[] U)
