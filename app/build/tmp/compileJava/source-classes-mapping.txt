@@ -14,8 +14,8 @@ src/data/package-info.java
  src.data.package-info
 src/peng/State.java
  src.peng.State
-src/peng/Simulation.java
- src.peng.Simulation
+src/data/ConfigFileManager.java
+ src.data.ConfigFileManager
 src/peng/RungeKutta2nd.java
  src.peng.RungeKutta2nd
 src/peng/Vector3d.java
@@ -55,7 +55,7 @@ src/univ/DTG.java
  src.univ.DTG
 src/App.java
  src.App
-src/data/ConfigFileManager.java
- src.data.ConfigFileManager
+src/peng/Simulation.java
+ src.peng.Simulation
 src/univ/Universe.java
  src.univ.Universe

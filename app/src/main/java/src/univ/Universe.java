@@ -4,6 +4,7 @@ import src.peng.Vector3d;
 import src.peng.StateInterface;
 import src.peng.Vector3dInterface;
 import src.data.ConfigFileManager;
+import src.data.DataFileManager;
 import src.peng.State;
 
 import java.util.ArrayList;
@@ -72,7 +73,6 @@ public class Universe
     public void update(StateInterface[] States)
     {
         U2 = new CelestialBody[U.length][States.length];
-    	
     	for(int i=0; i< States.length; i++)
         {
             //Cast each object into a State object
@@ -84,5 +84,15 @@ public class Universe
                 U2[j][i] = U[j].updateCopy(temp.position.get(j),temp.velocity.get(j), new DTG());	//TODO (Leon) DTG as ms to be able to convert here
             }
         }
+    	save();
+    }
+    
+    public void save()
+    {
+    	DataFileManager fileMngr = new DataFileManager();
+    	for(int i = 0; i < U.length; i++)
+    	{
+    		fileMngr.save(U2[i]);
+    	}
     }
 }
