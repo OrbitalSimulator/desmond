@@ -26,7 +26,6 @@ class TestSimulation
 
 		/*Calculate*/
     	Simulation sim = new Simulation();																//Generate simulation
-    	sim.DISPLAY_VISUALISER = false;
     	Vector3dInterface[] container = sim.trajectory(
 			new Vector3d(-1.471000001603588e+11,  -2.860000000266412e+10,   8.278180000000080e+06), 
 			new Vector3d( 22021.0193300029, -57508.4276505118,-857.448354683806), tf, h);
@@ -51,7 +50,6 @@ class TestSimulation
 
 		/*Calculate*/
 		Simulation sim = new Simulation();
-		sim.DISPLAY_VISUALISER = false;
 		Vector3dInterface[] container = sim.trajectory(
 			new Vector3d(-1.471000001603588e+11,  -2.860000000266412e+10,   8.278180000000080e+06),
 			new Vector3d(22021.0193300029, -57508.4276505118, -857.448354683806), ts);
