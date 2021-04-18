@@ -45,39 +45,9 @@ public class DataFileManager
 		{
 			throw new FileNotFoundException(filePath + " Not found");
 		}
-		else
-		{
-			return readFileData(reference, file);
-		}
+		return readFileData(reference, file);
 	}
-	
-	private String createFileName(CelestialBody[] data)
-	{
-		StringBuilder fileName = new StringBuilder();
-		fileName.append(data[0].name + "_");
-		fileName.append(data[0].time.toString() + "_");
-		fileName.append(data[data.length-1].time.toString() + "_");
-		fileName.append(data.length);
-		return fileName.toString();
-	}
-	
-	private String createFileName(DataFileReference reference)
-	{
-		StringBuilder fileName = new StringBuilder();
-		fileName.append(reference.Name + "_");
-		fileName.append(reference.Start_Time.toString() + "_");
-		fileName.append(reference.End_Time.toString() + "_");
-		fileName.append(reference.No_of_Steps);
-		return fileName.toString();
-	}
-	
-	private String getFilePath(String fileName)
-	{
-		FileSystem fileSystem = FileSystems.getDefault();
-		String path = fileSystem.getPath("").toAbsolutePath().toString();
-		return path.concat("/src/main/java/src/data/" + fileName);
-	}
-	
+		
 	private void writeFileHeader(File file, CelestialBody[] data) throws IOException
 	{
 		FileWriter writer = new FileWriter(file,false);
@@ -120,23 +90,64 @@ public class DataFileManager
 		{
 			line = reader.readLine();
 		}
-		
 		// Start reading vectors
 		for(int i = 0; i < reference.No_of_Steps; i++)
 		{
 			line = reader.readLine();
-			String[] subStrings = line.split(","); 
-			data[i] = new CelestialBody(
-					new Vector3d(Double.valueOf(subStrings[1]),Double.valueOf(subStrings[2]),Double.valueOf(subStrings[3])),
-					new Vector3d(Double.valueOf(subStrings[4]),Double.valueOf(subStrings[5]),Double.valueOf(subStrings[6])),
-					reference.Mass,
-					reference.Radius,
-					reference.Name,
-					reference.Image_Path,
-					reference.Icon_Path,
-					new DTG(subStrings[0]));  // TODO (Leon) add time step
+			data[i] = convertToCelestialBody(line, reference);
 		}
 		reader.close();
 		return data;
+	}
+	
+	private CelestialBody convertToCelestialBody(String line, DataFileReference reference)
+	{
+		String[] subStrings = line.split(","); 
+		subStrings = removeWhiteSpace(subStrings);
+		return new CelestialBody(
+				new Vector3d(Double.valueOf(subStrings[1]),Double.valueOf(subStrings[2]),Double.valueOf(subStrings[3])),
+				new Vector3d(Double.valueOf(subStrings[4]),Double.valueOf(subStrings[5]),Double.valueOf(subStrings[6])),
+				reference.Mass,
+				reference.Radius,
+				reference.Name,
+				reference.Image_Path,
+				reference.Icon_Path,
+				new DTG(subStrings[0]));  // TODO (Leon) add time step
+	}
+	
+	private String createFileName(CelestialBody[] data)
+	{
+		StringBuilder fileName = new StringBuilder();
+		fileName.append(data[0].name + "_");
+		fileName.append(data[0].time.toString() + "_");
+		fileName.append(data[data.length-1].time.toString() + "_");
+		fileName.append(data.length);
+		return fileName.toString();
+	}
+	
+	private String createFileName(DataFileReference reference)
+	{
+		StringBuilder fileName = new StringBuilder();
+		fileName.append(reference.Name + "_");
+		fileName.append(reference.Start_Time.toString() + "_");
+		fileName.append(reference.End_Time.toString() + "_");
+		fileName.append(reference.No_of_Steps);
+		return fileName.toString();
+	}
+	
+	private String getFilePath(String fileName)
+	{
+		FileSystem fileSystem = FileSystems.getDefault();
+		String path = fileSystem.getPath("").toAbsolutePath().toString();
+		return path.concat("/src/main/java/src/data/" + fileName);
+	}
+	
+		private String[] removeWhiteSpace(String[] array)
+	{
+		for(String each: array)
+		{
+			each = each.strip();
+		}
+		return array;
 	}
 }
