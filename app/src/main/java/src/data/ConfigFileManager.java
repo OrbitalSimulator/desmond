@@ -6,15 +6,12 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.nio.file.FileSystem;
-import java.nio.file.FileSystems;
 import java.util.ArrayList;
 
 import src.peng.Vector3d;
 import src.univ.CelestialBody;
-import src.univ.DTG;
 
-public class ConfigFileManager
+public class ConfigFileManager extends FileManager
 {		
 	public void overwrite(String fileName, String[] data)
 	{
@@ -45,14 +42,7 @@ public class ConfigFileManager
 		}
 		return readFileData(file);
 	}
-		
-	private String getFilePath(String fileName)
-	{
-		FileSystem fileSystem = FileSystems.getDefault();
-		String path = fileSystem.getPath("").toAbsolutePath().toString();
-		return path.concat("/src/main/java/src/data/" + fileName);
-	}
-		
+				
 	private void writeFileData(File file, String[] data) throws IOException
 	{
 		FileWriter writer = new FileWriter(file,true);
@@ -89,7 +79,7 @@ public class ConfigFileManager
 				subStrings[0],
 				subStrings[9],
 				subStrings[9],
-				new DTG(subStrings[0]));  // TODO (Leon) add time step
+				parseDateTime(subStrings[10]));
 	}
 	
 	private CelestialBody[] convertToArray(ArrayList<CelestialBody> arrayList)
@@ -98,15 +88,6 @@ public class ConfigFileManager
 		for(int i = 0; i < arrayList.size(); i++)
 		{
 			array[i] = arrayList.get(i);
-		}
-		return array;
-	}
-	
-	private String[] removeWhiteSpace(String[] array)
-	{
-		for(int i = 0; i < array.length; i++)
-		{
-			array[i] = array[i].strip();
 		}
 		return array;
 	}

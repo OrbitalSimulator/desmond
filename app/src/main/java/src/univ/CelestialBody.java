@@ -1,5 +1,7 @@
 package src.univ;
 
+import java.time.LocalDateTime;
+
 import src.peng.Vector3d;
 
 /**
@@ -17,9 +19,9 @@ public class CelestialBody
 	public String icon = null;
 	public Vector3d velocity;
 	public Vector3d location;
-	public DTG time = new DTG();
+	public LocalDateTime time = null;
 
-	public CelestialBody(Vector3d location, Vector3d velocity, double mass, double radius, String name, String image, String icon, DTG time)
+	public CelestialBody(Vector3d location, Vector3d velocity, double mass, double radius, String name, String image, String icon, LocalDateTime time)
 	{
 		this.location = location;
 		this.velocity = velocity;
@@ -59,7 +61,7 @@ public class CelestialBody
 		this.icon = icon;
 	}
 
-	public CelestialBody updateCopy(Vector3d position, Vector3d velocity, DTG time)
+	public CelestialBody updateCopy(Vector3d position, Vector3d velocity, LocalDateTime time)
 	{
 		return new CelestialBody(position, velocity, mass, radius, name, image, icon, time);
 	}

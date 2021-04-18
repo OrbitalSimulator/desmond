@@ -7,6 +7,9 @@ import src.data.ConfigFileManager;
 import src.data.DataFileManager;
 import src.peng.State;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 
 public class Universe
@@ -32,7 +35,7 @@ public class Universe
 							    "Probe",
 							    "/src/main/java/misc/craftIcon.png",
 							    "/src/main/java/misc/craftIcon.png",
-							    new DTG());
+							    null); //TODO (Leon) add local date time loading
 		}
 		catch (Exception e)
 		{
@@ -80,7 +83,7 @@ public class Universe
             //Iterate through each planet contained in a single state
             for(int j=0; j< temp.velocity.size(); j++)
             {
-                U2[j][i] = U[j].updateCopy(temp.position.get(j),temp.velocity.get(j), new DTG());	//TODO (Leon) DTG as ms to be able to convert here
+                U2[j][i] = U[j].updateCopy(temp.position.get(j),temp.velocity.get(j), null);	//TODO (Leon) DTG as ms to be able to convert here
             }
         }
     	save();

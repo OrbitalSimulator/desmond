@@ -7,12 +7,14 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.nio.file.FileSystem;
 import java.nio.file.FileSystems;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.Arrays;
 import java.util.LinkedList;
 
 import src.peng.Vector3d;
 import src.univ.CelestialBody;
-import src.univ.DTG;
 
 /**
  * Group 22
@@ -92,7 +94,7 @@ public class EphemerisReader
 					if(DEBUG) System.out.println(fourthln);
 					
 					// Read the date line (in separate method)
-					DTG dtg = toDTG(dateln);
+					LocalDateTime dtg = toDateTime(dateln);
 					
 					// Read the coordinate line
 					char[] coordinate = coordinateln.toCharArray();
@@ -160,7 +162,7 @@ public class EphemerisReader
 	 * "2458940.500000000 = A.D. 2020-Apr-01 00:00:00.0000 TDB "
 	 * @return a DTG
 	 */
-	private DTG toDTG(String date)
+	private LocalDateTime toDateTime(String date)
 	{
 		char[] chars = date.toCharArray();
 		char[] year = Arrays.copyOfRange(chars, 25, 29);
@@ -175,7 +177,10 @@ public class EphemerisReader
 		int min = Integer.valueOf(String.copyValueOf(minute));
 		char[] second = Arrays.copyOfRange(chars, 43, 45);
 		int sec = Integer.valueOf(String.copyValueOf(second));
-		return new DTG(yr,mth,dy,hr,min,sec);
+		
+		LocalDate localDate = LocalDate.parse(yr +"-"+ mth +"-"+ dy);
+		LocalTime localTime = LocalTime.parse(hr +":"+ min +":"+ sec);
+		return LocalDateTime.of(localDate, localTime);
 	}
 	
 	private double lookUpMass(String name)
