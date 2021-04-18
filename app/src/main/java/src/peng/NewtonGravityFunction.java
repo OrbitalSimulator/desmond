@@ -2,8 +2,6 @@ package src.peng;
 
 import java.util.ArrayList;
 
-import src.univ.Universe;
-
 //TODO (Travis Dawson) Clean up comments in class functions
 public class NewtonGravityFunction implements ODEFunctionInterface
 {

@@ -67,7 +67,7 @@ public class SaveFile
 			x = Double.valueOf(xLn);
 			y = Double.valueOf(yLn);
 			z = Double.valueOf(zLn);
-			
+			br.close();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

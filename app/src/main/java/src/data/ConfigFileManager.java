@@ -43,10 +43,7 @@ public class ConfigFileManager
 		{
 			throw new FileNotFoundException(filePath + " Not found");
 		}
-		else
-		{
-			return readFileData(file);
-		}
+		return readFileData(file);
 	}
 		
 	private String getFilePath(String fileName)
@@ -73,8 +70,8 @@ public class ConfigFileManager
 		ArrayList<CelestialBody> dataList = new ArrayList<CelestialBody>();
 		while(line != null)
 		{
-			line = reader.readLine();
 			dataList.add(convertToCelestialBody(line));
+			line = reader.readLine();
 		}
 		reader.close();
 		return convertToArray(dataList);
@@ -107,9 +104,9 @@ public class ConfigFileManager
 	
 	private String[] removeWhiteSpace(String[] array)
 	{
-		for(String each: array)
+		for(int i = 0; i < array.length; i++)
 		{
-			each = each.strip();
+			array[i] = array[i].strip();
 		}
 		return array;
 	}

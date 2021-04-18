@@ -16,7 +16,6 @@ public class Simulation
 	public Vector3dInterface[] trajectory(Vector3dInterface p0, Vector3dInterface v0, double[] ts)
 	{
 		/* Build */
-		int size = ts.length;															//Determine quantity of intermediate states
 		Universe universe = new Universe(p0, v0);										//Initialise the universe
 		StateInterface initialState = universe.initialState();							//Generate the initial state of the universe
 		ODEFunctionInterface funct = new NewtonGravityFunction(universe.getMasses());	//Initialise ODEFunctionInterface - contains call method
@@ -42,8 +41,7 @@ public class Simulation
 	 */
 	public Vector3dInterface[] trajectory(Vector3dInterface p0, Vector3dInterface v0, double tf, double h)
 	{
-		/* Build */
-		int size = (int)Math.ceil(tf/h)+1;												//Determine quantity of intermediate states												
+		/* Build */								
 		Universe universe = new Universe(p0, v0);										//Initialise the universe
 		StateInterface initialState = universe.initialState(); 							//Generate the initial state of the universe
 		ODEFunctionInterface funct = new NewtonGravityFunction(universe.getMasses());	//Initialise ODEFunctionInterface - contains call method			

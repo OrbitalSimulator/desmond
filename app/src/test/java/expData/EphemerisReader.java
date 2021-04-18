@@ -55,7 +55,6 @@ public class EphemerisReader
 			path = path.concat(fileName);
 			File file = new File(path);
 			BufferedReader reader = new BufferedReader(new FileReader(file));
-			
 			// This tries to read the first line, throws an exception if nothing is found
 			try
 			{
@@ -131,6 +130,7 @@ public class EphemerisReader
 					
 					bodies.add(new CelestialBody(location, velocity, mass, radius, name, image, icon,dtg));
 				}
+				reader.close();
 			}
 			catch (IOException e) 
 			{
