@@ -40,7 +40,6 @@ public class Canvas extends JPanel
 	private double zoom_rate = 1E-10;
 	private Dimension screen;
 	private CelestialBody[][] U;
-	private ArrayList<Coordinate[]> T;
 	private int time;						// Current time
 	private int endTime;
 	private boolean follow = false;
@@ -57,7 +56,6 @@ public class Canvas extends JPanel
 		yOffset = 0;
 		xOrigin = getWidth()/ 2;
 		yOrigin = getHeight()/ 2;
-		T = new ArrayList<Coordinate[]>();
 	}
 	
 	@Override
@@ -72,14 +70,14 @@ public class Canvas extends JPanel
 		g.setFont(font);
 		int timeX = 10;
 		int timeY = (int) screen.getHeight()- 140;
-		g.drawString(U[0][time].loc.t.toStringDate(), timeX, timeY);
+		g.drawString(U[0][time].time.toStringDate(), timeX, timeY);
 		
 		if(follow)
 		{
 			distScaling = detailDist;
 			sizeScaling = detailSize;
-			xOffset = (int) - (U[following][time].loc.getX() * distScaling);
-			yOffset = (int) - (U[following][time].loc.getY() * distScaling);	
+			xOffset = (int) - (U[following][time].location.getX() * distScaling);
+			yOffset = (int) - (U[following][time].location.getY() * distScaling);	
 		}
 		
 		// Paint Orbits
@@ -89,11 +87,11 @@ public class Canvas extends JPanel
 			for(int j = 0; j < U[i].length; j += 50)
 			{
 				int x = xOrigin;
-				x += (int) (U[i][j].loc.getX() * distScaling);
+				x += (int) (U[i][j].location.getX() * distScaling);
 				x += xOffset;
 				
 				int y = yOrigin;
-				y += (int) (U[i][j].loc.getY() * distScaling);
+				y += (int) (U[i][j].location.getY() * distScaling);
 				y += yOffset;
 				
 				g.fillOval(x, y, 2, 2);
@@ -108,12 +106,12 @@ public class Canvas extends JPanel
 			int r = (int) (U[i][time].radius * sizeScaling);
 			
 			int x = xOrigin;
-			x += (int) (U[i][time].loc.getX() * distScaling);
+			x += (int) (U[i][time].location.getX() * distScaling);
 			x -= r/2;
 			x += xOffset;
 			
 			int y = yOrigin;
-			y += (int) (U[i][time].loc.getY()  * distScaling);
+			y += (int) (U[i][time].location.getY()  * distScaling);
 			y -= r/2;
 			y += yOffset;
 			
@@ -138,22 +136,16 @@ public class Canvas extends JPanel
 			for(int j = 0; j < U[i].length; j++)
 			{
 				int x = xOrigin;
-				x += (int) (U[i][j].loc.getX() * distScaling);
+				x += (int) (U[i][j].location.getX() * distScaling);
 				x += xOffset;
 				
 				int y = yOrigin;
-				y += (int) (U[i][j].loc.getY() * distScaling);
+				y += (int) (U[i][j].location.getY() * distScaling);
 				y += yOffset;
 				
 				g.fillOval(x, y, 2, 2);
 			}
 		}
-	}
-	
-	public void addTrajectory(Coordinate[] c)
-	{
-		T.add(c);
-		repaint();
 	}
 	
 	public void incrementTime(int interval)

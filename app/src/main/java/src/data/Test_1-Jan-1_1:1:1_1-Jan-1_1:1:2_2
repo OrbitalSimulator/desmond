@@ -1,0 +1,11 @@
+Name=Test
+Mass=100.0
+Radius=100.0
+Image_Path=/image/path
+Icon_Path=icon/path
+Start_Time=1-Jan-1_1:1:1
+End_Time=1-Jan-1_1:1:2
+No_of_Steps=2
+$SOE
+1-Jan-1_1:1:1,1.0,1.0,1.0,2.0,2.0,2.0
+1-Jan-1_1:1:2,2.0,2.0,2.0,3.0,3.0,3.0

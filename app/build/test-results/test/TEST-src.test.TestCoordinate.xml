@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="src.test.TestCoordinate" tests="1" skipped="0" failures="0" errors="0" timestamp="2021-04-16T11:43:02" hostname="pop-os" time="0.032">
-  <properties/>
-  <testcase name="test()" classname="src.test.TestCoordinate" time="0.032"/>
-  <system-out><![CDATA[X:1.0 Y:1.0 Z:1.0 T:0-zero-0_0:0:0
-X:10.0 Y:10.0 Z:1.0 T:0-zero-0_0:0:0
-]]></system-out>
-  <system-err><![CDATA[]]></system-err>
-</testsuite>

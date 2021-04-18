@@ -1,12 +1,9 @@
 package src.peng;
 
 import src.univ.Universe;
-import src.visu.Visualiser;
 
 public class Simulation 
 {	
-	public boolean DISPLAY_VISUALISER = true;
-	
 	/*
 	 * Simulate the solar system, including a probe fired from Earth at 00:00h on 1 April 2020.
 	 *
@@ -19,22 +16,17 @@ public class Simulation
 	public Vector3dInterface[] trajectory(Vector3dInterface p0, Vector3dInterface v0, double[] ts)
 	{
 		/* Build */
-		int size = ts.length;													//Determine quantity of intermediate states
-		Universe uni = new Universe(size, p0, v0);								//Initialise the universe
-		StateInterface initialState = uni.initialState();						//Generate the initial state of the universe
-		ODEFunctionInterface funct = new NewtonGravityFunction(uni.accessMasses());				//Initialise ODEFunctionInterface - contains call method
+		int size = ts.length;															//Determine quantity of intermediate states
+		Universe universe = new Universe(p0, v0);										//Initialise the universe
+		StateInterface initialState = universe.initialState();							//Generate the initial state of the universe
+		ODEFunctionInterface funct = new NewtonGravityFunction(universe.getMasses());	//Initialise ODEFunctionInterface - contains call method
 
-		// TODO (Leon) Allow selection of algorithms
 		/* Compute */
-		RungeKutta4th solver = new RungeKutta4th();		 				//Call physics engine to determine intermediate states of the system.
-		StateInterface[] results = solver.solve(funct, initialState, ts);		//Record intermediate states
-		uni.convertToCelestialBody(results);									//Convert the obtained results to CelestialBodies for visualisation display
+		RungeKutta4th solver = new RungeKutta4th();		 								//Call physics engine to determine intermediate states of the system.
+		StateInterface[] results = solver.solve(funct, initialState, ts);				//Record intermediate states
+		universe.update(results);														//Convert the obtained results to CelestialBodies for visualisation display
 
 		/* Output */
-		if(DISPLAY_VISUALISER)
-		{
-			Visualiser visual = new Visualiser(uni.U2);									//Display the results
-		}
 		Vector3dInterface[] ret = output(results);
 		return ret; 															//Returns an array of the probes locations
 	}
@@ -51,42 +43,36 @@ public class Simulation
 	public Vector3dInterface[] trajectory(Vector3dInterface p0, Vector3dInterface v0, double tf, double h)
 	{
 		/* Build */
-		int size = (int)Math.ceil(tf/h)+1;											//Determine quantity of intermediate states												
-		Universe uni = new Universe(size, p0, v0);									//Initialise the universe
-		StateInterface initialState = uni.initialState(); 							//Generate the initial state of the universe
-		ODEFunctionInterface funct = new NewtonGravityFunction(uni.accessMasses());					//Initialise ODEFunctionInterface - contains call method			
+		int size = (int)Math.ceil(tf/h)+1;												//Determine quantity of intermediate states												
+		Universe universe = new Universe(p0, v0);										//Initialise the universe
+		StateInterface initialState = universe.initialState(); 							//Generate the initial state of the universe
+		ODEFunctionInterface funct = new NewtonGravityFunction(universe.getMasses());	//Initialise ODEFunctionInterface - contains call method			
 
 		/* Compute */
-		RungeKutta4th solver = new RungeKutta4th();							//Call physics engine to determine intermediate states of the system.
-		StateInterface[] results = solver.solve(funct, initialState, tf, h);		//Record intermediate states
-		uni.convertToCelestialBody(results);										//Convert the obtained results to CelestialBodies for visualisation display
+		RungeKutta4th solver = new RungeKutta4th();										//Call physics engine to determine intermediate states of the system.
+		StateInterface[] results = solver.solve(funct, initialState, tf, h);			//Record intermediate states
+		universe.update(results);														//Convert the obtained results to CelestialBodies for visualisation display
 
 		/* Display */
-		if(DISPLAY_VISUALISER)
-		{
-			Visualiser visual = new Visualiser(uni.U2);									//Display the results
-		}
 		Vector3dInterface[] ret = output(results);
-		return ret;																	//Returns an array of the probes locations
+		return ret;																		//Returns an array of the probes locations
 	}
 
 
 	//TODO Make dynamic at next stage with regard to probe position
-
 	public Vector3d[] output(StateInterface[] states)
 	{
-
-		Vector3d[] out = new Vector3d[states.length];				//Instantiate Vector array to length of states
+		Vector3d[] output = new Vector3d[states.length];				//Instantiate Vector array to length of states
 
 		int index = 0;     
-		for(int i=0; i< states.length; i++) 						//Iterates through the states
+		for(int i=0; i< states.length; i++) 							//Iterates through the states
 		{  
-			State temp = (State)states[i];							//Cast the StateInterface into a state object
-			int probeIndex = temp.position.size() -1;				//Access each state and derive the probe location.
-			out[index] = temp.position.get(probeIndex);				//determine last element of each state = probe
+			State temp = (State)states[i];								//Cast the StateInterface into a state object
+			int probeIndex = temp.position.size() -1;					//Access each state and derive the probe location.
+			output[index] = temp.position.get(probeIndex);				//determine last element of each state = probe
 			index++;
 		}
 
-		return out;
+		return output;
 	}
 }

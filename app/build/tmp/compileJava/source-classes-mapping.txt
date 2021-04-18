@@ -1,23 +1,25 @@
-src/peng/ODEFunctionInterface.java
- src.peng.ODEFunctionInterface
+src/peng/ODESolverInterface.java
+ src.peng.ODESolverInterface
 src/peng/RateInterface.java
  src.peng.RateInterface
 src/visu/package-info.java
  src.visu.package-info
-src/peng/Vector3dInterface.java
- src.peng.Vector3dInterface
-src/data/CSVLogger.java
- src.data.CSVLogger
+src/univ/CelestialBody.java
+ src.univ.CelestialBody
+src/data/SaveFile.java
+ src.data.SaveFile
 src/peng/ProbeSimulatorInterface.java
  src.peng.ProbeSimulatorInterface
 src/data/package-info.java
  src.data.package-info
-src/peng/package-info.java
- src.peng.package-info
+src/peng/State.java
+ src.peng.State
+src/data/ConfigFileManager.java
+ src.data.ConfigFileManager
 src/peng/RungeKutta2nd.java
  src.peng.RungeKutta2nd
-src/univ/DTG.java
- src.univ.DTG
+src/peng/Vector3d.java
+ src.peng.Vector3d
 src/peng/RungeKutta4th.java
  src.peng.RungeKutta4th
 src/peng/StateInterface.java
@@ -27,33 +29,33 @@ src/peng/EulerSolver.java
 src/visu/Visualiser.java
  src.visu.Visualiser
  src.visu.Visualiser$1
-src/peng/ODESolverInterface.java
- src.peng.ODESolverInterface
 src/univ/package-info.java
  src.univ.package-info
-src/peng/RungeKutta3rd.java
- src.peng.RungeKutta3rd
-src/visu/Canvas.java
- src.visu.Canvas
-src/peng/State.java
- src.peng.State
-src/App.java
- src.App
-src/data/EphemerisReader.java
- src.data.EphemerisReader
-src/peng/Simulation.java
- src.peng.Simulation
-src/peng/Vector3d.java
- src.peng.Vector3d
-src/univ/Universe.java
- src.univ.Universe
+src/peng/ODEFunctionInterface.java
+ src.peng.ODEFunctionInterface
+src/data/DataFileReference.java
+ src.data.DataFileReference
 src/peng/Rate.java
  src.peng.Rate
-src/univ/CelestialBody.java
- src.univ.CelestialBody
-src/data/SaveFile.java
- src.data.SaveFile
-src/univ/Coordinate.java
- src.univ.Coordinate
+src/data/CSVLogger.java
+ src.data.CSVLogger
+src/peng/package-info.java
+ src.peng.package-info
 src/peng/NewtonGravityFunction.java
  src.peng.NewtonGravityFunction
+src/data/DataFileManager.java
+ src.data.DataFileManager
+src/peng/Vector3dInterface.java
+ src.peng.Vector3dInterface
+src/visu/Canvas.java
+ src.visu.Canvas
+src/peng/RungeKutta3rd.java
+ src.peng.RungeKutta3rd
+src/univ/DTG.java
+ src.univ.DTG
+src/App.java
+ src.App
+src/peng/Simulation.java
+ src.peng.Simulation
+src/univ/Universe.java
+ src.univ.Universe

@@ -7,7 +7,7 @@ import src.univ.Universe;
 //TODO (Travis Dawson) Clean up comments in class functions
 public class NewtonGravityFunction implements ODEFunctionInterface
 {
-	public static final boolean DEBUG = false;
+	public static final double GRAVITY = 6.67430e-11;
     public double[] masses;
 
     /**
@@ -31,13 +31,6 @@ public class NewtonGravityFunction implements ODEFunctionInterface
 
         /*1.Calculate resultant sum acceleration */
         ArrayList<Vector3d> cv = newtonGravity(y, masses);
-        if(DEBUG)                                                       //Display
-        {
-            System.out.println("Acceleration vectors");
-            System.out.println(cv.get(0).toString());
-            System.out.println(cv.get(1).toString());
-            System.out.println("------");
-        }
 
         /*2. Calculate the resultant change in position*/
         ArrayList<Vector3d> cp = new ArrayList<Vector3d>();
@@ -45,16 +38,9 @@ public class NewtonGravityFunction implements ODEFunctionInterface
         {
             cp.add(stateInfo.velocity.get(i));
         }
-        if(DEBUG)                                                       //Display
-        {
-        	System.out.println(cp.get(0).toString());
-        	System.out.println(cp.get(1).toString());
-        }
-
+        
         /* 3.Return rateInterface object reflecting these changes*/
-        Rate result = new Rate(cv, cp);
-        if(DEBUG) System.out.println(result.toString());
-        return result;
+        return new Rate(cv, cp);
     }
 
     /**
@@ -85,23 +71,18 @@ public class NewtonGravityFunction implements ODEFunctionInterface
 
                     /*Distance calc*/
                     double r = otherPos.dist(currentPos);                                               //Calculate the distance between the two planets
-                    if(DEBUG) System.out.println("Distance: "+ r);
 
                     /*Unit vector calc*/
                     Vector3d rHat = (otherPos.sub(currentPos)).unitVector();
-                    if(DEBUG) System.out.println("Unit vector: "+ rHat.toString());
 
                     /*Scaler quantity calc */
-                    double quantity = (Universe.gConstant*planetMass*otherMass)/ Math.pow(r,2);
-                    if(DEBUG) System.out.println("Scaler quantity: "+ quantity);
+                    double quantity = (GRAVITY*planetMass*otherMass)/ Math.pow(r,2);
 
                     /*Gravitational force calc */
                     Vector3d gravitationalForce = rHat.mul(quantity);                                   //Direction vector multiplied by non-vector quantity
-                    if(DEBUG) System.out.println("gravitationalForce "+ gravitationalForce.toString());
 
                     /*Resultant acceleration calc*/
                     Vector3d resAcceleration = gravitationalForce.mul(1.0/planetMass);                  //a = F/mass 
-                    if(DEBUG) System.out.println("resultant acceleration: "+ resAcceleration.toString());
 
                     /*Summation*/
                     accelerationSum  = accelerationSum.add(resAcceleration);

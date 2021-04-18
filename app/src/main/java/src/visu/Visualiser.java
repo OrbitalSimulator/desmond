@@ -35,7 +35,6 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import src.univ.CelestialBody;
-import src.univ.Coordinate;
 
 /**
  * Group 22
@@ -210,12 +209,7 @@ public class Visualiser extends JFrame implements KeyListener, MouseWheelListene
 		timer = new Timer(1, timeEvent);
 		timer.start();
 	}
-	
-	public void addTrajectory(Coordinate[] c)
-	{
-		canvas.addTrajectory(c);
-	}
-	
+		
 	@Override
 	public void mouseWheelMoved(MouseWheelEvent e) 
 	{

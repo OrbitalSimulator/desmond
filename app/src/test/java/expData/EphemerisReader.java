@@ -12,7 +12,6 @@ import java.util.LinkedList;
 
 import src.peng.Vector3d;
 import src.univ.CelestialBody;
-import src.univ.Coordinate;
 import src.univ.DTG;
 
 /**
@@ -29,7 +28,6 @@ public class EphemerisReader
 	private String startOfEph = "$$SOE";
 	private String endOfEph  = "$$EOE";
 	private LinkedList<CelestialBody> bodies;
-	private LinkedList<Coordinate> coords;
 	
 	//0  Ephemeris_Sol.txt
 	//1  Ephemeris_Merc.txt
@@ -46,7 +44,6 @@ public class EphemerisReader
 	public EphemerisReader(String fileName)
 	{
 		this.fileName = fileName;
-		coords = new LinkedList<Coordinate>();
 		bodies = new LinkedList<CelestialBody>();
 		
 		// This opens the file and creates a new file reader
@@ -111,14 +108,13 @@ public class EphemerisReader
 					z *= 1.E3;
 					
 					// Generate a new CelestialBody element
-					Coordinate centerOfMass = new Coordinate(x,y,z,dtg);
-					Coordinate barycenter = new Coordinate();
+					Vector3d location = new Vector3d(x,y,z);
 										
 					// Read the velocity line
-					char[] velocity = velocityln.toCharArray();
-					char[] xV = Arrays.copyOfRange(velocity, 4, 25);
-					char[] yV = Arrays.copyOfRange(velocity, 30, 51);
-					char[] zV = Arrays.copyOfRange(velocity, 56, 67);
+					char[] velocityLine = velocityln.toCharArray();
+					char[] xV = Arrays.copyOfRange(velocityLine, 4, 25);
+					char[] yV = Arrays.copyOfRange(velocityLine, 30, 51);
+					char[] zV = Arrays.copyOfRange(velocityLine, 56, 67);
 					double xv = Double.valueOf(String.copyValueOf(xV));
 					double yv = Double.valueOf(String.copyValueOf(yV));
 					double zv = Double.valueOf(String.copyValueOf(zV));
@@ -126,14 +122,14 @@ public class EphemerisReader
 					yv *= 1.E3;
 					zv *= 1.E3;
 					
-					Vector3d vector = new Vector3d(xv,yv, zv);
+					Vector3d velocity = new Vector3d(xv,yv, zv);
 					
 					dateln  = reader.readLine();
 					coordinateln = reader.readLine();
 					velocityln  = reader.readLine();
 					fourthln = reader.readLine();
 					
-					bodies.add(new CelestialBody(centerOfMass,barycenter,mass,radius, vector,image,icon));
+					bodies.add(new CelestialBody(location, velocity, mass, radius, name, image, icon,dtg));
 				}
 			}
 			catch (IOException e) 
@@ -146,15 +142,6 @@ public class EphemerisReader
 		{
 			System.out.println("File " + fileName + " Not Found");
 			e.printStackTrace();
-		}
-		
-		// This prints everything to the terminal on debug
-		if(DEBUG)
-		{
-			for(Coordinate c: coords)
-			{
-				System.out.println(c.toString());
-			}
 		}
 	}
 	

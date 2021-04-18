@@ -10,7 +10,6 @@ import src.peng.Simulation;
 import src.peng.Vector3d;
 import src.peng.Vector3dInterface;
 import src.univ.CelestialBody;
-import src.univ.Coordinate;
 import src.univ.DTG;
 import src.visu.Visualiser;
 
@@ -26,7 +25,6 @@ class TestSimulation
 
 		/*Calculate*/
     	Simulation sim = new Simulation();																//Generate simulation
-    	sim.DISPLAY_VISUALISER = false;
     	Vector3dInterface[] container = sim.trajectory(
 			new Vector3d(-1.471000001603588e+11,  -2.860000000266412e+10,   8.278180000000080e+06), 
 			new Vector3d( 22021.0193300029, -57508.4276505118,-857.448354683806), tf, h);
@@ -51,7 +49,6 @@ class TestSimulation
 
 		/*Calculate*/
 		Simulation sim = new Simulation();
-		sim.DISPLAY_VISUALISER = false;
 		Vector3dInterface[] container = sim.trajectory(
 			new Vector3d(-1.471000001603588e+11,  -2.860000000266412e+10,   8.278180000000080e+06),
 			new Vector3d(22021.0193300029, -57508.4276505118, -857.448354683806), ts);
@@ -94,30 +91,5 @@ class TestSimulation
 		
 		Visualiser v = new Visualiser(U);
 		
-		double x = -1.471922101663588e+11;
-		double y = -2.860995816266412e+10;
-		double z = 8.278183193596080e+06;
-		Coordinate[] T = new Coordinate[U[0].length];
-		for(int i = 0; i < U[0].length; i++)
-		{
-			T[i] = new Coordinate(x,y,z,new DTG());
-			x += 12E7;
-			y -= 13.5E7;
-			z += 0;
-		}
-		
-		Coordinate[] T2 = new Coordinate[U[0].length];
-		x = -1.471922101663588e+11;
-		y = -2.860995816266412e+10;
-		z = 8.278183193596080e+06; 
-		for(int i = 0; i < U[0].length; i++)
-		{
-			T2[i] = new Coordinate(x,y,z,new DTG());
-			x += 12E7;
-			y -= 13E7;
-			z += 0;
-		}
-		v.addTrajectory(T);
-		v.addTrajectory(T2);
 	}
 }
