@@ -9,7 +9,6 @@ import src.peng.State;
 
 import java.util.ArrayList;
 
-//Class containing universal constants
 public class Universe
 {
     public  CelestialBody[] U; 
