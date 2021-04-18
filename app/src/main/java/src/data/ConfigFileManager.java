@@ -76,6 +76,7 @@ public class ConfigFileManager
 			line = reader.readLine();
 			dataList.add(convertToCelestialBody(line));
 		}
+		reader.close();
 		return convertToArray(dataList);
 	}
 	
