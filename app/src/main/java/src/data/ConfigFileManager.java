@@ -83,6 +83,7 @@ public class ConfigFileManager
 	private CelestialBody convertToCelestialBody(String line)
 	{
 		String[] subStrings = line.split(",");
+		subStrings = removeWhiteSpace(subStrings);
 		return new CelestialBody(
 				new Vector3d(Double.valueOf(subStrings[1]),Double.valueOf(subStrings[2]),Double.valueOf(subStrings[3])),
 				new Vector3d(Double.valueOf(subStrings[4]),Double.valueOf(subStrings[5]),Double.valueOf(subStrings[6])),
@@ -100,6 +101,15 @@ public class ConfigFileManager
 		for(int i = 0; i < arrayList.size(); i++)
 		{
 			array[i] = arrayList.get(i);
+		}
+		return array;
+	}
+	
+	private String[] removeWhiteSpace(String[] array)
+	{
+		for(String each: array)
+		{
+			each = each.strip();
 		}
 		return array;
 	}
