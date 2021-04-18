@@ -73,24 +73,33 @@ public class ConfigFileManager
 		ArrayList<CelestialBody> dataList = new ArrayList<CelestialBody>();
 		while(line != null)
 		{
-			String[] subStrings = line.split(",");
-			dataList.add(new CelestialBody(
-					new Vector3d(Double.valueOf(subStrings[1]),Double.valueOf(subStrings[2]),Double.valueOf(subStrings[3])),
-					new Vector3d(Double.valueOf(subStrings[4]),Double.valueOf(subStrings[5]),Double.valueOf(subStrings[6])),
-					Double.valueOf(subStrings[7]),
-					Double.valueOf(subStrings[8]),
-					subStrings[0],
-					subStrings[9],
-					subStrings[9],
-					new DTG(subStrings[0])));  // TODO (Leon) add time step
 			line = reader.readLine();
+			dataList.add(convertToCelestialBody(line));
 		}
-		
-		CelestialBody[] dataArray = new CelestialBody[dataList.size()];
-		for(int i = 0; i < dataList.size(); i++)
+		return convertToArray(dataList);
+	}
+	
+	private CelestialBody convertToCelestialBody(String line)
+	{
+		String[] subStrings = line.split(",");
+		return new CelestialBody(
+				new Vector3d(Double.valueOf(subStrings[1]),Double.valueOf(subStrings[2]),Double.valueOf(subStrings[3])),
+				new Vector3d(Double.valueOf(subStrings[4]),Double.valueOf(subStrings[5]),Double.valueOf(subStrings[6])),
+				Double.valueOf(subStrings[7]),
+				Double.valueOf(subStrings[8]),
+				subStrings[0],
+				subStrings[9],
+				subStrings[9],
+				new DTG(subStrings[0]));  // TODO (Leon) add time step
+	}
+	
+	private CelestialBody[] convertToArray(ArrayList<CelestialBody> arrayList)
+	{
+		CelestialBody[] array = new CelestialBody[arrayList.size()];
+		for(int i = 0; i < arrayList.size(); i++)
 		{
-			dataArray[i] = dataList.get(i);
+			array[i] = arrayList.get(i);
 		}
-		return dataArray;
+		return array;
 	}
 }
