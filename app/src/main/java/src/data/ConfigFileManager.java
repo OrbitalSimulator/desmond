@@ -43,10 +43,7 @@ public class ConfigFileManager
 		{
 			throw new FileNotFoundException(filePath + " Not found");
 		}
-		else
-		{
-			return readFileData(file);
-		}
+		return readFileData(file);
 	}
 		
 	private String getFilePath(String fileName)
@@ -73,24 +70,44 @@ public class ConfigFileManager
 		ArrayList<CelestialBody> dataList = new ArrayList<CelestialBody>();
 		while(line != null)
 		{
-			String[] subStrings = line.split(",");
-			dataList.add(new CelestialBody(
-					new Vector3d(Double.valueOf(subStrings[1]),Double.valueOf(subStrings[2]),Double.valueOf(subStrings[3])),
-					new Vector3d(Double.valueOf(subStrings[4]),Double.valueOf(subStrings[5]),Double.valueOf(subStrings[6])),
-					Double.valueOf(subStrings[7]),
-					Double.valueOf(subStrings[8]),
-					subStrings[0],
-					subStrings[9],
-					subStrings[9],
-					new DTG(subStrings[0])));  // TODO (Leon) add time step
+			dataList.add(convertToCelestialBody(line));
 			line = reader.readLine();
 		}
-		
-		CelestialBody[] dataArray = new CelestialBody[dataList.size()];
-		for(int i = 0; i < dataList.size(); i++)
+		reader.close();
+		return convertToArray(dataList);
+	}
+	
+	private CelestialBody convertToCelestialBody(String line)
+	{
+		String[] subStrings = line.split(",");
+		subStrings = removeWhiteSpace(subStrings);
+		return new CelestialBody(
+				new Vector3d(Double.valueOf(subStrings[1]),Double.valueOf(subStrings[2]),Double.valueOf(subStrings[3])),
+				new Vector3d(Double.valueOf(subStrings[4]),Double.valueOf(subStrings[5]),Double.valueOf(subStrings[6])),
+				Double.valueOf(subStrings[7]),
+				Double.valueOf(subStrings[8]),
+				subStrings[0],
+				subStrings[9],
+				subStrings[9],
+				new DTG(subStrings[0]));  // TODO (Leon) add time step
+	}
+	
+	private CelestialBody[] convertToArray(ArrayList<CelestialBody> arrayList)
+	{
+		CelestialBody[] array = new CelestialBody[arrayList.size()];
+		for(int i = 0; i < arrayList.size(); i++)
 		{
-			dataArray[i] = dataList.get(i);
+			array[i] = arrayList.get(i);
 		}
-		return dataArray;
+		return array;
+	}
+	
+	private String[] removeWhiteSpace(String[] array)
+	{
+		for(int i = 0; i < array.length; i++)
+		{
+			array[i] = array[i].strip();
+		}
+		return array;
 	}
 }

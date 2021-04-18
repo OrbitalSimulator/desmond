@@ -4,7 +4,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 
-import src.peng.ProbeSimulatorInterface;
 import src.peng.Simulation;
 import src.peng.Vector3d;
 import src.peng.Vector3dInterface;

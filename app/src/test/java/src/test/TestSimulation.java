@@ -10,7 +10,6 @@ import src.peng.Simulation;
 import src.peng.Vector3d;
 import src.peng.Vector3dInterface;
 import src.univ.CelestialBody;
-import src.univ.DTG;
 import src.visu.Visualiser;
 
 class TestSimulation 
@@ -90,6 +89,5 @@ class TestSimulation
 		}
 		
 		Visualiser v = new Visualiser(U);
-		
 	}
 }

@@ -1,7 +1,5 @@
 package src.test;
 
-import src.peng.Vector3d;
-import src.univ.Universe;
 import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;

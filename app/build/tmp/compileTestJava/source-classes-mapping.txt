@@ -14,8 +14,8 @@ src/test/TestCelestialBody.java
  src.test.TestCelestialBody
 expData/EphemerisReader.java
  expData.EphemerisReader
-src/test/TestRate.java
- src.test.TestRate
+src/test/TestSimulation.java
+ src.test.TestSimulation
 src/test/TestUniverse.java
  src.test.TestUniverse
 src/test/TestNewtonGravityFunction.java
@@ -28,5 +28,5 @@ src/test/package-info.java
  src.test.package-info
 src/test/ProbeSimulatorTest.java
  src.test.ProbeSimulatorTest
-src/test/TestSimulation.java
- src.test.TestSimulation
+src/test/TestRate.java
+ src.test.TestRate

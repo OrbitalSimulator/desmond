@@ -1,7 +1,5 @@
 package src.univ;
 
-import java.awt.Color;
-
 import src.peng.Vector3d;
 
 /**
