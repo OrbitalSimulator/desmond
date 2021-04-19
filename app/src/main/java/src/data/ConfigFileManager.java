@@ -58,7 +58,7 @@ public class ConfigFileManager extends FileManager
 		BufferedReader reader = new BufferedReader(new FileReader(file));
 		String line = reader.readLine();
 		ArrayList<CelestialBody> dataList = new ArrayList<CelestialBody>();
-		while(line != null)
+		while(!line.equalsIgnoreCase("EOF"))
 		{
 			dataList.add(convertToCelestialBody(line));
 			line = reader.readLine();
@@ -78,8 +78,8 @@ public class ConfigFileManager extends FileManager
 				Double.valueOf(subStrings[8]),
 				subStrings[0],
 				subStrings[9],
-				subStrings[9],
-				parseDateTime(subStrings[10]));
+				subStrings[10],
+				parseDateTime(subStrings[11]));
 	}
 	
 	private CelestialBody[] convertToArray(ArrayList<CelestialBody> arrayList)
