@@ -1,6 +1,7 @@
 package src.univ;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 import src.peng.Vector3d;
 
@@ -31,6 +32,7 @@ public class CelestialBody
 		this.image = image;
 		this.icon = icon;
 		this.time = time;
+		time.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
 	}
 	
 	/**
