@@ -7,8 +7,6 @@ public class Simulation
 	/*
 	 * Simulate the solar system, including a probe fired from Earth at 00:00h on 1 April 2020.
 	 *
-	 * @param   p0      the starting position of the probe, relative to the earth's position.
-	 * @param   v0      the starting velocity of the probe, relative to the earth's velocity.
 	 * @param   ts      the times at which the states should be output, with ts[0] being the initial time.
 	 * @return  an array of size ts.length giving the position of the probe at each time stated, 
 	 *          taken relative to the Solar System barycentre.
@@ -27,8 +25,8 @@ public class Simulation
 		universe.update(results);														//Convert the obtained results to CelestialBodies for visualisation display
 
 		/* Output */
-		Vector3dInterface[] ret = output(results);
-		return ret; 															//Returns an array of the probes locations
+		Vector3dInterface[] trajectory = output(results);
+		return trajectory;		
 	}
 
 	/*
@@ -54,25 +52,22 @@ public class Simulation
 		universe.update(results);														//Convert the obtained results to CelestialBodies for visualisation display
 
 		/* Display */
-		Vector3dInterface[] ret = output(results);
-		return ret;																		//Returns an array of the probes locations
+		Vector3dInterface[] trajectory = output(results);
+		return trajectory;									
 	}
 
-
-	//TODO Make dynamic at next stage with regard to probe position
 	public Vector3d[] output(StateInterface[] states)
 	{
 		Vector3d[] output = new Vector3d[states.length];				//Instantiate Vector array to length of states
 
 		int index = 0;     
-		for(int i=0; i< states.length; i++) 							//Iterates through the states
+		for(int i=0; i< states.length; i++) 							
 		{  
 			State temp = (State)states[i];								//Cast the StateInterface into a state object
 			int probeIndex = temp.position.size() -1;					//Access each state and derive the probe location.
 			output[index] = temp.position.get(probeIndex);				//determine last element of each state = probe
 			index++;
 		}
-
 		return output;
 	}
 }

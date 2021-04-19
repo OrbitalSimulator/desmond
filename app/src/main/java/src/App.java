@@ -5,7 +5,8 @@ import src.peng.Vector3d;
 
 public class App 
 {
-    // TODO APP add GUI startup and selection implementation
+    // TODO (Alp) APP add GUI startup and selection implementation
+	// TODO (Jerome) APP add Setting File Loading
 	public static void main(String[] args) 
     {
 		runSimulation();
