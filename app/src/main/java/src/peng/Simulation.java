@@ -13,10 +13,11 @@ public class Simulation
 	 * @return  an array of size ts.length giving the position of the probe at each time stated, 
 	 *          taken relative to the Solar System barycentre.
 	 */
-	public Vector3dInterface[] trajectory(Vector3dInterface p0, Vector3dInterface v0, double[] ts)
+	public Vector3dInterface[] trajectory(Vector3dInterface probeStartPosition, Vector3dInterface probeStartVelocity, double[] ts)
 	{
 		/* Build */
-		Universe universe = new Universe(p0, v0);										//Initialise the universe
+		int stepSizeNs = (int) ((ts[1] - ts[0]) * 1E9);
+		Universe universe = new Universe(probeStartPosition, probeStartVelocity, stepSizeNs);
 		StateInterface initialState = universe.initialState();							//Generate the initial state of the universe
 		ODEFunctionInterface funct = new NewtonGravityFunction(universe.getMasses());	//Initialise ODEFunctionInterface - contains call method
 
@@ -39,10 +40,11 @@ public class Simulation
 	 * @return  an array of size round(tf/h)+1 giving the position of the probe at each time stated, 
 	 *          taken relative to the Solar System barycentre
 	 */
-	public Vector3dInterface[] trajectory(Vector3dInterface p0, Vector3dInterface v0, double tf, double h)
+	public Vector3dInterface[] trajectory(Vector3dInterface probeStartPosition, Vector3dInterface probeStartVelocity, double tf, double h)
 	{
 		/* Build */								
-		Universe universe = new Universe(p0, v0);										//Initialise the universe
+		int stepSizeNs = (int) (h*1E9);
+		Universe universe = new Universe(probeStartPosition, probeStartVelocity, stepSizeNs);
 		StateInterface initialState = universe.initialState(); 							//Generate the initial state of the universe
 		ODEFunctionInterface funct = new NewtonGravityFunction(universe.getMasses());	//Initialise ODEFunctionInterface - contains call method			
 
