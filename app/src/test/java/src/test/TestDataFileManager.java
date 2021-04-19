@@ -31,7 +31,7 @@ class TestDataFileManager
 		exp[1] = new CelestialBody(new Vector3d(2,2,2), new Vector3d(3,3,3), 100, 100, "Test", "/image/path", "icon/path", LocalDateTime.of(d2, t2));
 		
 		DataFileManager manager = new DataFileManager();
-		manager.save(exp);
+		manager.overwrite(exp);
 		
 		DataFileReference ref = new DataFileReference(exp);
 		CelestialBody[] act = new CelestialBody[exp.length];

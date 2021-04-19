@@ -105,7 +105,7 @@ public class Universe
     	DataFileManager fileMngr = new DataFileManager();
     	for(int i = 0; i < U.length; i++)
     	{
-    		fileMngr.save(U2[i]);
+    		fileMngr.overwrite(U2[i]);
     	}
     }
 }

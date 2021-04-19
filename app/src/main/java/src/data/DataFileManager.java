@@ -11,7 +11,7 @@ import src.univ.CelestialBody;
 
 public class DataFileManager extends FileManager
 {		
-	public void save(CelestialBody[] data)
+	public void overwrite(CelestialBody[] data)
 	{
 		try 
 		{
