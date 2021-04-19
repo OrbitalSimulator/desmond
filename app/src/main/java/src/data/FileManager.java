@@ -26,11 +26,10 @@ public class FileManager
 	
 	protected LocalDateTime parseDateTime(String string)
 	{
-		String timeString = string.substring(0, 10);
-		String dateString = string.substring(11, 19);
-		System.out.println(dateString);
-		LocalTime time = LocalTime.parse(timeString);
+		String dateString = string.substring(0, 10);
 		LocalDate date = LocalDate.parse(dateString);
+		String timeString = string.substring(11, 16);
+		LocalTime time = LocalTime.parse(timeString);
 		return LocalDateTime.of(date, time);
 	}
 }
