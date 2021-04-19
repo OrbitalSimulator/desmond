@@ -50,6 +50,7 @@ public class ConfigFileManager extends FileManager
 		{
 			writer.write(data[i]);
 		}
+		writer.write("EOF");
 		writer.close();
 	}
 	
