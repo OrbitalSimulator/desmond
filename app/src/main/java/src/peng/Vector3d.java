@@ -1,6 +1,8 @@
 package src.peng;
 
 import java.lang.Math;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 
 public class Vector3d implements Vector3dInterface
 {
@@ -150,6 +152,14 @@ public class Vector3d implements Vector3dInterface
         return z;
     }
 
+    public double getX(int digit){
+        return round(x,digit);
+    }
+
+    public double getY(int digit){return round(y,digit); }
+
+    public double getZ(int digit){ return round(z,digit);}
+
     public void setX(double x)
     {
         this.x = x;
@@ -163,5 +173,13 @@ public class Vector3d implements Vector3dInterface
     public void setZ(double z)
     {
         this.z = z;
+    }
+
+    private static double round(double value, int places) {
+        if (places < 0) throw new IllegalArgumentException();
+
+        BigDecimal bd = new BigDecimal(Double.toString(value));
+        bd = bd.setScale(places, RoundingMode.HALF_UP);
+        return bd.doubleValue();
     }
 }
