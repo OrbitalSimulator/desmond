@@ -310,8 +310,10 @@ public class SetupMenu {
 
 
     }
-    public void run(CelestialBody[] U){
+    public void run(){
         new SetupMenu(U);
     }
+    
+
 
 }
