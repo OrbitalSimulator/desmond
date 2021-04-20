@@ -1,0 +1,11 @@
+Name=Test
+Mass=100.0
+Radius=100.0
+Image_Path=/image/path
+Icon_Path=icon/path
+Start_Time=2021-04-01T00:01
+End_Time=2021-04-01T00:02
+No_of_Steps=2
+$SOE
+2021-04-01T00:01,1.0,1.0,1.0,2.0,2.0,2.0
+2021-04-01T00:02,2.0,2.0,2.0,3.0,3.0,3.0

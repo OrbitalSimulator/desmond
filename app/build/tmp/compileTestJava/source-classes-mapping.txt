@@ -2,29 +2,29 @@ src/test/TestEulerSolver.java
  src.test.TestEulerSolver
 src/test/TestVector.java
  src.test.TestVector
-src/test/TestNewtonGravityFunction.java
- src.test.TestNewtonGravityFunction
-src/test/TestRate.java
- src.test.TestRate
-src/test/package-info.java
- src.test.package-info
-src/test/Vector3dTest.java
- src.test.Vector3dTest
-src/test/TestState.java
- src.test.TestState
-src/test/TestFunction.java
- src.test.TestFunction
-src/test/TestUniverse.java
- src.test.TestUniverse
-expData/EphemerisReader.java
- expData.EphemerisReader
-src/test/TestVisualiser.java
- src.test.TestVisualiser
 src/test/TestDataFileManager.java
  src.test.TestDataFileManager
-src/test/TestSimulation.java
- src.test.TestSimulation
-src/test/ProbeSimulatorTest.java
- src.test.ProbeSimulatorTest
+src/test/TestVisualiser.java
+ src.test.TestVisualiser
+src/test/Vector3dTest.java
+ src.test.Vector3dTest
 src/test/TestCelestialBody.java
  src.test.TestCelestialBody
+expData/EphemerisReader.java
+ expData.EphemerisReader
+src/test/TestSimulation.java
+ src.test.TestSimulation
+src/test/TestUniverse.java
+ src.test.TestUniverse
+src/test/TestNewtonGravityFunction.java
+ src.test.TestNewtonGravityFunction
+src/test/TestFunction.java
+ src.test.TestFunction
+src/test/TestState.java
+ src.test.TestState
+src/test/package-info.java
+ src.test.package-info
+src/test/ProbeSimulatorTest.java
+ src.test.ProbeSimulatorTest
+src/test/TestRate.java
+ src.test.TestRate
