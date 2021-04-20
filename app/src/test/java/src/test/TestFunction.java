@@ -4,7 +4,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 
-//TODO TestFunction full partition testing
+//TODO (?) TestFunction full partition testing
 
 class TestFunction 
 {

@@ -7,12 +7,14 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.nio.file.FileSystem;
 import java.nio.file.FileSystems;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.Arrays;
 import java.util.LinkedList;
 
 import src.peng.Vector3d;
 import src.univ.CelestialBody;
-import src.univ.DTG;
 
 /**
  * Group 22
@@ -92,7 +94,7 @@ public class EphemerisReader
 					if(DEBUG) System.out.println(fourthln);
 					
 					// Read the date line (in separate method)
-					DTG dtg = toDTG(dateln);
+					LocalDateTime dtg = toDateTime(dateln);
 					
 					// Read the coordinate line
 					char[] coordinate = coordinateln.toCharArray();
@@ -147,35 +149,41 @@ public class EphemerisReader
 	
 	public CelestialBody[] getOrbit()
 	{
-		CelestialBody[] C = new CelestialBody[bodies.size()];
+		CelestialBody[] celestialBodyArray = new CelestialBody[bodies.size()];
 		int pntr = 0;
-		for(CelestialBody c: bodies)
+		for(CelestialBody each: bodies)
 		{
-			C[pntr++] = c;
+			celestialBodyArray[pntr++] = each;
 		}
-		return C;
+		return celestialBodyArray;
 	}
 	
 	/** Read a standard string in the form:
 	 * "2458940.500000000 = A.D. 2020-Apr-01 00:00:00.0000 TDB "
 	 * @return a DTG
 	 */
-	private DTG toDTG(String date)
+	private LocalDateTime toDateTime(String date)
 	{
 		char[] chars = date.toCharArray();
-		char[] year = Arrays.copyOfRange(chars, 25, 29);
-		int yr = Integer.valueOf(String.copyValueOf(year));
-		char[] month = Arrays.copyOfRange(chars, 30, 33);
-		String mth = String.copyValueOf(month);
-		char[] day = Arrays.copyOfRange(chars, 34, 36);
-		int dy = Integer.valueOf(String.copyValueOf(day));
-		char[] hour = Arrays.copyOfRange(chars, 37, 39);
-		int hr = Integer.valueOf(String.copyValueOf(hour));
-		char[] minute = Arrays.copyOfRange(chars, 40, 42);
-		int min = Integer.valueOf(String.copyValueOf(minute));
-		char[] second = Arrays.copyOfRange(chars, 43, 45);
-		int sec = Integer.valueOf(String.copyValueOf(second));
-		return new DTG(yr,mth,dy,hr,min,sec);
+		
+		char[] yr = Arrays.copyOfRange(chars, 25, 29);
+		String year = String.copyValueOf(yr);
+		char[] mth = Arrays.copyOfRange(chars, 30, 33);
+		String month = lookUpMonth(String.copyValueOf(mth));
+		char[] dy = Arrays.copyOfRange(chars, 34, 36);
+		String day = String.copyValueOf(dy);
+		
+		LocalDate localDate = LocalDate.parse(year +"-"+ month +"-"+ day);
+		
+		char[] hr = Arrays.copyOfRange(chars, 37, 39);
+		String hours = String.copyValueOf(hr);
+		char[] min = Arrays.copyOfRange(chars, 40, 42);
+		String minutes = String.copyValueOf(min);
+		char[] sec = Arrays.copyOfRange(chars, 43, 45);
+		String seconds = String.copyValueOf(sec);
+		
+		LocalTime localTime = LocalTime.parse(hours +":"+ minutes +":"+ seconds);
+		return LocalDateTime.of(localDate, localTime);
 	}
 	
 	private double lookUpMass(String name)
@@ -327,6 +335,40 @@ public class EphemerisReader
 					return path;              
 			default:
 				return null;
+		}
+	}
+	
+	private String lookUpMonth(String month)
+	{
+		month = month.toLowerCase();
+		switch(month)
+		{
+			case "jan": 		
+				 	return "01";
+			case "feb":	
+				 	return "02";
+			case "mar": 		
+				 	return "03";  
+			case "apr": 		
+				 	return "04"; 
+			case "may":		
+				 	return "05";  	
+			case "jun": 		
+				 	return "06";  
+			case "jul": 	
+				 	return "07"; 
+			case "aug": 	
+				 	return "08";  
+			case "sep": 		
+				 	return "09";    
+			case "oct": 	
+				 	return "10";  
+			case "nov": 	
+				 	return "11";
+			case "dec": 	
+			 		return "12";
+			default:
+			 	return "00";
 		}
 	}
 }

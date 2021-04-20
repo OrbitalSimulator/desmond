@@ -6,16 +6,12 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.nio.file.FileSystem;
-import java.nio.file.FileSystems;
-
 import src.peng.Vector3d;
 import src.univ.CelestialBody;
-import src.univ.DTG;
 
-public class DataFileManager 
+public class DataFileManager extends FileManager
 {		
-	public void save(CelestialBody[] data)
+	public void overwrite(CelestialBody[] data)
 	{
 		try 
 		{
@@ -84,7 +80,6 @@ public class DataFileManager
 		CelestialBody[] data = new CelestialBody[reference.No_of_Steps];
 		BufferedReader reader = new BufferedReader(new FileReader(file));
 		String line = reader.readLine();
-		
 		// Find where the data starts
 		while(!line.equalsIgnoreCase("$SOE"))
 		{
@@ -112,7 +107,7 @@ public class DataFileManager
 				reference.Name,
 				reference.Image_Path,
 				reference.Icon_Path,
-				new DTG(subStrings[0]));  // TODO (Leon) add time step
+				parseDateTime(subStrings[0]));  
 	}
 	
 	private String createFileName(CelestialBody[] data)
@@ -133,21 +128,5 @@ public class DataFileManager
 		fileName.append(reference.End_Time.toString() + "_");
 		fileName.append(reference.No_of_Steps);
 		return fileName.toString();
-	}
-	
-	private String getFilePath(String fileName)
-	{
-		FileSystem fileSystem = FileSystems.getDefault();
-		String path = fileSystem.getPath("").toAbsolutePath().toString();
-		return path.concat("/src/main/java/src/data/" + fileName);
-	}
-	
-		private String[] removeWhiteSpace(String[] array)
-	{
-		for(String each: array)
-		{
-			each = each.strip();
-		}
-		return array;
 	}
 }
