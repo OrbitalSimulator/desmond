@@ -6,12 +6,15 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.FileSystem;
+import java.nio.file.FileSystems;
 import java.util.ArrayList;
 
 import src.peng.Vector3d;
 import src.univ.CelestialBody;
+import src.univ.DTG;
 
-public class ConfigFileManager extends FileManager
+public class ConfigFileManager
 {		
 	public void overwrite(String fileName, String[] data)
 	{
@@ -42,7 +45,14 @@ public class ConfigFileManager extends FileManager
 		}
 		return readFileData(file);
 	}
-				
+		
+	private String getFilePath(String fileName)
+	{
+		FileSystem fileSystem = FileSystems.getDefault();
+		String path = fileSystem.getPath("").toAbsolutePath().toString();
+		return path.concat("/src/main/java/src/data/" + fileName);
+	}
+		
 	private void writeFileData(File file, String[] data) throws IOException
 	{
 		FileWriter writer = new FileWriter(file,true);
@@ -50,7 +60,6 @@ public class ConfigFileManager extends FileManager
 		{
 			writer.write(data[i]);
 		}
-		writer.write("EOF");
 		writer.close();
 	}
 	
@@ -59,7 +68,7 @@ public class ConfigFileManager extends FileManager
 		BufferedReader reader = new BufferedReader(new FileReader(file));
 		String line = reader.readLine();
 		ArrayList<CelestialBody> dataList = new ArrayList<CelestialBody>();
-		while(!line.equalsIgnoreCase("EOF"))
+		while(line != null)
 		{
 			dataList.add(convertToCelestialBody(line));
 			line = reader.readLine();
@@ -79,8 +88,8 @@ public class ConfigFileManager extends FileManager
 				Double.valueOf(subStrings[8]),
 				subStrings[0],
 				subStrings[9],
-				subStrings[10],
-				parseDateTime(subStrings[11]));
+				subStrings[9],
+				new DTG(subStrings[0]));  // TODO (Leon) add time step
 	}
 	
 	private CelestialBody[] convertToArray(ArrayList<CelestialBody> arrayList)
@@ -89,6 +98,15 @@ public class ConfigFileManager extends FileManager
 		for(int i = 0; i < arrayList.size(); i++)
 		{
 			array[i] = arrayList.get(i);
+		}
+		return array;
+	}
+	
+	private String[] removeWhiteSpace(String[] array)
+	{
+		for(int i = 0; i < array.length; i++)
+		{
+			array[i] = array[i].strip();
 		}
 		return array;
 	}

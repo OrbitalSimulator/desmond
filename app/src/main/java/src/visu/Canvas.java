@@ -69,7 +69,7 @@ public class Canvas extends JPanel
 		g.setFont(font);
 		int timeX = 10;
 		int timeY = (int) screen.getHeight()- 140;
-		g.drawString(U[0][time].time.toString(), timeX, timeY);
+		g.drawString(U[0][time].time.toStringDate(), timeX, timeY);
 		
 		if(follow)
 		{

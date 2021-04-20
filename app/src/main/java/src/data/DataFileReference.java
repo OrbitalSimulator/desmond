@@ -1,8 +1,7 @@
 package src.data;
 
-import java.time.LocalDateTime;
-
 import src.univ.CelestialBody;
+import src.univ.DTG;
 
 public class DataFileReference 
 {
@@ -11,8 +10,8 @@ public class DataFileReference
 	public double Radius;
 	public String Image_Path;
 	public String Icon_Path;
-	public LocalDateTime Start_Time;
-	public LocalDateTime End_Time;
+	public DTG Start_Time;
+	public DTG End_Time;
 	public int No_of_Steps;
 	
 	public DataFileReference(CelestialBody[] data)

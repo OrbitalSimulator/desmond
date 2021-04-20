@@ -12,6 +12,7 @@ import org.junit.jupiter.api.Test;
  */
 class TestUniverse 
 {	
+	////TODO (Travis Dawson) Test Mass access of Universe class
     //@Test
 	//void testMassAccess()
 	//{
