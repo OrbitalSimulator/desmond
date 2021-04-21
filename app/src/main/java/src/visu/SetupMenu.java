@@ -10,6 +10,7 @@ public class SetupMenu {
     JFrame mainFrame;
     JFrame addNewBody;
     CelestialBody[] U;
+    CelestialBody[] firstU;
     //Panels
     int rowValueForLayout;
     JPanel mainPanel;
@@ -75,6 +76,7 @@ public class SetupMenu {
         mainFrame.add(mainPanel,BorderLayout.CENTER);
         rowValueForLayout=U.length+1;
         this.U=U;
+        this.firstU=U;
         arrayOfButtons=new JRadioButton[U.length];
         //Combo box
         boxForStartDay=new JComboBox();
@@ -240,7 +242,8 @@ public class SetupMenu {
                 boxForEndDay.setSelectedIndex(0);
                 boxForEndMonth.setSelectedIndex(0);
                 boxForEndYear.setSelectedIndex(0);
-
+                mainFrame.setVisible(false);
+                new SetupMenu(firstU);
             }
         });
         startUniverse =new JButton("Start Universe");
@@ -325,5 +328,4 @@ public class SetupMenu {
     public void run(){
         new SetupMenu(U);
     }
-    
 }
