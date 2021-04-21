@@ -1,4 +1,4 @@
-package src.data;
+package src.config;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -6,6 +6,8 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.FileSystem;
+import java.nio.file.FileSystems;
 import java.util.ArrayList;
 
 import src.peng.Vector3d;
@@ -91,5 +93,13 @@ public class ConfigFileManager extends FileManager
 			array[i] = arrayList.get(i);
 		}
 		return array;
+	}
+	
+	@Override
+	protected String getFilePath(String fileName)
+	{
+		FileSystem fileSystem = FileSystems.getDefault();
+		String path = fileSystem.getPath("").toAbsolutePath().toString();
+		return path.concat("/src/main/java/src/config/" + fileName);
 	}
 }

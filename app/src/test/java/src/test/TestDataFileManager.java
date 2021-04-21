@@ -10,8 +10,8 @@ import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 
-import src.data.DataFileManager;
-import src.data.DataFileReference;
+import src.config.DataFileManager;
+import src.config.DataFileReference;
 import src.peng.Vector3d;
 import src.univ.CelestialBody;
 

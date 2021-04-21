@@ -3,8 +3,8 @@ package src.univ;
 import src.peng.Vector3d;
 import src.peng.StateInterface;
 import src.peng.Vector3dInterface;
-import src.data.ConfigFileManager;
-import src.data.DataFileManager;
+import src.config.ConfigFileManager;
+import src.config.DataFileManager;
 import src.peng.State;
 
 import java.time.LocalDate;

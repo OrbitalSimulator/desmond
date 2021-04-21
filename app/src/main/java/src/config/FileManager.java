@@ -1,4 +1,4 @@
-package src.data;
+package src.config;
 
 import java.nio.file.FileSystem;
 import java.nio.file.FileSystems;
