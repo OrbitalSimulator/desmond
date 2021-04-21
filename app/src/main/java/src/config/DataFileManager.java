@@ -52,8 +52,8 @@ public class DataFileManager extends FileManager
 		writer.write("Radius=" + data[0].radius + "\n");
 		writer.write("Image_Path=" + data[0].image + "\n");
 		writer.write("Icon_Path=" + data[0].icon + "\n");
-		writer.write("Start_Time=" + data[0].time.toString() + "\n");
-		writer.write("End_Time=" + data[data.length-1].time.toString() + "\n");
+		writer.write("Start_Time=" + zipDateTime(data[0].time) + "\n");
+		writer.write("End_Time=" + zipDateTime(data[data.length-1].time) + "\n");
 		writer.write("No_of_Steps=" + data.length + "\n");
 		writer.write("$SOE\n");
 		writer.close();
@@ -64,7 +64,7 @@ public class DataFileManager extends FileManager
 		FileWriter writer = new FileWriter(file,true);
 		for(int i = 0; i < data.length; i++)
 		{
-			writer.write(data[i].time + "," + 
+			writer.write(zipDateTime(data[i].time) + "," + 
 						data[i].location.getX() + "," + 
 						data[i].location.getY() + "," +
 						data[i].location.getZ() + "," +
@@ -114,8 +114,8 @@ public class DataFileManager extends FileManager
 	{
 		StringBuilder fileName = new StringBuilder();
 		fileName.append(data[0].name + "_");
-		fileName.append(data[0].time.toString() + "_");
-		fileName.append(data[data.length-1].time.toString() + "_");
+		fileName.append(zipDateTime(data[0].time) + "_");
+		fileName.append(zipDateTime(data[data.length-1].time) + "_");
 		fileName.append(data.length);
 		return fileName.toString();
 	}
@@ -124,8 +124,8 @@ public class DataFileManager extends FileManager
 	{
 		StringBuilder fileName = new StringBuilder();
 		fileName.append(reference.Name + "_");
-		fileName.append(reference.Start_Time.toString() + "_");
-		fileName.append(reference.End_Time.toString() + "_");
+		fileName.append(zipDateTime(reference.Start_Time) + "_");
+		fileName.append(zipDateTime(reference.End_Time) + "_");
 		fileName.append(reference.No_of_Steps);
 		return fileName.toString();
 	}
