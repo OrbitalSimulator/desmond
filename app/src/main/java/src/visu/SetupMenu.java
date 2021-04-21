@@ -11,6 +11,7 @@ public class SetupMenu {
     JFrame addNewBody;
     CelestialBody[] U;
     //Panels
+    int rowValueForLayout;
     JPanel mainPanel;
     JPanel panelForDates;
     JPanel button;
@@ -66,13 +67,13 @@ public class SetupMenu {
     public SetupMenu(CelestialBody[]U){
         mainFrame=new JFrame("Setup Menu");
         mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        mainFrame.setSize(750,550);
+        mainFrame.setSize(1050,550);
         mainFrame.setLocationRelativeTo(null);
         mainFrame.setLayout(new BorderLayout());
         mainPanel=new JPanel();
         mainPanel.setLayout(new GridLayout(0,4));
         mainFrame.add(mainPanel,BorderLayout.CENTER);
-
+        rowValueForLayout=U.length+1;
         this.U=U;
         arrayOfButtons=new JRadioButton[U.length];
         //Combo box
@@ -126,13 +127,14 @@ public class SetupMenu {
         labelForVelocityTitle=new JLabel("Velocity");
         labelForLocationTitle=new JLabel("Location");
         column1=new JPanel();
-        column1.setLayout(new GridLayout(U.length+1,0));
+        column1.setLayout(new GridLayout(rowValueForLayout,0));
         column2=new JPanel();
-        column2.setLayout(new GridLayout(U.length+1,0));
+        column2.setLayout(new GridLayout(rowValueForLayout,0));
         column3=new JPanel();
-        column3.setLayout(new GridLayout(U.length+1,0));
+        column3.setLayout(new GridLayout(rowValueForLayout,0));
         column4=new JPanel();
-        column4.setLayout(new GridLayout(U.length+1,0));
+        column4.setLayout(new GridLayout(rowValueForLayout,0));
+
         column1.add(labelForNameTitle);
         column4.add(labelForMassTitle);
         column3.add(labelForVelocityTitle);
@@ -158,7 +160,11 @@ public class SetupMenu {
         add.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-            //ToDo
+                rowValueForLayout++;
+                column1.setLayout(new GridLayout(rowValueForLayout,0));
+                column2.setLayout(new GridLayout(rowValueForLayout,0));
+                column3.setLayout(new GridLayout(rowValueForLayout,0));
+                column4.setLayout(new GridLayout(rowValueForLayout,0));
                 addNewBody=new JFrame("Add New Body");
                 addNewBody.setSize(550,150);
                 addNewBody.setLayout(new BorderLayout());
@@ -172,29 +178,35 @@ public class SetupMenu {
                 YVelocityOfNewBody=new JTextField("Y velocity of body");
                 ZVelocityOfNewBody=new JTextField("Z velocity of body");
                 MassOfNewBody=new JTextField("Mass of body");
+
                 JButton setNewBody=new JButton("Set");
+
+
                 setNewBody.addActionListener(new ActionListener() {
                     @Override
+
                     public void actionPerformed(ActionEvent e) {
-                        int stepsize=2;
+                        int step=2;
                         JLabel nameOfNewBodyString= new JLabel(nameOfNewBody.getText());
                         JLabel LocationOfNewBodyString= new JLabel(XLocationOfNewBody.getText()+YLocationOfNewBody+ZLocationOfNewBody);
                         JLabel VelocityOfNewBodyString= new JLabel(XVelocityOfNewBody.getText()+YVelocityOfNewBody.getText()+ZVelocityOfNewBody.getText());
                         JLabel MassOfNewBodyString= new JLabel(MassOfNewBody.getText());
                         selectValuesOfPlanets=new boolean[U.length+1];
 
+
                         arrayOfButtons[U.length-1]= new JRadioButton(nameOfNewBody.getText());
-                        column1.setLayout(new GridLayout(U.length+stepsize,0));
-                        column2.setLayout(new GridLayout(U.length+stepsize,0));
-                        column3.setLayout(new GridLayout(U.length+stepsize,0));
-                        column4.setLayout(new GridLayout(U.length+stepsize,0));
+
+
+
                         column1.add(arrayOfButtons[U.length-1]);
                         column2.add(LocationOfNewBodyString);
                         column3.add(VelocityOfNewBodyString);
                         column4.add(MassOfNewBodyString);
-                        stepsize++;
+
+
                         addNewBody.setVisible(false);
                         mainFrame.setVisible(true);
+
                     }
                 });
                 addNewBody.add(setNewBody,BorderLayout.SOUTH);
@@ -314,6 +326,4 @@ public class SetupMenu {
         new SetupMenu(U);
     }
     
-
-
 }
