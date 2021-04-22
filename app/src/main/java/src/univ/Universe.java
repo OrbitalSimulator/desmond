@@ -5,6 +5,7 @@ import src.peng.StateInterface;
 import src.peng.Vector3dInterface;
 import src.config.ConfigFileManager;
 import src.config.DataFileManager;
+import src.config.SimulationSettings;
 import src.peng.State;
 
 import java.time.LocalDate;
@@ -14,15 +15,48 @@ import java.util.ArrayList;
 
 public class Universe
 {
-    public  CelestialBody[] U; 
-    public  CelestialBody[][] U2;
-    private int stepSize;
-    private LocalDate probeStartDate = LocalDate.parse("2021-04-01");
-    private LocalTime probeStartTime = LocalTime.parse("00:00:00");
-   
-    public Universe(Vector3dInterface probeStartPosition, Vector3dInterface probeStartVelocity, int stepInNanoSecs)
+    public  CelestialBody[] startVariables; 
+    public  CelestialBody[][] universe;
+	public LocalDateTime startTime;
+	public LocalDateTime endTime;
+	public int noOfSteps;
+
+	public String[] wayPoints;
+	
+	// If known settings are provided, run this 
+    public Universe(SimulationSettings settings)
     {
-    	stepSize = stepInNanoSecs;
+    	this.startTime = settings.startTime;
+    	this.endTime = settings.endTime;
+    	this.noOfSteps = settings.noOfSteps;
+    	this.wayPoints = settings.wayPoints;
+    	this.startVariables = settings.celestialBodies;
+    	
+    	universe = new CelestialBody[startVariables.length][noOfSteps];
+    	DataFileManager dataBase = new DataFileManager();
+     	if(dataBase.query(settings))
+     	{
+	    	try
+			{
+				
+				CelestialBody[] temp = config.load("UniverseConfig");
+				
+			}
+			catch (Exception e)
+			{
+				System.out.println("Unable to load config file");
+				e.printStackTrace();
+			}
+     	}
+     	else
+     	{
+     		
+     	}
+    }
+    
+    // If a config file is loaded, run this 
+    public Universe(String configFileName)
+    {
     	try
 		{
 			ConfigFileManager config = new ConfigFileManager();
@@ -32,14 +66,6 @@ public class Universe
 			{
 				U[i] = temp[i];
 			}
-			U[U.length-1] = new CelestialBody((Vector3d)probeStartPosition,
-							    (Vector3d)probeStartVelocity,
-							    15000,
-							    700,
-							    "Probe",
-							    "/src/main/java/misc/craftIcon.png",
-							    "/src/main/java/misc/craftIcon.png",
-							    LocalDateTime.of(probeStartDate, probeStartTime));
 		}
 		catch (Exception e)
 		{
@@ -47,11 +73,46 @@ public class Universe
 			e.printStackTrace();
 		}
     }
- 
-    public Universe(CelestialBody[] U)
+    
+    // purely for tests 
+    public Universe(CelestialBody[] universe)
     {
-    	this.U = U;
+    	this.universe = universe;
     }
+    
+    
+    //public getState(int step)
+    
+    	// Get the CBs at the time step
+    	// Convert to a state
+    
+    // public setState(StateInterface[] state, int step)
+    
+    	// take in the stateInterface and set each as a CB
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     
     public StateInterface initialState()
     {
@@ -78,9 +139,7 @@ public class Universe
         
     public void update(StateInterface[] States)
     {
-    	LocalDate date = probeStartDate;
-    	LocalTime time = probeStartTime;
-    	LocalDateTime dateTime = LocalDateTime.of(date, time);
+    	//LocalDateTime dateTime = LocalDateTime.of(date, time);
     	
     	U2 = new CelestialBody[U.length][States.length];
     	for(int i=0; i< States.length; i++)
@@ -100,7 +159,7 @@ public class Universe
     	save();
     }
     
-    public void save()
+    public void saveToFile()
     {
     	DataFileManager fileMngr = new DataFileManager();
     	for(int i = 0; i < U.length; i++)
