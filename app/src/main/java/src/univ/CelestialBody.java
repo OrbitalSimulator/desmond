@@ -52,6 +52,25 @@ public class CelestialBody
 			return true;
 		return false;
 	}
+
+	/**
+	 * Calculate the Sphere of Influence of an orbiting planet.
+	 * @param a The semi-major axis of the orbit/ the distance to the orbiting planet.
+	 * @param mSmaller Mass of the smaller orbiting planet.
+	 * @param mGreater Mass of the larger planet, of which is being orbited.
+	 * @return A distance in meters, representing the sphere of influence from the planet's centre. 
+	 * Ex. Venus SOI orbiting the sun is 0.616e6 km
+	 * Note: Will throw RunTimeException if mGreater < mSmaller
+	 */
+	public double calculateSOI(double mSmaller, double mGreater, double a)
+	{
+		if(mSmaller>mGreater)																//Check to ensure correct variable placement with regards to mass. If error found throw runtime exception.
+		{
+			throw new RuntimeException("mSmaller > mGreater");
+		}
+
+		return a*(Math.pow((mSmaller/mGreater), (2.0/5.0)));
+	}
 	
 	public void setImage(String image)
 	{
