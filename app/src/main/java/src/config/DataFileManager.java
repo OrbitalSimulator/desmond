@@ -6,11 +6,34 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.time.LocalDateTime;
+
 import src.peng.Vector3d;
 import src.univ.CelestialBody;
 
 public class DataFileManager extends FileManager
 {		
+	public boolean query(SimulationSettings query)
+	{
+		boolean dataAvailable = true;
+		
+		// Run through all CelestialBodies in the query
+		for(int i = 0; i < query.celestialBodies.length; i++)
+		{
+			String fileName = createFileName(query.celestialBodies[i], 
+											 query.startTime, 
+											 query.endTime, 
+											 query.noOfSteps);
+			String filePath = getFilePath(fileName);
+			File file = new File(filePath);
+			if(!file.exists())
+			{
+				dataAvailable = false;
+			}
+		}
+		return dataAvailable;
+	}
+	
 	public void overwrite(CelestialBody[] data)
 	{
 		try 
@@ -43,7 +66,7 @@ public class DataFileManager extends FileManager
 		}
 		return readFileData(reference, file);
 	}
-		
+	
 	private void writeFileHeader(File file, CelestialBody[] data) throws IOException
 	{
 		FileWriter writer = new FileWriter(file,false);
@@ -117,6 +140,16 @@ public class DataFileManager extends FileManager
 		fileName.append(zipDateTime(data[0].time) + "_");
 		fileName.append(zipDateTime(data[data.length-1].time) + "_");
 		fileName.append(data.length);
+		return fileName.toString();
+	}
+	
+	private String createFileName(CelestialBody celestialBody, LocalDateTime startTime, LocalDateTime endTime, int noOfSteps)
+	{
+		StringBuilder fileName = new StringBuilder();
+		fileName.append(celestialBody.name + "_");
+		fileName.append(zipDateTime(startTime) + "_");
+		fileName.append(zipDateTime(endTime) + "_");
+		fileName.append(noOfSteps);
 		return fileName.toString();
 	}
 	
