@@ -23,6 +23,7 @@ class TestCelestialBody
 	LocalDate d1 = LocalDate.parse("2021-04-01");
 	double radius = 100;											// Radius of CelestialBody
 	Vector3d centre = new Vector3d();								// Centre of 0,0,0
+	double epsilon = 10e3;											//Assign error range
 	
 	@Test
 	void testCollision() 
@@ -52,7 +53,7 @@ class TestCelestialBody
 		}
 	}
 
-	//TODO Check if accuracy is important for these tests (Confirm epsilon with group member)
+	//TODO (Travis) Check if accuracy is important for these tests (Confirm epsilon with group member)
 	@Test
 	void testSOI()
 	{
@@ -71,7 +72,6 @@ class TestCelestialBody
 
 		/*Celestial Body*/
 		CelestialBody cb = new CelestialBody(centre, centre, 0, radius, null, null, null, LocalDateTime.of(d1, t1));
-		double epsilon = 10e3;								//Assign error range
 
 		/*Tests*/
 		assertTrue(inRange(venusSOIExact, cb.calculateSOI(venusMass, sunMass, venusToSun),epsilon)); 	//SOI test for Venus
@@ -84,6 +84,25 @@ class TestCelestialBody
 		{
 			assertEquals("mSmaller > mGreater", e.getMessage());
 		}
+	}
+
+	@Test
+	/*Test aims to compute the orbital velcoty of the Earth orbiting the sun, and compare to exact orbital velocity*/
+	void testOrbitalVelocity()
+	{
+		/*Sun*/
+		CelestialBody sun = new CelestialBody(new Vector3d(), new Vector3d(), 1.988500e30, 696340e3, "Sun", "", "",  LocalDateTime.of(d1, t1));
+		double sunRadius =  696340e3;
+		double distSunToEarth = 149.6e9;
+		double r2 = distSunToEarth - sunRadius;
+
+		/*Earth*/
+		double exactOrbitalVelocity = 29800;
+
+		/*Test*/
+		double velocityForOrbit = sun.orbitalVelocity(r2);
+		System.out.println(velocityForOrbit);
+		assertTrue(inRange(exactOrbitalVelocity,velocityForOrbit, epsilon));
 	}
 
 	/**
