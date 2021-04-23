@@ -5,6 +5,8 @@ import java.time.format.DateTimeFormatter;
 
 import src.peng.Vector3d;
 
+import java.lang.Math;
+
 /**
  * Group 22
  * A class to hold the information of a CelestialBody
@@ -51,6 +53,39 @@ public class CelestialBody
 		if(dist < radius)
 			return true;
 		return false;
+	}
+
+	/**
+	 * Calculate the Sphere of Influence of an orbiting planet.
+	 * @param a The semi-major axis of the orbit/ the distance to the orbiting planet.
+	 * @param mSmaller Mass of the smaller orbiting planet.
+	 * @param mGreater Mass of the larger planet, of which is being orbited.
+	 * @return A distance in meters, representing the sphere of influence from the planet's centre. 
+	 * Ex. Venus SOI orbiting the sun is 0.616e6 km
+	 * Note: Will throw RunTimeException if mGreater < mSmaller
+	 */
+	public double calculateSOI(double mSmaller, double mGreater, double a)
+	{
+		if(mSmaller>mGreater)																//Check to ensure correct variable placement with regards to mass. If error found throw runtime exception.
+		{
+			throw new RuntimeException("mSmaller > mGreater");
+		}
+
+		return a*(Math.pow((mSmaller/mGreater), (2.0/5.0)));
+	}
+
+	/**
+	 * Orbital velocity calculation to determine velocity required to stay in orbit at determined height
+	 * @param r2 The height of the orbit above the planets surface (In meters)
+	 * @return the Velcoty required to remain in orbit at the specified height. (meters per second)
+	 * Method should be called from the Celestial Body to be orbited, as it will access the planet's radius, to determine the height from the planets center.
+	 */
+	public double orbitalVelocity(double r2)
+	{
+		double G = 6.67408e-11;									//Universal gravitational constant
+		double r = radius+r2; 							//Represents total height from the centre of the planet
+		return Math.sqrt((G*mass)/r);
+		
 	}
 	
 	public void setImage(String image)
