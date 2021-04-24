@@ -13,20 +13,19 @@ public class Simulation
 	 */
 	public Vector3dInterface[] trajectory(Vector3dInterface probeStartPosition, Vector3dInterface probeStartVelocity, double[] ts)
 	{
-		/* Build */
+		// Work out all the settings parameters
 		int stepSizeNs = (int) ((ts[1] - ts[0]) * 1E9);
-		Universe universe = new Universe(probeStartPosition, probeStartVelocity, stepSizeNs);
-		StateInterface initialState = universe.initialState();							//Generate the initial state of the universe
-		ODEFunctionInterface funct = new NewtonGravityFunction(universe.getMasses());	//Initialise ODEFunctionInterface - contains call method
-
-		/* Compute */
-		RungeKutta4th solver = new RungeKutta4th();		 								//Call physics engine to determine intermediate states of the system.
-		StateInterface[] results = solver.solve(funct, initialState, ts);				//Record intermediate states
-		universe.update(results);														//Convert the obtained results to CelestialBodies for visualisation display
-
-		/* Output */
-		Vector3dInterface[] trajectory = output(results);
-		return trajectory;		
+		
+		
+		// Load/Create the universe from settings
+		Universe universe = new Universe(null); 								//TODO (Leon) Add settings here
+		ODEFunctionInterface funct = new NewtonGravityFunction(universe.masses);
+		
+		// Add the start parameters of the probe
+		
+		// Call a single step of the solver to get the 
+		
+		return null;		
 	}
 
 	/*
@@ -40,20 +39,20 @@ public class Simulation
 	 */
 	public Vector3dInterface[] trajectory(Vector3dInterface probeStartPosition, Vector3dInterface probeStartVelocity, double tf, double h)
 	{
-		/* Build */								
-		int stepSizeNs = (int) (h*1E9);
-		Universe universe = new Universe(probeStartPosition, probeStartVelocity, stepSizeNs);
-		StateInterface initialState = universe.initialState(); 							//Generate the initial state of the universe
-		ODEFunctionInterface funct = new NewtonGravityFunction(universe.getMasses());	//Initialise ODEFunctionInterface - contains call method			
-
-		/* Compute */
-		RungeKutta4th solver = new RungeKutta4th();										//Call physics engine to determine intermediate states of the system.
-		StateInterface[] results = solver.solve(funct, initialState, tf, h);			//Record intermediate states
-		universe.update(results);														//Convert the obtained results to CelestialBodies for visualisation display
-
-		/* Display */
-		Vector3dInterface[] trajectory = output(results);
-		return trajectory;									
+	//	/* Build */								
+	//	int stepSizeNs = (int) (h*1E9);
+	//	Universe universe = new Universe(probeStartPosition, probeStartVelocity, stepSizeNs);
+	//	StateInterface initialState = universe.initialState(); 							//Generate the initial state of the universe
+	//	ODEFunctionInterface funct = new NewtonGravityFunction(universe.getMasses());	//Initialise ODEFunctionInterface - contains call method			
+    //
+	//	/* Compute */
+	//	RungeKutta4th solver = new RungeKutta4th();										//Call physics engine to determine intermediate states of the system.
+	//	StateInterface[] results = solver.solve(funct, initialState, tf, h);			//Record intermediate states
+	//	universe.update(results);														//Convert the obtained results to CelestialBodies for visualisation display
+    //
+	//	/* Display */
+	//	Vector3dInterface[] trajectory = output(results);
+		return null;									
 	}
 
 	public Vector3d[] output(StateInterface[] states)
