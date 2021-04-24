@@ -13,48 +13,37 @@ import src.univ.CelestialBody;
 
 public abstract class DataFileManager extends FileManager
 {		
-	public static boolean query(SimulationSettings query)
-	{
-		boolean dataAvailable = true;
-		
-		// Run through all CelestialBodies in the query
-		for(int i = 0; i < query.celestialBodies.length; i++)
-		{
-			String fileName = createFileName(query, i);
-			String filePath = getFilePath(fileName);
-			File file = new File(filePath);
-			if(!file.exists())
-			{
-				dataAvailable = false;
-			}
-		}
-		return dataAvailable;
-	}
-	
-	public static void overwrite(CelestialBody[] data)
+
+	public static void overwrite(CelestialBody[][] universe)
 	{
 		try 
 		{
-			String fileName = createFileName(data);
-			String filePath = getFilePath(fileName);
-			File file = new File(filePath);
-				
-			if(!file.exists())
+			CelestialBody[][] data = swapRowsAndColumns(universe);
+			
+			for(int i = 0; i < data.length; i++)
 			{
-				file.createNewFile();
+				String fileName = createFileName(data[i]);
+				String filePath = getFilePath(fileName);
+				File file = new File(filePath);
+					
+				if(!file.exists())
+				{
+					file.createNewFile();
+				}
+				writeFileHeader(file, data[i]);
+				writeFileData(file, data[i]);
 			}
-			writeFileHeader(file, data);
-			writeFileData(file, data);
 		}
 		catch (IOException e)
 		{
+			System.out.println("Unable to save universe data");
 			e.printStackTrace();	
 		}
 	}
 	
 	public static CelestialBody[][] load(SimulationSettings settings) throws Exception
 	{
-		CelestialBody[][] universe = new CelestialBody[settings.celestialBodies.length][settings.noOfSteps];
+		CelestialBody[][] data = new CelestialBody[settings.celestialBodies.length][settings.noOfSteps];
 		for(int i = 0; i < settings.celestialBodies.length; i++)
 		{
 			String fileName = createFileName(settings, i);
@@ -64,10 +53,23 @@ public abstract class DataFileManager extends FileManager
 			{
 				throw new FileNotFoundException(filePath + " Not found");
 			}
-			universe[i] = readFileData(settings, file);
+			data[i] = readFileData(settings, file);
 		}
-		return universe;
+		return swapRowsAndColumns(data);
 	}
+	
+	private static CelestialBody[][] swapRowsAndColumns(CelestialBody[][] input)
+	{
+		CelestialBody[][] output = new CelestialBody[input[0].length][input.length];
+		for(int i = 0; i < input.length; i++)
+		{
+			for(int j = 0; j < input[i].length; j++)
+			{
+				output[i][j] = input[j][i];
+			}
+		}
+		return output;
+ 	}
 	
 	private static void writeFileHeader(File file, CelestialBody[] data) throws IOException
 	{
@@ -104,7 +106,7 @@ public abstract class DataFileManager extends FileManager
 	{
 		CelestialBody[] data = new CelestialBody[settings.noOfSteps];
 		BufferedReader reader = new BufferedReader(new FileReader(file));
-		
+		// Read file header and create a template Celestial Body
 		String name = reader.readLine();
 		double mass = Double.valueOf(reader.readLine());
 		double radius = Double.valueOf(reader.readLine());
@@ -122,7 +124,6 @@ public abstract class DataFileManager extends FileManager
 												   image, 
 												   icon,  
 												   startTime);
-				
 		String line = reader.readLine();
 		// Find where the data starts
 		while(!line.equalsIgnoreCase("$SOE"))
