@@ -12,6 +12,7 @@ public class SimulationSettings
 	public LocalDateTime startTime;
 	public LocalDateTime endTime;
 	public int noOfSteps;
+	public double stepSize;
 	public String[] wayPoints;
 
 	public SimulationSettings(CelestialBody[] celestialBodies,
@@ -20,6 +21,7 @@ public class SimulationSettings
 							  LocalDateTime startTime,
 							  LocalDateTime endTime,
 							  int noOfSteps,
+							  double stepSize,
 							  String[] wayPoints)
 	{
 		this.celestialBodies = celestialBodies;
@@ -28,6 +30,7 @@ public class SimulationSettings
 		this.startTime = startTime;
 		this.endTime = endTime;
 		this.noOfSteps = noOfSteps;
+		this.stepSize = stepSize;
 		this.wayPoints = wayPoints;
 	}
 }
