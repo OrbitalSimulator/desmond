@@ -6,16 +6,16 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 
-public class FileManager 
+public abstract class FileManager 
 {
-	protected String getFilePath(String fileName)
+	protected static String getFilePath(String fileName)
 	{
 		FileSystem fileSystem = FileSystems.getDefault();
 		String path = fileSystem.getPath("").toAbsolutePath().toString();
 		return path.concat("/src/main/java/src/data/" + fileName);
 	}
 	
-	protected String[] removeWhiteSpace(String[] array)
+	protected static String[] removeWhiteSpace(String[] array)
 	{
 		for(int i = 0; i < array.length; i++)
 		{
@@ -24,7 +24,7 @@ public class FileManager
 		return array;
 	}
 	
-	public LocalDateTime parseDateTime(String string)
+	public static LocalDateTime parseDateTime(String string)
 	{
 		string = unzipDateTime(string);
 		String dateString = string.substring(0, 10);
@@ -34,7 +34,7 @@ public class FileManager
 		return LocalDateTime.of(date, time);
 	}
 	
-	public String unzipDateTime(String zippedDateTime)
+	public static String unzipDateTime(String zippedDateTime)
 	{
 		String templateString = "0000-00-00T00:00:00";
 		char[] templateChars = templateString.toCharArray();
@@ -51,7 +51,7 @@ public class FileManager
 		return templateString;
 	}
 	
-	public String zipDateTime(LocalDateTime dateTime)
+	public static String zipDateTime(LocalDateTime dateTime)
 	{
 		char[] dateTimeChars = dateTime.toString().toCharArray();
 		char[] templateChars = new char[dateTimeChars.length];

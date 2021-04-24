@@ -11,19 +11,16 @@ import java.time.LocalDateTime;
 import src.peng.Vector3d;
 import src.univ.CelestialBody;
 
-public class DataFileManager extends FileManager
+public abstract class DataFileManager extends FileManager
 {		
-	public boolean query(SimulationSettings query)
+	public static boolean query(SimulationSettings query)
 	{
 		boolean dataAvailable = true;
 		
 		// Run through all CelestialBodies in the query
 		for(int i = 0; i < query.celestialBodies.length; i++)
 		{
-			String fileName = createFileName(query.celestialBodies[i], 
-											 query.startTime, 
-											 query.endTime, 
-											 query.noOfSteps);
+			String fileName = createFileName(query, i);
 			String filePath = getFilePath(fileName);
 			File file = new File(filePath);
 			if(!file.exists())
@@ -34,7 +31,7 @@ public class DataFileManager extends FileManager
 		return dataAvailable;
 	}
 	
-	public void overwrite(CelestialBody[] data)
+	public static void overwrite(CelestialBody[] data)
 	{
 		try 
 		{
@@ -55,34 +52,39 @@ public class DataFileManager extends FileManager
 		}
 	}
 	
-	public CelestialBody[] load(DataFileReference reference) throws Exception
+	public static CelestialBody[][] load(SimulationSettings settings) throws Exception
 	{
-		String fileName = createFileName(reference);
-		String filePath = getFilePath(fileName);
-		File file = new File(filePath);
-		if(!file.exists())
+		CelestialBody[][] universe = new CelestialBody[settings.celestialBodies.length][settings.noOfSteps];
+		for(int i = 0; i < settings.celestialBodies.length; i++)
 		{
-			throw new FileNotFoundException(filePath + " Not found");
+			String fileName = createFileName(settings, i);
+			String filePath = getFilePath(fileName);
+			File file = new File(filePath);
+			if(!file.exists())
+			{
+				throw new FileNotFoundException(filePath + " Not found");
+			}
+			universe[i] = readFileData(settings, file);
 		}
-		return readFileData(reference, file);
+		return universe;
 	}
 	
-	private void writeFileHeader(File file, CelestialBody[] data) throws IOException
+	private static void writeFileHeader(File file, CelestialBody[] data) throws IOException
 	{
 		FileWriter writer = new FileWriter(file,false);
-		writer.write("Name=" + data[0].name + "\n");
-		writer.write("Mass=" + data[0].mass + "\n");
-		writer.write("Radius=" + data[0].radius + "\n");
-		writer.write("Image_Path=" + data[0].image + "\n");
-		writer.write("Icon_Path=" + data[0].icon + "\n");
-		writer.write("Start_Time=" + zipDateTime(data[0].time) + "\n");
-		writer.write("End_Time=" + zipDateTime(data[data.length-1].time) + "\n");
-		writer.write("No_of_Steps=" + data.length + "\n");
+		writer.write(data[0].name + "\n");
+		writer.write(data[0].mass + "\n");
+		writer.write(data[0].radius + "\n");
+		writer.write(data[0].image + "\n");
+		writer.write(data[0].icon + "\n");
+		writer.write(zipDateTime(data[0].time) + "\n");
+		writer.write(zipDateTime(data[data.length-1].time) + "\n");
+		writer.write(data.length + "\n");
 		writer.write("$SOE\n");
 		writer.close();
 	}
 	
-	private void writeFileData(File file, CelestialBody[] data) throws IOException
+	private static void writeFileData(File file, CelestialBody[] data) throws IOException
 	{
 		FileWriter writer = new FileWriter(file,true);
 		for(int i = 0; i < data.length; i++)
@@ -98,10 +100,29 @@ public class DataFileManager extends FileManager
 		writer.close();
 	}
 	
-	private CelestialBody[] readFileData(DataFileReference reference, File file) throws IOException
+	private static CelestialBody[] readFileData(SimulationSettings settings, File file) throws IOException
 	{
-		CelestialBody[] data = new CelestialBody[reference.No_of_Steps];
+		CelestialBody[] data = new CelestialBody[settings.noOfSteps];
 		BufferedReader reader = new BufferedReader(new FileReader(file));
+		
+		String name = reader.readLine();
+		double mass = Double.valueOf(reader.readLine());
+		double radius = Double.valueOf(reader.readLine());
+		String image = reader.readLine();
+		String icon = reader.readLine();
+		LocalDateTime startTime = parseDateTime(reader.readLine());
+		LocalDateTime endTime = parseDateTime(reader.readLine());
+		double noOfSteps = Double.valueOf(reader.readLine());
+
+		CelestialBody template = new CelestialBody(new Vector3d(0,0,0),
+												   new Vector3d(0,0,0),
+												   mass,
+												   radius, 
+												   name, 
+												   image, 
+												   icon,  
+												   startTime);
+				
 		String line = reader.readLine();
 		// Find where the data starts
 		while(!line.equalsIgnoreCase("$SOE"))
@@ -109,31 +130,31 @@ public class DataFileManager extends FileManager
 			line = reader.readLine();
 		}
 		// Start reading vectors
-		for(int i = 0; i < reference.No_of_Steps; i++)
+		for(int i = 0; i < settings.noOfSteps; i++)
 		{
 			line = reader.readLine();
-			data[i] = convertToCelestialBody(line, reference);
+			data[i] = convertToCelestialBody(line, template);
 		}
 		reader.close();
 		return data;
 	}
 	
-	private CelestialBody convertToCelestialBody(String line, DataFileReference reference)
+	private static CelestialBody convertToCelestialBody(String line, CelestialBody template)
 	{
 		String[] subStrings = line.split(","); 
 		subStrings = removeWhiteSpace(subStrings);
 		return new CelestialBody(
 				new Vector3d(Double.valueOf(subStrings[1]),Double.valueOf(subStrings[2]),Double.valueOf(subStrings[3])),
 				new Vector3d(Double.valueOf(subStrings[4]),Double.valueOf(subStrings[5]),Double.valueOf(subStrings[6])),
-				reference.Mass,
-				reference.Radius,
-				reference.Name,
-				reference.Image_Path,
-				reference.Icon_Path,
+				template.mass,
+				template.radius,
+				template.name,
+				template.image,
+				template.icon,
 				parseDateTime(subStrings[0]));  
 	}
 	
-	private String createFileName(CelestialBody[] data)
+	private static String createFileName(CelestialBody[] data)
 	{
 		StringBuilder fileName = new StringBuilder();
 		fileName.append(data[0].name + "_");
@@ -142,24 +163,14 @@ public class DataFileManager extends FileManager
 		fileName.append(data.length);
 		return fileName.toString();
 	}
-	
-	private String createFileName(CelestialBody celestialBody, LocalDateTime startTime, LocalDateTime endTime, int noOfSteps)
+		
+	private static String createFileName(SimulationSettings settings, int celestialBodyIndex)
 	{
 		StringBuilder fileName = new StringBuilder();
-		fileName.append(celestialBody.name + "_");
-		fileName.append(zipDateTime(startTime) + "_");
-		fileName.append(zipDateTime(endTime) + "_");
-		fileName.append(noOfSteps);
-		return fileName.toString();
-	}
-	
-	private String createFileName(DataFileReference reference)
-	{
-		StringBuilder fileName = new StringBuilder();
-		fileName.append(reference.Name + "_");
-		fileName.append(zipDateTime(reference.Start_Time) + "_");
-		fileName.append(zipDateTime(reference.End_Time) + "_");
-		fileName.append(reference.No_of_Steps);
+		fileName.append(settings.celestialBodies[celestialBodyIndex].name + "_");
+		fileName.append(zipDateTime(settings.startTime) + "_");
+		fileName.append(zipDateTime(settings.endTime) + "_");
+		fileName.append(settings.noOfSteps);
 		return fileName.toString();
 	}
 }

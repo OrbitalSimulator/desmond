@@ -13,9 +13,9 @@ import java.util.ArrayList;
 import src.peng.Vector3d;
 import src.univ.CelestialBody;
 
-public class ConfigFileManager extends FileManager
+public abstract class ConfigFileManager extends FileManager
 {		
-	public void overwrite(String fileName, String[] data)
+	public static void overwrite(String fileName, String[] data)
 	{
 		try 
 		{
@@ -34,7 +34,7 @@ public class ConfigFileManager extends FileManager
 		}
 	}
 	
-	public CelestialBody[] load(String fileName) throws Exception
+	public static CelestialBody[] load(String fileName) throws Exception
 	{
 		String filePath = getFilePath(fileName);
 		File file = new File(filePath);
@@ -45,7 +45,7 @@ public class ConfigFileManager extends FileManager
 		return readFileData(file);
 	}
 				
-	private void writeFileData(File file, String[] data) throws IOException
+	private static void writeFileData(File file, String[] data) throws IOException
 	{
 		FileWriter writer = new FileWriter(file,true);
 		for(int i = 0; i < data.length; i++)
@@ -56,7 +56,7 @@ public class ConfigFileManager extends FileManager
 		writer.close();
 	}
 	
-	private CelestialBody[] readFileData(File file) throws IOException
+	private static CelestialBody[] readFileData(File file) throws IOException
 	{
 		BufferedReader reader = new BufferedReader(new FileReader(file));
 		String line = reader.readLine();
@@ -70,7 +70,7 @@ public class ConfigFileManager extends FileManager
 		return convertToArray(dataList);
 	}
 	
-	private CelestialBody convertToCelestialBody(String line)
+	private static CelestialBody convertToCelestialBody(String line)
 	{
 		String[] subStrings = line.split(",");
 		subStrings = removeWhiteSpace(subStrings);
@@ -85,7 +85,7 @@ public class ConfigFileManager extends FileManager
 				parseDateTime(subStrings[11]));
 	}
 	
-	private CelestialBody[] convertToArray(ArrayList<CelestialBody> arrayList)
+	private static CelestialBody[] convertToArray(ArrayList<CelestialBody> arrayList)
 	{
 		CelestialBody[] array = new CelestialBody[arrayList.size()];
 		for(int i = 0; i < arrayList.size(); i++)
@@ -95,8 +95,7 @@ public class ConfigFileManager extends FileManager
 		return array;
 	}
 	
-	@Override
-	protected String getFilePath(String fileName)
+	protected static String getFilePath(String fileName)
 	{
 		FileSystem fileSystem = FileSystems.getDefault();
 		String path = fileSystem.getPath("").toAbsolutePath().toString();
