@@ -13,7 +13,6 @@ import src.univ.CelestialBody;
 
 public abstract class DataFileManager extends FileManager
 {		
-
 	public static void overwrite(CelestialBody[][] universe)
 	{
 		try 
