@@ -33,7 +33,8 @@ public class VerletSolver implements ODESolverInterface	//find position x_n+1 us
         while(t < tf)
         {
         	if (index==1) {	//special case for x1, where x1 = x0 +v0*h + 1/2*A(x0)*h^2
-        		results[index] = 
+        		results[index] = ((State) results[index]).add(((State) results[index]).scale(h));
+        		results[index] = results[index].addMul(h, f.call(t, currentState));
         	}
             currentState = step(f, t, currentState, h);								// Determine new current state through a single step of the Euler method
             results[index] = currentState;											// Add new state to the results array
@@ -70,7 +71,12 @@ public class VerletSolver implements ODESolverInterface	//find position x_n+1 us
         //While the current time is less that the last specified time in ts
         while(t< ts[ts.length-1])
         {    
-            double h = ts[index] - ts[index-1];						//Determine step size
+            double h = ts[index] - ts[index-1];	
+            if (index==1) {	//special case for x1, where x1 = x0 +v0*h + 1/2*A(x0)*h^2
+        		results[index] = ((State) results[index]).add(((State) results[index]).scale(h));
+        		results[index] = results[index].addMul(h, f.call(t, currentState));
+        	}
+            //Determine step size
             if(DEBUG) System.out.println("Time step: "+ h);
             currentState = step(f, t, currentState, h);				//Determine new current state through a single step of the Euler method
             results[index] = currentState;							//Add new state to the results array
@@ -83,7 +89,7 @@ public class VerletSolver implements ODESolverInterface	//find position x_n+1 us
     /**
      * Update state for one step (for verlet method).
      * Essentially adding the calculated changes (In acceleration, position)
-     * Assuming for steps past x1, so using x_n+1 = 2*xn - x_n-1 + A(xn)*h^2
+     * Assuming we're past step x1, so using x_n+1 = 2*xn - x_n-1 + A(xn)*h^2
      * @param   f   the function defining the differential equation dy/dt=f(t,y)
      * @param   t   the time
      * @param   y   the state
@@ -96,8 +102,8 @@ public class VerletSolver implements ODESolverInterface	//find position x_n+1 us
 
     	y = ((State) y).scale(2.0);										//the 2*xn part
     	y = ((State) y).add(((State) results[index-1]).scale(-1.0));	//the 2*xn - x_n-1
-    	y = y.addMul((h*h), f.call(t, y.call(t,y)));					//<-----------sorta issue
-        return (StateInterface) y;
+    	y = y.addMul((h*h), f.call(t, y));					//<-----------maybe sorta issue
+        return y;
     }
 }
 
