@@ -1,5 +1,6 @@
 package src.peng;
 
+import src.config.SimulationSettings;
 import src.univ.Universe;
 
 public class Simulation 
@@ -13,18 +14,18 @@ public class Simulation
 	 */
 	public Vector3dInterface[] trajectory(Vector3dInterface probeStartPosition, Vector3dInterface probeStartVelocity, double[] ts)
 	{
-		// Work out all the settings parameters
-		int stepSizeNs = (int) ((ts[1] - ts[0]) * 1E9);
-		
+		SimulationSettings settings = SettingsFileManager.load();
+		settings.noOfSteps = (int) ((ts[1] - ts[0]) * 1E9);
+		settings.probeStartPosition = probeStartPosition;
+		settings.probeStartVelocity = probeStartVelocity;
 		
 		// Load/Create the universe from settings
-		Universe universe = new Universe(null); 								//TODO (Leon) Add settings here
+		Universe universe = new Universe(settings); 								
 		ODEFunctionInterface funct = new NewtonGravityFunction(universe.masses);
 		
 		// Add the start parameters of the probe
 		
 		// Call a single step of the solver to get the 
-		
 		return null;		
 	}
 
