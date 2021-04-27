@@ -94,6 +94,31 @@ public class Universe
     	return bodies;
     }
     
+    public CelestialBody[] convertToCelestialBody(StateInterface stateInterfaces)
+    {  	
+    	State states = (State) stateInterfaces;
+    	CelestialBody[] bodies = new CelestialBody[states.position.size()];
+        LocalDateTime dateTime = startTime;
+  		for(int i = 0; i < states.velocity.size(); i++)
+        {
+   			bodies[i] = startVariables[i].updateCopy(states.position.get(i),
+                									 states.velocity.get(i), 
+                						   			 dateTime);
+   		}
+        dateTime.plusNanos((long) stepSizeNanoSec);
+    	return bodies;
+    }
+    
+    public StateInterface getStateAt(int timeStep)
+    {
+    	return convertToState(universe[timeStep]);
+    }
+    
+    public void setStateAt(int timeStep, StateInterface state)
+    {
+    	universe[timeStep] = convertToCelestialBody(state);
+    }
+    
     public void saveToFile()
     {
     	DataFileManager.overwrite(universe);
