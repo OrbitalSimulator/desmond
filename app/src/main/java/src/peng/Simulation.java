@@ -58,20 +58,34 @@ public class Simulation
 	 */
 	public Vector3dInterface[] trajectory(Vector3dInterface probeStartPosition, Vector3dInterface probeStartVelocity, double tf, double h)
 	{
-	//	/* Build */								
-	//	int stepSizeNs = (int) (h*1E9);
-	//	Universe universe = new Universe(probeStartPosition, probeStartVelocity, stepSizeNs);
-	//	StateInterface initialState = universe.initialState(); 							//Generate the initial state of the universe
-	//	ODEFunctionInterface funct = new NewtonGravityFunction(universe.getMasses());	//Initialise ODEFunctionInterface - contains call method			
-    //
-	//	/* Compute */
-	//	RungeKutta4th solver = new RungeKutta4th();										//Call physics engine to determine intermediate states of the system.
-	//	StateInterface[] results = solver.solve(funct, initialState, tf, h);			//Record intermediate states
-	//	universe.update(results);														//Convert the obtained results to CelestialBodies for visualisation display
-    //
-	//	/* Display */
-	//	Vector3dInterface[] trajectory = output(results);
-		return null;									
+		SimulationSettings settings;
+		try {
+			settings = SettingsFileManager.load();
+			settings.noOfSteps = (int) (tf/h);
+			settings.probeStartPosition = probeStartPosition;
+			settings.probeStartVelocity = probeStartVelocity;
+			
+			// Load or Create the universe from settings
+			Universe universe = new Universe(settings); 								
+			ODEFunctionInterface funct = new NewtonGravityFunction(universe.masses);
+			RungeKutta4th solver = new RungeKutta4th();									//TODO (Leon) solver selection
+			Vector3d[] trajectory = new Vector3d[settings.noOfSteps];
+			
+			int currentStep = 0;
+			State nextStep;
+			while(currentStep < settings.noOfSteps)
+			{
+				nextStep = solver.step(funct, currentStep, universe.getStateAt(currentStep), settings.stepSize);
+				trajectory[currentStep+1] = nextStep.position.get(nextStep.position.size()-1);
+			}
+			return trajectory;
+		} 
+		catch (IOException e) 
+		{
+			System.out.println("Settings File Not Found");
+			e.printStackTrace();
+			return null;
+		}								
 	}
 
 	public Vector3d[] output(StateInterface[] states)
