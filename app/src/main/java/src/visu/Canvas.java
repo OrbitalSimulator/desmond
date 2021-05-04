@@ -26,7 +26,6 @@ import src.univ.*;
 public class Canvas extends JPanel
 {
 	private static final long serialVersionUID = 1L;
-	public final boolean DEBUG = true;
 	
 	private int xOffset;
 	private int yOffset;
@@ -161,7 +160,6 @@ public class Canvas extends JPanel
 		if((time+interval < endTime) && (time+interval >= 0))
 		{
 			time += interval;
-			if(DEBUG) System.out.println(time);
 			repaint();
 		}
 	}
@@ -171,7 +169,6 @@ public class Canvas extends JPanel
 		if((time < endTime) && (time > 0))
 		{
 			time = t;
-			if(DEBUG) System.out.println(time);
 			repaint();
 		}
 	}
@@ -180,8 +177,6 @@ public class Canvas extends JPanel
 	{
 		distScaling += (quantity * zoom_rate);
 		sizeScaling += (quantity * 100 * zoom_rate);
-		if(DEBUG) System.out.println("Dist: " + distScaling);
-		if(DEBUG) System.out.println("Size: " + sizeScaling);
 		repaint();
 	}
 	
