@@ -15,12 +15,10 @@ import src.univ.CelestialBody;
 
 public abstract class DataFileManager extends FileManager
 {		
-	public static void overwrite(CelestialBody[][] universe)
+	public static void overwrite(CelestialBody[][] data)
 	{
 		try 
 		{
-			CelestialBody[][] data = swapRowsAndColumns(universe);
-			
 			for(int i = 0; i < data.length; i++)
 			{
 				String fileName = createFileName(data[i]);
@@ -52,26 +50,14 @@ public abstract class DataFileManager extends FileManager
 			File file = new File(filePath);
 			if(!file.exists())
 			{
+				System.out.println(filePath + " Not found");
 				throw new FileNotFoundException(filePath + " Not found");
 			}
 			data[i] = readFileData(settings, file);
 		}
-		return swapRowsAndColumns(data);
+		return data;
 	}
-	
-	private static CelestialBody[][] swapRowsAndColumns(CelestialBody[][] input)
-	{
-		CelestialBody[][] output = new CelestialBody[input[0].length][input.length];
-		for(int i = 0; i < input.length; i++)
-		{
-			for(int j = 0; j < input[i].length; j++)
-			{
-				output[i][j] = input[j][i];
-			}
-		}
-		return output;
- 	}
-	
+		
 	private static void writeFileHeader(File file, CelestialBody[] data) throws IOException
 	{
 		FileWriter writer = new FileWriter(file,false);
@@ -161,8 +147,12 @@ public abstract class DataFileManager extends FileManager
 		StringBuilder fileName = new StringBuilder();
 		fileName.append(data[0].name + "_");
 		fileName.append(zipDateTime(data[0].time) + "_");
-		fileName.append(zipDateTime(data[data.length-1].time) + "_");
-		fileName.append(data.length);
+		fileName.append(data.length-1 + "_");
+		
+		double step1 = data[1].timeInMs();
+		double step0 = data[0].timeInMs();
+		double stepSize = step1 - step0;
+		fileName.append(String.format("%.0f", stepSize));				
 		return fileName.toString();
 	}
 		
@@ -171,8 +161,8 @@ public abstract class DataFileManager extends FileManager
 		StringBuilder fileName = new StringBuilder();
 		fileName.append(settings.celestialBodies[celestialBodyIndex].name + "_");
 		fileName.append(zipDateTime(settings.startTime) + "_");
-		fileName.append(zipDateTime(settings.endTime) + "_");
-		fileName.append(settings.noOfSteps);
+		fileName.append((settings.noOfSteps) + "_");
+		fileName.append(String.format("%.0f", settings.stepSize));				
 		return fileName.toString();
 	}
 	
@@ -182,4 +172,5 @@ public abstract class DataFileManager extends FileManager
 		String path = fileSystem.getPath("").toAbsolutePath().toString();
 		return path.concat("/src/main/java/src/data/" + fileName);
 	}
+	
 }

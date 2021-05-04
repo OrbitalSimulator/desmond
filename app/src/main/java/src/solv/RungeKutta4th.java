@@ -1,4 +1,4 @@
-package solv;
+package src.solv;
 
 import src.peng.ODEFunctionInterface;
 import src.peng.Rate;

@@ -1,13 +1,9 @@
 package src.peng;
 
 import java.io.IOException;
-import java.time.LocalDateTime;
-
-import solv.ODESolverInterface;
-import solv.RungeKutta4th;
+import src.solv.RungeKutta4th;
 import src.config.SettingsFileManager;
 import src.config.SimulationSettings;
-import src.univ.CelestialBody;
 import src.univ.Universe;
 
 public class Simulation 

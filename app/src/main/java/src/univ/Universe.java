@@ -2,20 +2,15 @@ package src.univ;
 
 import src.peng.Vector3d;
 import src.peng.StateInterface;
-import src.peng.Vector3dInterface;
-import src.config.ConfigFileManager;
 import src.config.DataFileManager;
 import src.config.SimulationSettings;
 import src.peng.NewtonGravityFunction;
 import src.peng.ODEFunctionInterface;
 import src.peng.State;
+import src.solv.RungeKutta4th;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.ArrayList;
-
-import solv.RungeKutta4th;
 
 public class Universe
 {
@@ -54,6 +49,9 @@ public class Universe
 			System.out.print("Creating new universe ...");
 			universe = generateNewUniverse();
 			System.out.println(" Done");
+			System.out.print("Saving to file ...");
+			saveToFile();
+			System.out.print(" Done");
      	}
     }
      

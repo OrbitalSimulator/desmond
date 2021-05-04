@@ -19,12 +19,14 @@ import src.univ.CelestialBody;
  */
 class TestCelestialBody 
 {	
-	LocalTime t1 = LocalTime.parse("00:01");
-	LocalDate d1 = LocalDate.parse("2021-04-01");
+
 	
 	@Test
 	void testCollision() 
 	{
+		LocalTime t1 = LocalTime.parse("00:01");
+		LocalDate d1 = LocalDate.parse("2021-04-01");
+		
 		// Arrange (set up everything for your test)
 		double radius = 100;											// make a new celestial body	
 		Vector3d centre = new Vector3d();								// with a radius 50 and	a centre of 0,0,0
@@ -50,6 +52,33 @@ class TestCelestialBody
 		{
 			assertEquals(exp[i], act[i]);
 		}
+	}
+	
+	@Test
+	void testTimeInMs_Second()
+	{
+		LocalTime t1 = LocalTime.parse("00:00:01");
+		LocalDate d1 = LocalDate.parse("0001-01-01");
+		CelestialBody cb = new CelestialBody(null, null, 0, 0, null, null, null, LocalDateTime.of(d1, t1));
+		assertEquals(1000, cb.timeInMs());
+	}
+	
+	@Test
+	void testTimeInMs_Min()
+	{
+		LocalTime t1 = LocalTime.parse("00:50:00");
+		LocalDate d1 = LocalDate.parse("0001-01-01");
+		CelestialBody cb = new CelestialBody(null, null, 0, 0, null, null, null, LocalDateTime.of(d1, t1));
+		assertEquals(3e+6, cb.timeInMs());
+	}
+	
+	@Test
+	void testTimeInMs_Hour()
+	{
+		LocalTime t1 = LocalTime.parse("03:00:00");
+		LocalDate d1 = LocalDate.parse("0001-01-01");
+		CelestialBody cb = new CelestialBody(null, null, 0, 0, null, null, null, LocalDateTime.of(d1, t1));
+		assertEquals(1.08e+7, cb.timeInMs());
 	}
 
 }

@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
-import solv.EulerSolver;
+import src.solv.EulerSolver;
 import src.peng.ODEFunctionInterface;
 import src.peng.State;
 import src.peng.StateInterface;
