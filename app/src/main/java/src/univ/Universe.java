@@ -8,13 +8,14 @@ import src.config.DataFileManager;
 import src.config.SimulationSettings;
 import src.peng.NewtonGravityFunction;
 import src.peng.ODEFunctionInterface;
-import src.peng.RungeKutta4th;
 import src.peng.State;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
+
+import solv.RungeKutta4th;
 
 public class Universe
 {
@@ -42,28 +43,30 @@ public class Universe
     		masses[i] = startVariables[i].mass;
     	}
     	
-    	universe = new CelestialBody[startVariables.length][noOfSteps];
+    	universe = new CelestialBody[startVariables.length][noOfSteps+1];
     	try
 		{
     		universe = DataFileManager.load(settings);
 		}
 		catch (Exception e)
 		{
-			System.out.println("Unable to load config file/n");
+			System.out.println("Unable to load config file");
+			System.out.print("Creating new universe ...");
 			universe = generateNewUniverse();
+			System.out.println(" Done");
      	}
     }
      
     private CelestialBody[][] generateNewUniverse()
     {
 		StateInterface initialState = convertToState(startVariables);
-		ODEFunctionInterface function = new NewtonGravityFunction(masses);			
-		RungeKutta4th solver = new RungeKutta4th();									
+		ODEFunctionInterface function = new NewtonGravityFunction(masses);
+		RungeKutta4th solver = new RungeKutta4th();
 		StateInterface[] states = solver.solve(function, initialState, stepSize*noOfSteps, stepSize);			
 		return convertToCelestialBody(states);														
     }
     
-    public StateInterface convertToState(CelestialBody[] bodies)
+    public State convertToState(CelestialBody[] bodies)
     {
         ArrayList<Vector3d> velocity = new ArrayList<Vector3d>();
         ArrayList<Vector3d> position = new ArrayList<Vector3d>();
@@ -109,7 +112,7 @@ public class Universe
     	return bodies;
     }
     
-    public StateInterface getStateAt(int timeStep)
+    public State getStateAt(int timeStep)
     {
     	return convertToState(universe[timeStep]);
     }
