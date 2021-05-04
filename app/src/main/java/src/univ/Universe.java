@@ -16,6 +16,7 @@ public class Universe
 {
     public CelestialBody[] startVariables; 
     public CelestialBody[][] universe;
+    public ArrayList<Vector3d[]> trajectories;
 	public LocalDateTime startTime;
 	public LocalDateTime endTime;
 	public int noOfSteps;
@@ -108,6 +109,15 @@ public class Universe
    		}
         dateTime.plusNanos((long) stepSizeNanoSec);
     	return bodies;
+    }
+    
+    public void addTrajectory(Vector3d[] trajectory)
+    {
+    	if(trajectories == null)
+    	{
+    		trajectories = new ArrayList<Vector3d[]>();
+    	}
+    	trajectories.add(trajectory);
     }
     
     public State getStateAt(int timeStep)
