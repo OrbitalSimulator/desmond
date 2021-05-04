@@ -13,7 +13,7 @@ public class SimulationSettings
 	public LocalDateTime endTime;
 	public int noOfSteps;
 	public double stepSize;
-	public String[] wayPoints;
+	public String[] waypoints;
 
 	public SimulationSettings(CelestialBody[] celestialBodies,
 			                  Vector3dInterface probeStartPosition,
@@ -22,7 +22,7 @@ public class SimulationSettings
 							  LocalDateTime endTime,
 							  int noOfSteps,
 							  double stepSize,
-							  String[] wayPoints)
+							  String[] waypoints)
 	{
 		this.celestialBodies = celestialBodies;
 		this.probeStartPosition = probeStartPosition;
@@ -31,6 +31,6 @@ public class SimulationSettings
 		this.endTime = endTime;
 		this.noOfSteps = noOfSteps;
 		this.stepSize = stepSize;
-		this.wayPoints = wayPoints;
+		this.waypoints = waypoints;
 	}
 }

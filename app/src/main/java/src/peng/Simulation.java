@@ -1,6 +1,10 @@
 package src.peng;
 
+import java.time.LocalDateTime;
+
+import src.config.SettingsFileManager;
 import src.config.SimulationSettings;
+import src.univ.CelestialBody;
 import src.univ.Universe;
 
 public class Simulation 
@@ -14,19 +18,26 @@ public class Simulation
 	 */
 	public Vector3dInterface[] trajectory(Vector3dInterface probeStartPosition, Vector3dInterface probeStartVelocity, double[] ts)
 	{
-		SimulationSettings settings = SettingsFileManager.load();
-		settings.noOfSteps = (int) ((ts[1] - ts[0]) * 1E9);
-		settings.probeStartPosition = probeStartPosition;
-		settings.probeStartVelocity = probeStartVelocity;
-		
-		// Load/Create the universe from settings
-		Universe universe = new Universe(settings); 								
-		ODEFunctionInterface funct = new NewtonGravityFunction(universe.masses);
-		
-		// Add the start parameters of the probe
-		
-		// Call a single step of the solver to get the 
-		return null;		
+		SimulationSettings settings;
+		try {
+			settings = SettingsFileManager.load();
+			settings.noOfSteps = (int) ((ts[1] - ts[0]) * 1E9);
+			settings.probeStartPosition = probeStartPosition;
+			settings.probeStartVelocity = probeStartVelocity;
+			
+			// Load or Create the universe from settings
+			Universe universe = new Universe(settings); 								
+			ODEFunctionInterface funct = new NewtonGravityFunction(universe.masses);
+			
+			// Add the start parameters of the probe
+			
+			
+			// Call a single step of the solver to get the 
+			return null;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}	
 	}
 
 	/*
