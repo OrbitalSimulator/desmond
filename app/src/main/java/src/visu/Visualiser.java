@@ -73,6 +73,8 @@ public class Visualiser extends JFrame implements KeyListener, MouseWheelListene
 		setLayout(new BorderLayout());
 		setResizable(true);
 		
+		FileSystem fileSystem = FileSystems.getDefault();
+		
 		// Add planet buttons
 		BufferedImage icon = null;
 		JPanel rPanel = new JPanel();
@@ -85,7 +87,8 @@ public class Visualiser extends JFrame implements KeyListener, MouseWheelListene
 		for(int i = 0; i < 11; i++)
 		{
 			Icon btnIcon = null;
-			String path = U[i][0].icon;
+			String path = fileSystem.getPath("").toAbsolutePath().toString();
+			path = path.concat(U[i][0].icon);
 			try 
 			{
 				icon = ImageIO.read(new File(path));
@@ -108,7 +111,6 @@ public class Visualiser extends JFrame implements KeyListener, MouseWheelListene
 		Icon playIcon = null;
 		try 
 		{
-			FileSystem fileSystem = FileSystems.getDefault();
 			String path = fileSystem.getPath("").toAbsolutePath().toString();
 			path = path.concat("/src/main/java/src/misc/playIcon.png");
 			icon = ImageIO.read(new File(path));
@@ -127,7 +129,6 @@ public class Visualiser extends JFrame implements KeyListener, MouseWheelListene
 		Icon stopIcon = null;
 		try 
 		{
-			FileSystem fileSystem = FileSystems.getDefault();
 			String path = fileSystem.getPath("").toAbsolutePath().toString();
 			path = path.concat("/src/main/java/src/misc/stopIcon.png");
 			icon = ImageIO.read(new File(path));
@@ -145,7 +146,6 @@ public class Visualiser extends JFrame implements KeyListener, MouseWheelListene
 		Icon revIcon = null;
 		try 
 		{
-			FileSystem fileSystem = FileSystems.getDefault();
 			String path = fileSystem.getPath("").toAbsolutePath().toString();
 			path = path.concat("/src/main/java/src/misc/revIcon.png");
 			icon = ImageIO.read(new File(path));

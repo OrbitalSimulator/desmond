@@ -9,6 +9,8 @@ import java.awt.Point;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.FileSystem;
+import java.nio.file.FileSystems;
 
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
@@ -37,6 +39,8 @@ public class Canvas extends JPanel
 	private double detailDist = 4.8E-7;		// The model in detail scales
 	private double detailSize = 3E-6;
 	private double zoom_rate = 1E-10;
+	
+	private FileSystem fileSystem = FileSystems.getDefault();
 	private Dimension screen;
 	private CelestialBody[][] U;
 	private int time;						// Current time
@@ -119,10 +123,15 @@ public class Canvas extends JPanel
 			{
 				try 
 				{ 
-					BufferedImage img = ImageIO.read(new File(U[i][time].image));
+					String path = fileSystem.getPath("").toAbsolutePath().toString();
+					path = path.concat(U[i][time].image);
+					BufferedImage img = ImageIO.read(new File(path));
 					g.drawImage(img, x, y, r, r, null);
 				} 
-				catch (IOException e) {}
+				catch (IOException e) 
+				{
+					System.out.println("Unable to find image: " + U[i][time].name);
+				}
 			}
 			else
 				g.fillOval(x, y, r, r);
