@@ -17,6 +17,7 @@ public class Simulation
 	 */
 	public Vector3dInterface[] trajectory(Vector3dInterface probeStartPosition, Vector3dInterface probeStartVelocity, double[] ts)
 	{
+		//TODO (Leon) this needs to be implemented to calculate at random steps ... fuck knows why
 		SimulationSettings settings;
 		try {
 			settings = SettingsFileManager.load();
