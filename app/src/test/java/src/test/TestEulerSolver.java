@@ -7,11 +7,11 @@ import java.util.ArrayList;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
+import solv.EulerSolver;
 import src.peng.ODEFunctionInterface;
 import src.peng.State;
 import src.peng.StateInterface;
 import src.peng.Vector3d;
-import src.peng.EulerSolver;
 import src.peng.NewtonGravityFunction;
 
 class TestEulerSolver 

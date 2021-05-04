@@ -1,4 +1,7 @@
-package src.peng;
+package solv;
+
+import src.peng.ODEFunctionInterface;
+import src.peng.StateInterface;
 
 /*
  * @author Pieter Collins, Christof Seiler, Katerina Stankova, Nico Roos, Katharina Schueller
