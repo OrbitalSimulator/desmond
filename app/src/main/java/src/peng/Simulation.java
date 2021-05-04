@@ -1,14 +1,17 @@
 package src.peng;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
 
+import solv.ODESolverInterface;
+import solv.RungeKutta4th;
 import src.config.SettingsFileManager;
 import src.config.SimulationSettings;
 import src.univ.CelestialBody;
 import src.univ.Universe;
 
 public class Simulation 
-{	
+{		
 	/*
 	 * Simulate the solar system, including a probe fired from Earth at 00:00h on 1 April 2020.
 	 *
@@ -28,13 +31,21 @@ public class Simulation
 			// Load or Create the universe from settings
 			Universe universe = new Universe(settings); 								
 			ODEFunctionInterface funct = new NewtonGravityFunction(universe.masses);
+			RungeKutta4th solver = new RungeKutta4th();	
+			Vector3d[] trajectory = new Vector3d[settings.noOfSteps];
 			
-			// Add the start parameters of the probe
-			
-			
-			// Call a single step of the solver to get the 
-			return null;
-		} catch (Exception e) {
+			int currentStep = 0;
+			State nextStep;
+			while(currentStep < settings.noOfSteps)
+			{
+				nextStep = solver.step(funct, currentStep, universe.getStateAt(currentStep), settings.stepSize);
+				trajectory[currentStep+1] = nextStep.position.get(nextStep.position.size()-1);
+			}
+			return trajectory;
+		} 
+		catch (IOException e) 
+		{
+			System.out.println("Settings File Not Found");
 			e.printStackTrace();
 			return null;
 		}	
