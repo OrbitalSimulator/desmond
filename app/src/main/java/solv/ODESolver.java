@@ -4,7 +4,7 @@ import src.peng.ODEFunctionInterface;
 import src.peng.State;
 import src.peng.StateInterface;
 
-public abstract class ODESolver implements ODESolverInterface
+public class ODESolver implements ODESolverInterface
 {
 	/**
      * Solve the differential equation by taking multiple steps of equal size, starting at time 0.
@@ -67,6 +67,12 @@ public abstract class ODESolver implements ODESolverInterface
      * @param   h   the step size
      * @return  the new state after taking one step
      */
+	@Override
+	public StateInterface step(ODEFunctionInterface f, double t, StateInterface y, double h) 
+	{
+		return null; // Implementation required by specific solvers
+	}
+	
     public State step(ODEFunctionInterface f, double t, State y, double h)
     {
     	return null; // Implementation required by specific solvers
