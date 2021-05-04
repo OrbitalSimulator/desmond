@@ -81,7 +81,6 @@ class TestEulerSolver
 		assertEquals(5.0, finalResultConverted.time);
 	}
 	
-	//TODO (Travis Dawson) Time array Euler Solver testing
 	@Test
 	public void testFunction3() 
 	{

@@ -74,7 +74,6 @@ public class TestVector
 	     assertEquals(-25, q.getZ());
     }
 
-	//TODO (Travis Dawson) Test vector equality method.
 	@Test
 	void testEquals()
 	{

@@ -15,7 +15,6 @@ import src.peng.Vector3d;
 
 class TestNewtonGravityFunction 
 {
-	//TODO (Travis Dawson) Clean up and fialize NewtonGravityFunction testing
 	@Test
 	void testNewtonGravityFunc() 
 	{	
