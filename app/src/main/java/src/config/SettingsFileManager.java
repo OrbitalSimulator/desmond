@@ -5,6 +5,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.nio.file.FileSystem;
+import java.nio.file.FileSystems;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
@@ -14,7 +16,7 @@ import src.univ.CelestialBody;
 
 public abstract class SettingsFileManager extends FileManager
 {
-	public static SimulationSettings load() throws Exception
+	public static SimulationSettings load() throws IOException
 	{
 		String filePath = getFilePath("settingsConfig");
 		File file = new File(filePath);
@@ -40,7 +42,9 @@ public abstract class SettingsFileManager extends FileManager
 		// Read Celestial Bodies
 		while(!line.equalsIgnoreCase("##CELESTIAL BODIES"))  {line = reader.readLine();} // Find bodies
 		ArrayList<CelestialBody> dataList = new ArrayList<CelestialBody>();
-		while(!line.equalsIgnoreCase("EOF"))
+		line = reader.readLine();
+		
+		while(!line.equalsIgnoreCase("##END"))
 		{
 			dataList.add(convertToCelestialBody(line));
 			line = reader.readLine();
@@ -49,7 +53,8 @@ public abstract class SettingsFileManager extends FileManager
 		
 		// Read probe
 		while(!line.equalsIgnoreCase("##PROBE")) {line = reader.readLine();} // Find probe
-		CelestialBody probe =  convertToCelestialBody(reader.readLine());
+		line = reader.readLine();
+		CelestialBody probe =  convertToCelestialBody(line);
 		
 		// Read Waypoints
 		while(!line.equalsIgnoreCase("##WAYPOINTS")) { line = reader.readLine();} // Find waypoints
@@ -76,7 +81,7 @@ public abstract class SettingsFileManager extends FileManager
 				new Vector3d(Double.valueOf(subStrings[4]),Double.valueOf(subStrings[5]),Double.valueOf(subStrings[6])),
 				Double.valueOf(subStrings[7]),
 				Double.valueOf(subStrings[8]),
-				subStrings[0],
+				subStrings[0],							
 				subStrings[9],
 				subStrings[10],
 				parseDateTime(subStrings[11]));
@@ -90,5 +95,12 @@ public abstract class SettingsFileManager extends FileManager
 			array[i] = arrayList.get(i);
 		}
 		return array;
+	}
+	
+	private static String getFilePath(String fileName)
+	{
+		FileSystem fileSystem = FileSystems.getDefault();
+		String path = fileSystem.getPath("").toAbsolutePath().toString();
+		return path.concat("/src/main/java/src/config/" + fileName);
 	}
 }

@@ -6,6 +6,8 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.FileSystem;
+import java.nio.file.FileSystems;
 import java.time.LocalDateTime;
 
 import src.peng.Vector3d;
@@ -172,5 +174,12 @@ public abstract class DataFileManager extends FileManager
 		fileName.append(zipDateTime(settings.endTime) + "_");
 		fileName.append(settings.noOfSteps);
 		return fileName.toString();
+	}
+	
+	private static String getFilePath(String fileName)
+	{
+		FileSystem fileSystem = FileSystems.getDefault();
+		String path = fileSystem.getPath("").toAbsolutePath().toString();
+		return path.concat("/src/main/java/src/data/" + fileName);
 	}
 }
