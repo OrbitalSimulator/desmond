@@ -28,6 +28,9 @@ class TestSettingsFileManager
 			
 			assertEquals(startDateTime, settings.startTime);
 			assertEquals(endDateTime, settings.endTime);
+			assertEquals(31556926, settings.noOfSteps);
+			assertEquals(10000, settings.stepSize);
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
