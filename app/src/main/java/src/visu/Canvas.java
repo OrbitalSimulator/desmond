@@ -28,6 +28,7 @@ import src.univ.*;
 public class Canvas extends JPanel
 {
 	private static final long serialVersionUID = 1L;
+	private final int ORBIT_PAINT_RATE = 1;
 	
 	private int xOffset;
 	private int yOffset;
@@ -48,6 +49,7 @@ public class Canvas extends JPanel
 	private int endTime;
 	private boolean follow = false;
 	private int following = -1;
+	
 	
 	private ArrayList<Vector3d[]> trajectories;
 	
@@ -70,14 +72,8 @@ public class Canvas extends JPanel
 		super.paint(G);
 		setBackground(Color.BLACK);
 		Graphics2D g = (Graphics2D) G;
-		
-		// Paint the DTG in the corner
-		Font font = new Font("SansSerif", Font.PLAIN, 24);
-		g.setFont(font);
-		int timeX = 10;
-		int timeY = (int) screen.getHeight()- 140;
-		g.drawString(U[0][time].time.toString(), timeX, timeY);
-		
+		paintDateTime(g);
+
 		if(follow)
 		{
 			distScaling = detailDist;
@@ -86,11 +82,30 @@ public class Canvas extends JPanel
 			yOffset = (int) - (U[following][time].location.getY() * distScaling);	
 		}
 		
-		// Paint Orbits
+		paintOrbits(g);
+		paintCelestialBodies(g);
+	
+		if(trajectories != null)
+		{
+			paintTrajectories(g);
+		}
+	}
+	
+	private void paintDateTime(Graphics2D g)
+	{
+		Font font = new Font("SansSerif", Font.PLAIN, 24);
+		g.setFont(font);
+		int timeX = 10;
+		int timeY = (int) screen.getHeight()- 140;
+		g.drawString(U[0][time].time.toString(), timeX, timeY);
+	}
+	
+	private void paintOrbits(Graphics2D g)
+	{
 		g.setColor(Color.GREEN);
 		for(int i = 0; i < U.length; i++)		
 		{
-			for(int j = 0; j < U[i].length; j += 50)
+			for(int j = 0; j < U[i].length; j += ORBIT_PAINT_RATE)
 			{
 				int x = xOrigin;
 				x += (int) (U[i][j].location.getX() * distScaling);
@@ -103,9 +118,10 @@ public class Canvas extends JPanel
 				g.fillOval(x, y, 2, 2);
 			}
 		}
-		
-		
-		// Run through each CelestialBody and paint it at time t
+	}
+	
+	private void paintCelestialBodies(Graphics2D g)
+	{
 		g.setColor(Color.WHITE);
 		for(int i = 0; i < U.length; i++)		
 		{		
@@ -139,8 +155,10 @@ public class Canvas extends JPanel
 			else
 				g.fillOval(x, y, r, r);
 		}
-		
-		// Paint trajectories
+	}
+	
+	private void paintTrajectories(Graphics2D g)
+	{
 		g.setColor(Color.RED);
 		for(Vector3d[] each: trajectories)		
 		{
