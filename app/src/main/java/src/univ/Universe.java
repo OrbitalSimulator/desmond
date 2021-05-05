@@ -32,7 +32,7 @@ public class Universe
     	noOfSteps = settings.noOfSteps;
     	startVariables = settings.celestialBodies;
 		stepSize = settings.stepSize;
-		stepSizeNanoSec = (int) (stepSize*1E9);
+		stepSizeNanoSec = (int) (stepSize*3E+6);
      	masses = new double[startVariables.length];
     	for(int i = 0; i < startVariables.length; i++)
     	{
@@ -42,7 +42,9 @@ public class Universe
     	universe = new CelestialBody[startVariables.length][noOfSteps+1];
     	try
 		{
+    		System.out.print("Loading from file ...");
     		universe = DataFileManager.load(settings);
+    		System.out.println(" Done");
 		}
 		catch (Exception e)
 		{
@@ -52,7 +54,7 @@ public class Universe
 			System.out.println(" Done");
 			System.out.print("Saving to file ...");
 			saveToFile();
-			System.out.print(" Done");
+			System.out.println(" Done");
      	}
     }
      
@@ -82,16 +84,16 @@ public class Universe
     {  	
     	State[] states = (State[]) stateInterfaces;
     	CelestialBody[][] bodies = new CelestialBody[universe.length][universe[0].length];
+    	LocalDateTime dateTime = startTime;
     	for(int i = 0; i < states.length; i++)
         {            
-            LocalDateTime dateTime = startTime;
     		for(int j = 0; j < states[i].velocity.size(); j++)
             {
     			bodies[j][i] = startVariables[j].updateCopy(states[i].position.get(j),
                 										states[i].velocity.get(j), 
                 						   				dateTime);
             }
-            dateTime.plusNanos((long) stepSizeNanoSec);
+            dateTime = dateTime.plusNanos((long) stepSizeNanoSec);
         }
     	return bodies;
     }
@@ -106,8 +108,8 @@ public class Universe
    			bodies[i] = startVariables[i].updateCopy(states.position.get(i),
                 									 states.velocity.get(i), 
                 						   			 dateTime);
+   			dateTime = dateTime.plusNanos((long) stepSizeNanoSec);
    		}
-        dateTime.plusNanos((long) stepSizeNanoSec);
     	return bodies;
     }
     
