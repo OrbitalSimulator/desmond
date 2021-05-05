@@ -28,7 +28,7 @@ import src.univ.*;
 public class Canvas extends JPanel
 {
 	private static final long serialVersionUID = 1L;
-	private final int ORBIT_PAINT_RATE = 1;
+	private final int ORBIT_PAINT_RATE = 10;
 	
 	private int xOffset;
 	private int yOffset;
