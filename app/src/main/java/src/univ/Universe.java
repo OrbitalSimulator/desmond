@@ -21,7 +21,6 @@ public class Universe
 	public LocalDateTime endTime;
 	public int noOfSteps;
 	public double stepSize;
-	public int stepSizeNanoSec;
 	public double[] masses;
 	public String[] wayPoints;
 	
@@ -32,7 +31,6 @@ public class Universe
     	noOfSteps = settings.noOfSteps;
     	startVariables = settings.celestialBodies;
 		stepSize = settings.stepSize;
-		stepSizeNanoSec = (int) (stepSize*1E+6);
      	masses = new double[startVariables.length];
     	for(int i = 0; i < startVariables.length; i++)
     	{
@@ -93,7 +91,7 @@ public class Universe
                 										states[i].velocity.get(j), 
                 						   				dateTime);
             }
-            dateTime = dateTime.plusNanos((long) stepSizeNanoSec);
+            dateTime = dateTime.plusSeconds((long) stepSize);
         }
     	return bodies;
     }
@@ -108,7 +106,7 @@ public class Universe
    			bodies[i] = startVariables[i].updateCopy(states.position.get(i),
                 									 states.velocity.get(i), 
                 						   			 dateTime);
-   			dateTime = dateTime.plusNanos((long) stepSizeNanoSec);
+   			dateTime = dateTime.plusSeconds((long) stepSize);
    		}
     	return bodies;
     }
