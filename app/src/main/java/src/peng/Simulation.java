@@ -83,7 +83,7 @@ public class Simulation
 		} 
 		catch (IOException e) 
 		{
-			System.out.println("Settings File Not Found");
+			System.out.println("Settings File Not Found ... Exiting");
 			e.printStackTrace();
 			return null;
 		}								
