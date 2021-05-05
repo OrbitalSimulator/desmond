@@ -2,8 +2,8 @@ package src.univ;
 
 import src.peng.Vector3d;
 import src.peng.StateInterface;
-import src.config.DataFileManager;
-import src.config.SimulationSettings;
+import src.conf.DataFileManager;
+import src.conf.SimulationSettings;
 import src.peng.NewtonGravityFunction;
 import src.peng.ODEFunctionInterface;
 import src.peng.State;

@@ -1,4 +1,4 @@
-package src.config;
+package src.conf;
 
 import java.time.LocalDateTime;
 import src.peng.Vector3dInterface;

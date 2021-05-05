@@ -8,7 +8,7 @@ import java.time.LocalTime;
 
 import org.junit.jupiter.api.Test;
 
-import src.config.FileManager;
+import src.conf.FileManager;
 
 class TestFileManager 
 {

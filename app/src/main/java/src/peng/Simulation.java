@@ -1,17 +1,12 @@
 package src.peng;
 
 import java.io.IOException;
-import java.util.ArrayList;
-
-import src.solv.RungeKutta4th;
-import src.config.SettingsFileManager;
-import src.config.SimulationSettings;
+import src.conf.SettingsFileManager;
+import src.conf.SimulationSettings;
 import src.univ.Universe;
 
 public class Simulation 
 {		
-	private final double MILLISECONDS = 1000;
-	
 	/*
 	 * Simulate the solar system, including a probe fired from Earth at 00:00h on 1 April 2020.
 	 *

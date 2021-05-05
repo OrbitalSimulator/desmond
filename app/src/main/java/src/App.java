@@ -2,8 +2,8 @@ package src;
 
 import java.io.IOException;
 
-import src.config.SettingsFileManager;
-import src.config.SimulationSettings;
+import src.conf.SettingsFileManager;
+import src.conf.SimulationSettings;
 import src.peng.TrajectoryPlanner;
 import src.univ.Universe;
 import src.visu.Visualiser;

@@ -7,8 +7,9 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 import org.junit.jupiter.api.Test;
-import src.config.DataFileManager;
-import src.config.SimulationSettings;
+
+import src.conf.DataFileManager;
+import src.conf.SimulationSettings;
 import src.peng.Vector3d;
 import src.univ.CelestialBody;
 

@@ -2,7 +2,7 @@ package src.peng;
 
 import java.util.ArrayList;
 
-import src.config.SimulationSettings;
+import src.conf.SimulationSettings;
 import src.solv.RungeKutta4th;
 import src.univ.Universe;
 

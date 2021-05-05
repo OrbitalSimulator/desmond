@@ -8,8 +8,8 @@ import java.time.LocalTime;
 
 import org.junit.jupiter.api.Test;
 
-import src.config.SettingsFileManager;
-import src.config.SimulationSettings;
+import src.conf.SettingsFileManager;
+import src.conf.SimulationSettings;
 
 class TestSettingsFileManager 
 {
