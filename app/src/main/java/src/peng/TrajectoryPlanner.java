@@ -42,11 +42,11 @@ public abstract class TrajectoryPlanner
 	private static State addProbe(State state, Vector3d position, Vector3d velocity)
 	{
 		ArrayList<Vector3d> velocities = new ArrayList<Vector3d>();
-		state.velocity.forEach((Vector3d v) -> velocities.add(v));
+		state.velocity.forEach(vector -> velocities.add(vector));
 		velocities.add(velocity);
 		
 		ArrayList<Vector3d> positions = new ArrayList<Vector3d>();
-		state.velocity.forEach((Vector3d p) -> positions.add(p));
+		state.position.forEach(vector -> positions.add(vector));
 		positions.add(position);
 		
 		return new State(velocities, positions, state.time);
