@@ -1,6 +1,8 @@
 package src.peng;
 
 import java.io.IOException;
+import java.util.ArrayList;
+
 import src.solv.RungeKutta4th;
 import src.config.SettingsFileManager;
 import src.config.SimulationSettings;
@@ -8,6 +10,8 @@ import src.univ.Universe;
 
 public class Simulation 
 {		
+	private final double MILLISECONDS = 1000;
+	
 	/*
 	 * Simulate the solar system, including a probe fired from Earth at 00:00h on 1 April 2020.
 	 *
@@ -37,24 +41,12 @@ public class Simulation
 		try {
 			settings = SettingsFileManager.load();
 			settings.noOfSteps = (int) ((tf/h)+2);
-			settings.stepSize = h;
+			settings.stepSize = h ;
 			settings.probeStartPosition = probeStartPosition;
 			settings.probeStartVelocity = probeStartVelocity;
 			
-			// Load or Create the universe from settings
 			Universe universe = new Universe(settings); 								
-			ODEFunctionInterface funct = new NewtonGravityFunction(universe.masses);
-			RungeKutta4th solver = new RungeKutta4th();									//TODO (Leon) solver selection
-			Vector3d[] trajectory = new Vector3d[settings.noOfSteps];
-			
-			int currentStep = 0;
-			State nextStep;
-			while(currentStep < settings.noOfSteps)
-			{
-				State currentState = universe.getStateAt(currentStep);
-				nextStep = solver.step(funct, currentStep, currentState, settings.stepSize);
-				trajectory[currentStep++] = nextStep.position.get(nextStep.position.size()-1);
-			}
+			Vector3d[] trajectory = TrajectoryPlanner.plot(universe, settings);
 			return trajectory;
 		} 
 		catch (IOException e) 
@@ -63,20 +55,6 @@ public class Simulation
 			e.printStackTrace();
 			return null;
 		}								
-	}
-
-	public Vector3d[] output(StateInterface[] states)
-	{
-		Vector3d[] output = new Vector3d[states.length];				//Instantiate Vector array to length of states
-
-		int index = 0;     
-		for(int i=0; i< states.length; i++) 							
-		{  
-			State temp = (State)states[i];								//Cast the StateInterface into a state object
-			int probeIndex = temp.position.size() -1;					//Access each state and derive the probe location.
-			output[index] = temp.position.get(probeIndex);				//determine last element of each state = probe
-			index++;
-		}
-		return output;
-	}
+	}	
+	
 }
