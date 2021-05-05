@@ -32,7 +32,7 @@ public class Universe
     	noOfSteps = settings.noOfSteps;
     	startVariables = settings.celestialBodies;
 		stepSize = settings.stepSize;
-		stepSizeNanoSec = (int) (stepSize*3E+6);
+		stepSizeNanoSec = (int) (stepSize*1E+6);
      	masses = new double[startVariables.length];
     	for(int i = 0; i < startVariables.length; i++)
     	{
