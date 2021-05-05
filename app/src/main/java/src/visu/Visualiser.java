@@ -20,6 +20,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.FileSystem;
 import java.nio.file.FileSystems;
+import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
@@ -34,6 +35,7 @@ import javax.swing.Timer;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import src.peng.Vector3d;
 import src.univ.CelestialBody;
 
 /**
@@ -54,7 +56,7 @@ public class Visualiser extends JFrame implements KeyListener, MouseWheelListene
 	
 	private boolean play = false;
 	private boolean reverse = false;
-	private int timeInterval = 10;
+	private int timeInterval = 20;
 	private Timer timer;
 			
 	private Canvas canvas;
@@ -66,6 +68,7 @@ public class Visualiser extends JFrame implements KeyListener, MouseWheelListene
 
 	public Visualiser(CelestialBody[][] U)
 	{
+		System.out.print("Starting visualisation ...");
 		setTitle("Desmond");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setSize(frame_width, frame_height);
@@ -208,6 +211,17 @@ public class Visualiser extends JFrame implements KeyListener, MouseWheelListene
 		};
 		timer = new Timer(1, timeEvent);
 		timer.start();
+		System.out.println(" Done");
+	}
+	
+	public void addTrajectories(ArrayList<Vector3d[]> trajectories)
+	{
+		canvas.addTrajectories(trajectories);
+	}
+	
+	public void addTrajectory(Vector3d[] trajectory)
+	{
+		canvas.addTrajectory(trajectory);
 	}
 		
 	@Override
@@ -220,8 +234,6 @@ public class Visualiser extends JFrame implements KeyListener, MouseWheelListene
 	public void mousePressed(MouseEvent e) 
 	{
 		mousePoint = e.getPoint();
-		System.out.println("MP x: " + e.getX());
-		System.out.println("MP y: " + e.getY());
 	}
 
 	@Override
@@ -230,10 +242,8 @@ public class Visualiser extends JFrame implements KeyListener, MouseWheelListene
 		canvas.follow(-1);					// Turn off following
 		double dX = frame_width/2;
 		dX = e.getX() - mousePoint.getX();
-		System.out.println("x: " + dX);
 		double dY = frame_height/2;
 		dY = e.getY() - mousePoint.getY(); 
-		System.out.println("y: " + dY);
         mousePoint = e.getPoint();
 		canvas.move(dX,dY);	
 	}

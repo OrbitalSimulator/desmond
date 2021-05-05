@@ -11,10 +11,12 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.FileSystem;
 import java.nio.file.FileSystems;
+import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
+import src.peng.Vector3d;
 import src.univ.*;
 
 /**
@@ -46,6 +48,8 @@ public class Canvas extends JPanel
 	private int endTime;
 	private boolean follow = false;
 	private int following = -1;
+	
+	private ArrayList<Vector3d[]> trajectories;
 	
 	public Canvas(CelestialBody[][] U, Dimension screen)
 	{
@@ -138,21 +142,47 @@ public class Canvas extends JPanel
 		
 		// Paint trajectories
 		g.setColor(Color.RED);
-		for(int i = 11; i < U.length; i++)		
+		for(Vector3d[] each: trajectories)		
 		{
-			for(int j = 0; j < U[i].length; j++)
+			for(int i = 0; i < each.length; i++)
 			{
 				int x = xOrigin;
-				x += (int) (U[i][j].location.getX() * distScaling);
+				x += (int) (each[i].getX() * distScaling);
 				x += xOffset;
 				
 				int y = yOrigin;
-				y += (int) (U[i][j].location.getY() * distScaling);
+				y += (int) (each[i].getY() * distScaling);
 				y += yOffset;
 				
 				g.fillOval(x, y, 2, 2);
 			}
 		}
+	}
+	
+	public void addTrajectories(ArrayList<Vector3d[]> trajectories)
+	{
+		if(this.trajectories == null)
+		{
+			this.trajectories = trajectories;
+		}
+		else
+		{
+			for(Vector3d[] each: trajectories)
+			{
+				this.trajectories.add(each);
+			}
+		}
+    	repaint();
+	}
+	
+	public void addTrajectory(Vector3d[] trajectory)
+	{
+		if(this.trajectories == null)
+		{
+			this.trajectories = new ArrayList<Vector3d[]>();	
+		}
+		trajectories.add(trajectory);
+		repaint();
 	}
 	
 	public void incrementTime(int interval)
