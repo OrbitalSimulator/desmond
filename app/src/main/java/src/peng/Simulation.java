@@ -18,34 +18,8 @@ public class Simulation
 	public Vector3dInterface[] trajectory(Vector3dInterface probeStartPosition, Vector3dInterface probeStartVelocity, double[] ts)
 	{
 		//TODO (Leon) this needs to be implemented to calculate at random steps ... fuck knows why
-		SimulationSettings settings;
-		try {
-			settings = SettingsFileManager.load();
-			settings.noOfSteps = (int) ((ts[1] - ts[0]) * 1E9);
-			settings.probeStartPosition = probeStartPosition;
-			settings.probeStartVelocity = probeStartVelocity;
-			
-			// Load or Create the universe from settings
-			Universe universe = new Universe(settings); 								
-			ODEFunctionInterface funct = new NewtonGravityFunction(universe.masses);
-			RungeKutta4th solver = new RungeKutta4th();	
-			Vector3d[] trajectory = new Vector3d[settings.noOfSteps];
-			
-			int currentStep = 0;
-			State nextStep;
-			while(currentStep < settings.noOfSteps)
-			{
-				nextStep = solver.step(funct, currentStep, universe.getStateAt(currentStep), settings.stepSize);
-				trajectory[currentStep+1] = nextStep.position.get(nextStep.position.size()-1);
-			}
-			return trajectory;
-		} 
-		catch (IOException e) 
-		{
-			System.out.println("Settings File Not Found ... Exiting");
-			e.printStackTrace();
+
 			return null;
-		}	
 	}
 
 	/*
@@ -62,7 +36,8 @@ public class Simulation
 		SimulationSettings settings;
 		try {
 			settings = SettingsFileManager.load();
-			settings.noOfSteps = (int) (tf/h);
+			settings.noOfSteps = (int) ((tf/h)+2);
+			settings.stepSize = h;
 			settings.probeStartPosition = probeStartPosition;
 			settings.probeStartVelocity = probeStartVelocity;
 			
@@ -76,8 +51,9 @@ public class Simulation
 			State nextStep;
 			while(currentStep < settings.noOfSteps)
 			{
-				nextStep = solver.step(funct, currentStep, universe.getStateAt(currentStep), settings.stepSize);
-				trajectory[currentStep+1] = nextStep.position.get(nextStep.position.size()-1);
+				State currentState = universe.getStateAt(currentStep);
+				nextStep = solver.step(funct, currentStep, currentState, settings.stepSize);
+				trajectory[currentStep++] = nextStep.position.get(nextStep.position.size()-1);
 			}
 			return trajectory;
 		} 

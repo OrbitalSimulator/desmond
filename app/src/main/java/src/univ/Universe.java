@@ -124,7 +124,15 @@ public class Universe
     
     public State getStateAt(int timeStep)
     {
-    	return convertToState(universe[timeStep]);
+        ArrayList<Vector3d> velocity = new ArrayList<Vector3d>();
+        ArrayList<Vector3d> position = new ArrayList<Vector3d>();
+
+        for(int i = 0; i < universe.length; i++)
+        {
+            velocity.add(universe[i][timeStep].velocity);
+            position.add(universe[i][timeStep].location);
+        }
+        return new State(velocity, position);
     }
     
     public void setStateAt(int timeStep, StateInterface state)
