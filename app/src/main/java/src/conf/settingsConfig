@@ -3,13 +3,13 @@
 ##HEADER
 202104010000
 202204010000
-366
-86400
+11712
+2700
 ## Format:
 ## Start Time
 ## End Time
 ## Number of Steps
-## Step Size
+## Step Size [day:86400] [hour:3600] [min:60] [sec:1]
 ##END
  
 ##CELESTIAL BODIES
