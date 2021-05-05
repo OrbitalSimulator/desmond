@@ -24,7 +24,7 @@ public class RungeKutta4th extends ODESolver implements ODESolverInterface
     	
     	Rate dydt = k4;
     	dydt = dydt.add(k3.scale(2));								// w1 = w0 + 1/6 * ( k1 + (2*k2) + (2 * k3) + k4);
-     	dydt = dydt.add(k2).scale(2);								// This is abbreviated to w0 + h * dydt
+     	dydt = dydt.add(k2).scale(2);								// ^ This is abbreviated to w0 + h * dydt
      	dydt = dydt.add(k1);
     	dydt = dydt.scale(1/6);  	    					
     	return (State) y.addMul(h,dydt);
@@ -39,7 +39,7 @@ public class RungeKutta4th extends ODESolver implements ODESolverInterface
     	
     	Rate dydt = k4;
     	dydt = dydt.add(k3.scale(2));								// w1 = w0 + 1/6 * ( k1 + (2*k2) + (2 * k3) + k4);
-     	dydt = dydt.add(k2).scale(2);								// This is abbreviated to w0 + h * dydt
+     	dydt = dydt.add(k2).scale(2);								// ^ This is abbreviated to w0 + h * dydt
      	dydt = dydt.add(k1);
     	dydt = dydt.scale(1/6);  	    					
     	return (State) y.addMul(h,dydt);
