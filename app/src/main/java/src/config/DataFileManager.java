@@ -50,7 +50,7 @@ public abstract class DataFileManager extends FileManager
 			File file = new File(filePath);
 			if(!file.exists())
 			{
-				System.out.println(filePath + " Not found");
+				System.out.println("\n" + filePath + " Not found");
 				throw new FileNotFoundException(filePath + " Not found");
 			}
 			data[i] = readFileData(settings, file);
