@@ -101,6 +101,6 @@ public abstract class SettingsFileManager extends FileManager
 	{
 		FileSystem fileSystem = FileSystems.getDefault();
 		String path = fileSystem.getPath("").toAbsolutePath().toString();
-		return path.concat("/src/main/java/src/config/" + fileName);
+		return path.concat("/src/main/java/src/conf/" + fileName);
 	}
 }
