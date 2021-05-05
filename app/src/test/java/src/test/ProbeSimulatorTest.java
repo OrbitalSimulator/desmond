@@ -14,9 +14,9 @@ import java.lang.System;
 
 class ProbeSimulatorTest {
 
-    static final double DAY_ACCURACY = 5E12; // in meters (might need to tweak that)
-    static final double YEAR_ACCURACY = 5E13; // in meters (might need to tweak that)
-
+    static final double DAY_ACCURACY = 5E12; 
+    static final double YEAR_ACCURACY = 5E13; 
+    
     @Test void testTrajectoryOneDayX() {
 
         Vector3dInterface[] trajectory = simulateOneDay();
