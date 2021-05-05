@@ -149,10 +149,9 @@ public abstract class DataFileManager extends FileManager
 		fileName.append(zipDateTime(data[0].time) + "_");
 		fileName.append(data.length-1 + "_");
 		
-		double step1 = data[1].timeInMs();
-		double step0 = data[0].timeInMs();
-		double stepSize = step1 - step0;
-		fileName.append(String.format("%.0f", stepSize));				
+		double stepSizeD = data[1].time.getNano() - data[0].time.getNano(); 
+		int stepSizeI = (int) (stepSizeD / 1E+6);
+		fileName.append(stepSizeI);				
 		return fileName.toString();
 	}
 		
@@ -162,7 +161,7 @@ public abstract class DataFileManager extends FileManager
 		fileName.append(settings.celestialBodies[celestialBodyIndex].name + "_");
 		fileName.append(zipDateTime(settings.startTime) + "_");
 		fileName.append((settings.noOfSteps) + "_");
-		fileName.append(String.format("%.0f", settings.stepSize));				
+		fileName.append((int) settings.stepSize);				
 		return fileName.toString();
 	}
 	
