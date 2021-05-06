@@ -6,34 +6,59 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import src.conf.SettingsFileManager;
 import src.conf.SimulationSettings;
 
 class TestSettingsFileManager 
-{
-	LocalTime stime = LocalTime.parse("00:00:00");
-	LocalDate sdate = LocalDate.parse("2021-04-01");
-	LocalDateTime startDateTime = LocalDateTime.of(sdate, stime);
-	LocalTime etime = LocalTime.parse("00:00:00");
-	LocalDate edate = LocalDate.parse("2022-04-01");
-	LocalDateTime endDateTime = LocalDateTime.of(edate, etime);
+{		
+	@Test
+	void testLoadStartDateTime() 
+	{
+		SimulationSettings settings = loadSettings();
+		LocalTime time = LocalTime.parse("00:00:00");
+		LocalDate date = LocalDate.parse("2021-04-01");
+		LocalDateTime startDateTime = LocalDateTime.of(date, time);	
+
+		assertEquals(startDateTime, settings.startTime);
+	}
 	
 	@Test
-	void test() 
+	void testLoadEndDateTime() 
 	{
-		try {
-			SimulationSettings settings = SettingsFileManager.load();
-			
-			assertEquals(startDateTime, settings.startTime);
-			assertEquals(endDateTime, settings.endTime);
-			assertEquals(100000, settings.noOfSteps);
-			assertEquals(500, settings.stepSize);
-			
+		SimulationSettings settings = loadSettings();
+		LocalTime time = LocalTime.parse("00:00:00");
+		LocalDate date = LocalDate.parse("2022-04-01");
+		LocalDateTime endDateTime = LocalDateTime.of(date, time);
+
+		assertEquals(endDateTime, settings.endTime);
+	}
+	
+	@Test
+	void testLoadSteps() 
+	{
+		SimulationSettings settings = loadSettings();
+		assertEquals(11712, settings.noOfSteps);
+	}
+	
+	@Test
+	void testLoadStepSize() 
+	{
+		SimulationSettings settings = loadSettings();
+		assertEquals(2700, settings.stepSize);
+	}
+	
+	private SimulationSettings loadSettings()
+	{
+		try 
+		{
+			return SettingsFileManager.load();
 		} catch (Exception e) {
 			e.printStackTrace();
 			fail(e.getMessage());
 		}
+		return null;
 	}
 }
