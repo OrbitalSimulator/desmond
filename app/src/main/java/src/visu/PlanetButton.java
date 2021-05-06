@@ -10,7 +10,7 @@ public class PlanetButton extends  JButton
 {
 	private static final long serialVersionUID = 1L;
 	private int number;
-	
+
 	public PlanetButton(Icon icon, int number)
 	{
 		this.number = number;
@@ -20,9 +20,10 @@ public class PlanetButton extends  JButton
 		this.setSize(50, 50);
 		this.setMaximumSize(this.getSize());
 	}
-	
+
 	public int getNumber()
 	{
 		return number;
 	}
 }
+

@@ -8,25 +8,17 @@ import java.awt.Point;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.FileSystem;
-import java.nio.file.FileSystems;
 import java.util.ArrayList;
 
-import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.Icon;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -35,13 +27,11 @@ import javax.swing.Timer;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import src.misc.ResourceLoader;
 import src.peng.Vector3d;
 import src.univ.CelestialBody;
 
 /**
- * Group 22
- * A wrapper class that holds a display of celestial bodies in orbit, and provides
- * user input control. 
  * @author L.Debnath
  * @date 14 Mar 21
  */
@@ -61,9 +51,6 @@ public class Visualiser extends JFrame implements MouseWheelListener, MouseMotio
 			
 	private Canvas canvas;
 	private JButton[] btn;
-	private JButton playBtn;
-	private JButton stopBtn;
-	private JButton revBtn;
 	private JSlider timeSlider;
 
 	public Visualiser(CelestialBody[][] U)
@@ -76,8 +63,6 @@ public class Visualiser extends JFrame implements MouseWheelListener, MouseMotio
 		setLayout(new BorderLayout());
 		setResizable(true);
 		
-		FileSystem fileSystem = FileSystems.getDefault();
-		
 		// Add planet buttons
 		BufferedImage icon = null;
 		JPanel rPanel = new JPanel();
@@ -89,15 +74,7 @@ public class Visualiser extends JFrame implements MouseWheelListener, MouseMotio
 		btn = new PlanetButton[U.length];
 		for(int i = 0; i < 11; i++)
 		{
-			Icon btnIcon = null;
-			String path = fileSystem.getPath("").toAbsolutePath().toString();
-			path = path.concat(U[i][0].icon);
-			try 
-			{
-				icon = ImageIO.read(new File(path));
-				btnIcon = new ImageIcon(path);
-			}
-			catch (IOException e) { System.out.println("Planet Icon Image not found");}
+			Icon btnIcon = ResourceLoader.getIcon(U[i][0].icon);
 			btn[i] = new PlanetButton(btnIcon, i);
 			btn[i].addActionListener(this);
 			rPanel.add(btn[i]);
@@ -105,58 +82,15 @@ public class Visualiser extends JFrame implements MouseWheelListener, MouseMotio
 		this.add(rPanel, BorderLayout.EAST);
 		rPanel.setVisible(true);
 		
-		// Create play button
-		Icon playIcon = null;
-		try 
-		{
-			String path = fileSystem.getPath("").toAbsolutePath().toString();
-			path = path.concat("/src/main/java/src/misc/playIcon.png");
-			icon = ImageIO.read(new File(path));
-			playIcon = new ImageIcon(icon);
-		} 
-		catch (IOException e) { System.out.println("Play Icon Image not found");}
-		playBtn = new JButton();
-		playBtn.setBorder(BorderFactory.createEmptyBorder());
-		playBtn.setBackground(Color.BLACK);
-		playBtn.setIcon(playIcon);;
-		playBtn.addActionListener( e -> playFwd());
-		playBtn.setSize(50, 50);
-		playBtn.setMaximumSize(playBtn.getSize());
+		JButton playBtn = createButton("playIcon.png");
+		playBtn.addActionListener(e -> playFwd());
 		
-		// Create stop button
-		Icon stopIcon = null;
-		try 
-		{
-			String path = fileSystem.getPath("").toAbsolutePath().toString();
-			path = path.concat("/src/main/java/src/misc/stopIcon.png");
-			icon = ImageIO.read(new File(path));
-			stopIcon = new ImageIcon(icon);
-		} 
-		catch (IOException e) { System.out.println("Stop Button Image not found");}
-		stopBtn = new JButton(stopIcon);
-		stopBtn.setBorder(BorderFactory.createEmptyBorder());
-		stopBtn.setBackground(Color.BLACK);
-		stopBtn.addActionListener( e -> stop());
-		stopBtn.setSize(50, 50);
-		stopBtn.setMaximumSize(stopBtn.getSize());
-		
-		// Create reverse button
-		Icon revIcon = null;
-		try 
-		{
-			String path = fileSystem.getPath("").toAbsolutePath().toString();
-			path = path.concat("/src/main/java/src/misc/revIcon.png");
-			icon = ImageIO.read(new File(path));
-			revIcon = new ImageIcon(icon);
-		} 
-		catch (IOException e) { System.out.println("Reverse Icon Image not found");}
-		revBtn = new JButton(revIcon);
-		revBtn.setBorder(BorderFactory.createEmptyBorder());
-		revBtn.setBackground(Color.BLACK);
-		revBtn.addActionListener( e -> playRev());
-		revBtn.setSize(50, 50);
-		revBtn.setMaximumSize(revBtn.getSize());
-		
+		JButton stopBtn = createButton("stopIcon.png");
+		stopBtn.addActionListener(e -> stop());
+				
+		JButton revBtn = createButton("revIcon.png");
+		revBtn.addActionListener(e -> playRev());
+
 		// Create time slider
 		timeSlider = new JSlider(0, U[0].length);
 		timeSlider.setBorder(BorderFactory.createEmptyBorder());
@@ -218,23 +152,35 @@ public class Visualiser extends JFrame implements MouseWheelListener, MouseMotio
 		canvas.addTrajectory(trajectory);
 	}
 	
+	private JButton createButton(String iconName)
+	{
+		Icon icon = ResourceLoader.getIcon(iconName);
+		JButton btn = new JButton();
+		btn.setBorder(BorderFactory.createEmptyBorder());
+		btn.setBackground(Color.BLACK);
+		btn.setIcon(icon);
+		btn.setSize(50, 50);
+		btn.setMaximumSize(btn.getSize());
+		return btn;
+	}
+	
 	private void stop()
 	{
 		play = false;
 	}
-	
+
 	private void playFwd()
 	{
 		reverse = false;
 		play = true;
 	}
-	
+
 	private void playRev()
 	{
 		reverse = true;
 		play = true;
 	}
-		
+
 	@Override
 	public void mouseWheelMoved(MouseWheelEvent e) 
 	{
@@ -288,15 +234,9 @@ public class Visualiser extends JFrame implements MouseWheelListener, MouseMotio
 		canvas.setTime(timeSlider.getValue());
 	}
 
-	@Override
-	public void mouseMoved(MouseEvent arg0) {}
+	@Override public void mouseMoved(MouseEvent arg0) {}
+	@Override public void mouseEntered(MouseEvent arg0) {}
+	@Override public void mouseExited(MouseEvent arg0) {}
+	@Override public void mouseReleased(MouseEvent arg0) {}
 
-	@Override
-	public void mouseEntered(MouseEvent arg0) {}
-
-	@Override
-	public void mouseExited(MouseEvent arg0) {}
-
-	@Override
-	public void mouseReleased(MouseEvent arg0) {}
 }
