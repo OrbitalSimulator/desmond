@@ -8,6 +8,7 @@ import src.peng.NewtonGravityFunction;
 import src.peng.ODEFunctionInterface;
 import src.peng.State;
 import src.solv.RungeKutta4th;
+import src.solv.Verlet;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -72,9 +73,9 @@ public class Universe
     	System.out.print("Creating new universe ...");
     	StateInterface initialState = convertToState(startVariables);
 		ODEFunctionInterface function = new NewtonGravityFunction(masses);
-		RungeKutta4th solver = new RungeKutta4th();
-		StateInterface[] states = solver.solve(function, initialState, stepSize*noOfSteps, stepSize);
-		System.out.println(" Done");
+		Verlet solver = new Verlet();
+		StateInterface[] states = solver.solve(function, initialState, stepSize*noOfSteps, stepSize);		
+    System.out.println(" Done");
 		return convertToCelestialBody(states);														
     }
     
