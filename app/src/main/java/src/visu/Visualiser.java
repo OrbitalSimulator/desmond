@@ -45,7 +45,7 @@ import src.univ.CelestialBody;
  * @author L.Debnath
  * @date 14 Mar 21
  */
-public class Visualiser extends JFrame implements KeyListener, MouseWheelListener, MouseMotionListener, ActionListener, ChangeListener, MouseListener
+public class Visualiser extends JFrame implements MouseWheelListener, MouseMotionListener, ActionListener, ChangeListener, MouseListener
 {
 	private static final long serialVersionUID = 1L;
 	
@@ -86,7 +86,7 @@ public class Visualiser extends JFrame implements KeyListener, MouseWheelListene
 		rLayout.setVgap(5);
 		rPanel.setLayout(rLayout);
 		rPanel.setBackground(Color.BLACK);
-		btn = new JButton[U.length];
+		btn = new PlanetButton[U.length];
 		for(int i = 0; i < 11; i++)
 		{
 			Icon btnIcon = null;
@@ -98,17 +98,12 @@ public class Visualiser extends JFrame implements KeyListener, MouseWheelListene
 				btnIcon = new ImageIcon(path);
 			}
 			catch (IOException e) { System.out.println("Planet Icon Image not found");}
-			btn[i] = new JButton(btnIcon);
-			btn[i].setBorder(BorderFactory.createEmptyBorder());
-			btn[i].setBackground(Color.BLACK);
-			btn[i].setSize(50, 50);
-			btn[i].setMaximumSize(btn[i].getSize());
+			btn[i] = new PlanetButton(btnIcon, i);
 			btn[i].addActionListener(this);
 			rPanel.add(btn[i]);
 		}
 		this.add(rPanel, BorderLayout.EAST);
 		rPanel.setVisible(true);
-		
 		
 		// Create play button
 		Icon playIcon = null;
@@ -124,7 +119,7 @@ public class Visualiser extends JFrame implements KeyListener, MouseWheelListene
 		playBtn.setBorder(BorderFactory.createEmptyBorder());
 		playBtn.setBackground(Color.BLACK);
 		playBtn.setIcon(playIcon);;
-		playBtn.addActionListener(this);
+		playBtn.addActionListener( e -> playFwd());
 		playBtn.setSize(50, 50);
 		playBtn.setMaximumSize(playBtn.getSize());
 		
@@ -141,7 +136,7 @@ public class Visualiser extends JFrame implements KeyListener, MouseWheelListene
 		stopBtn = new JButton(stopIcon);
 		stopBtn.setBorder(BorderFactory.createEmptyBorder());
 		stopBtn.setBackground(Color.BLACK);
-		stopBtn.addActionListener(this);
+		stopBtn.addActionListener( e -> stop());
 		stopBtn.setSize(50, 50);
 		stopBtn.setMaximumSize(stopBtn.getSize());
 		
@@ -158,7 +153,7 @@ public class Visualiser extends JFrame implements KeyListener, MouseWheelListene
 		revBtn = new JButton(revIcon);
 		revBtn.setBorder(BorderFactory.createEmptyBorder());
 		revBtn.setBackground(Color.BLACK);
-		revBtn.addActionListener(this);
+		revBtn.addActionListener( e -> playRev());
 		revBtn.setSize(50, 50);
 		revBtn.setMaximumSize(revBtn.getSize());
 		
@@ -187,8 +182,7 @@ public class Visualiser extends JFrame implements KeyListener, MouseWheelListene
 		canvas.addMouseListener(this);
 		canvas.addMouseWheelListener(this);
 		canvas.addMouseMotionListener(this);
-		canvas.addKeyListener(this);
-		this.addKeyListener(this);
+
 		this.add(canvas, BorderLayout.CENTER);
 		setVisible(true);
 		
@@ -223,6 +217,23 @@ public class Visualiser extends JFrame implements KeyListener, MouseWheelListene
 	{
 		canvas.addTrajectory(trajectory);
 	}
+	
+	private void stop()
+	{
+		play = false;
+	}
+	
+	private void playFwd()
+	{
+		reverse = false;
+		play = true;
+	}
+	
+	private void playRev()
+	{
+		reverse = true;
+		play = true;
+	}
 		
 	@Override
 	public void mouseWheelMoved(MouseWheelEvent e) 
@@ -251,22 +262,6 @@ public class Visualiser extends JFrame implements KeyListener, MouseWheelListene
 	@Override
 	public void actionPerformed(ActionEvent e) 
 	{
-		if(e.getSource() == playBtn && play)
-			play = false;
-		else if(e.getSource() == playBtn && !play)
-			play = true;
-		else if(e.getSource() == stopBtn)
-			play = false;
-		else if(e.getSource() == revBtn && reverse)
-		{
-			reverse = false;
-			play = false;
-		}
-		else if(e.getSource() == revBtn)
-		{
-			reverse = true;
-			play = true;
-		}
 		for(int i = 0; i < btn.length; i++)
 		{
 			if(e.getSource() == btn[i])
@@ -292,18 +287,9 @@ public class Visualiser extends JFrame implements KeyListener, MouseWheelListene
 	{
 		canvas.setTime(timeSlider.getValue());
 	}
-	
-	@Override
-	public void keyTyped(KeyEvent e) {}
 
 	@Override
 	public void mouseMoved(MouseEvent arg0) {}
-		
-	@Override
-	public void keyPressed(KeyEvent e) {}
-
-	@Override
-	public void keyReleased(KeyEvent e) {}
 
 	@Override
 	public void mouseEntered(MouseEvent arg0) {}

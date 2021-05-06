@@ -6,6 +6,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import src.conf.SettingsFileManager;
@@ -14,8 +15,47 @@ import src.peng.Vector3dInterface;
 import src.peng.Vector3d;
 
 class TestSettingsFileManager 
-{
-	LocalTime stime = LocalTime.parse("00:00:00");
+{		
+	@Test
+	void testLoadStartDateTime() 
+	{
+		SimulationSettings settings = loadSettings();
+		LocalTime time = LocalTime.parse("00:00:00");
+		LocalDate date = LocalDate.parse("2021-04-01");
+		LocalDateTime startDateTime = LocalDateTime.of(date, time);	
+
+		assertEquals(startDateTime, settings.startTime);
+	}
+	
+	@Test
+	void testLoadEndDateTime() 
+	{
+		SimulationSettings settings = loadSettings();
+		LocalTime time = LocalTime.parse("00:00:00");
+		LocalDate date = LocalDate.parse("2022-04-01");
+		LocalDateTime endDateTime = LocalDateTime.of(date, time);
+
+		assertEquals(endDateTime, settings.endTime);
+	}
+	
+	@Test
+	void testLoadSteps() 
+	{
+		SimulationSettings settings = loadSettings();
+		assertEquals(11712, settings.noOfSteps);
+	}
+
+	
+	@Test
+	void testLoadStepSize() 
+	{
+		SimulationSettings settings = loadSettings();
+		assertEquals(2700, settings.stepSize);
+	}
+	
+	private SimulationSettings loadSettings()
+	{
+  LocalTime stime = LocalTime.parse("00:00:00");
 	LocalDate sdate = LocalDate.parse("2021-04-01");
 	LocalDateTime startDateTime = LocalDateTime.of(sdate, stime);
 	LocalTime etime = LocalTime.parse("00:00:00");
@@ -32,13 +72,9 @@ class TestSettingsFileManager
 	LocalTime cbTime = LocalTime.parse("00:00:00");
 	LocalDate cbDate = LocalDate.parse("2021-04-01");
 	LocalDateTime cbDateTime = LocalDateTime.of(cbDate, cbTime);
-	
-	@Test
-	void test() 
-	{
+  
 		try {
 			SimulationSettings settings = SettingsFileManager.load();
-			
 			assertEquals(startDateTime, settings.startTime);
 			assertEquals(endDateTime, settings.endTime);
 			assertEquals(11712, settings.noOfSteps);
@@ -57,5 +93,6 @@ class TestSettingsFileManager
 			e.printStackTrace();
 			fail(e.getMessage());
 		}
+		return null;
 	}
 }

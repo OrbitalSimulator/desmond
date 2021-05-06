@@ -8,13 +8,16 @@ import src.peng.NewtonGravityFunction;
 import src.peng.ODEFunctionInterface;
 import src.peng.State;
 import src.solv.RungeKutta4th;
+import src.solv.Verlet;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 public class Universe
 {
-    public CelestialBody[] startVariables; 
+    private boolean SAVE_TO_FILE = true;
+	
+	public CelestialBody[] startVariables; 
     public CelestialBody[][] universe;
     public ArrayList<Vector3d[]> trajectories;
 	public LocalDateTime startTime;
@@ -26,11 +29,22 @@ public class Universe
 	
     public Universe(SimulationSettings settings)
     {
+    	constructor(settings);
+    }
+    
+    public Universe(SimulationSettings settings, boolean save)
+    {
+    	SAVE_TO_FILE = save;
+    	constructor(settings);
+    }
+    
+    private void constructor(SimulationSettings settings)
+    {
     	startTime = settings.startTime;
     	endTime = settings.endTime;
     	noOfSteps = settings.noOfSteps;
     	startVariables = settings.celestialBodies;
-		stepSize = settings.stepSize;
+    	stepSize = settings.stepSize;
      	masses = new double[startVariables.length];
     	for(int i = 0; i < startVariables.length; i++)
     	{
@@ -47,21 +61,21 @@ public class Universe
 		catch (Exception e)
 		{
 			System.out.println("Unable to load config file");
-			System.out.print("Creating new universe ...");
 			universe = generateNewUniverse();
-			System.out.println(" Done");
-			System.out.print("Saving to file ...");
-			saveToFile();
-			System.out.println(" Done");
+				
+			if(SAVE_TO_FILE)	
+				saveToFile();
      	}
     }
      
     private CelestialBody[][] generateNewUniverse()
     {
-		StateInterface initialState = convertToState(startVariables);
+    	System.out.print("Creating new universe ...");
+    	StateInterface initialState = convertToState(startVariables);
 		ODEFunctionInterface function = new NewtonGravityFunction(masses);
 		RungeKutta4th solver = new RungeKutta4th();
-		StateInterface[] states = solver.solve(function, initialState, stepSize*noOfSteps, stepSize);			
+		StateInterface[] states = solver.solve(function, initialState, stepSize*noOfSteps, stepSize);		
+		System.out.println(" Done");
 		return convertToCelestialBody(states);														
     }
     
@@ -140,6 +154,13 @@ public class Universe
     
     public void saveToFile()
     {
+    	System.out.print("Saving to file ...");
     	DataFileManager.overwrite(universe);
+		System.out.println(" Done");
+    }
+    
+    public void setSaveToFile(boolean b)
+    {
+    	SAVE_TO_FILE = b;
     }
 }
