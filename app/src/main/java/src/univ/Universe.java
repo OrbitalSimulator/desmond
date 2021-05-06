@@ -44,7 +44,7 @@ public class Universe
     	endTime = settings.endTime;
     	noOfSteps = settings.noOfSteps;
     	startVariables = settings.celestialBodies;
-		stepSize = settings.stepSize;
+    	stepSize = settings.stepSize;
      	masses = new double[startVariables.length];
     	for(int i = 0; i < startVariables.length; i++)
     	{
@@ -73,9 +73,9 @@ public class Universe
     	System.out.print("Creating new universe ...");
     	StateInterface initialState = convertToState(startVariables);
 		ODEFunctionInterface function = new NewtonGravityFunction(masses);
-		Verlet solver = new Verlet();
+		RungeKutta4th solver = new RungeKutta4th();
 		StateInterface[] states = solver.solve(function, initialState, stepSize*noOfSteps, stepSize);		
-    System.out.println(" Done");
+		System.out.println(" Done");
 		return convertToCelestialBody(states);														
     }
     
