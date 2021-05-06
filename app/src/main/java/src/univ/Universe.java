@@ -28,6 +28,17 @@ public class Universe
 	
     public Universe(SimulationSettings settings)
     {
+    	constructor(settings);
+    }
+    
+    public Universe(SimulationSettings settings, boolean save)
+    {
+    	SAVE_TO_FILE = save;
+    	constructor(settings);
+    }
+    
+    private void constructor(SimulationSettings settings)
+    {
     	startTime = settings.startTime;
     	endTime = settings.endTime;
     	noOfSteps = settings.noOfSteps;
