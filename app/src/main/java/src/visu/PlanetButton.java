@@ -26,3 +26,4 @@ public class PlanetButton extends  JButton
 		return number;
 	}
 }
+

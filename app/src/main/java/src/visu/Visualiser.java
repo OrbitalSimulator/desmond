@@ -90,7 +90,7 @@ public class Visualiser extends JFrame implements MouseWheelListener, MouseMotio
 				
 		JButton revBtn = createButton("revIcon.png");
 		revBtn.addActionListener(e -> playRev());
-		
+
 		// Create time slider
 		timeSlider = new JSlider(0, U[0].length);
 		timeSlider.setBorder(BorderFactory.createEmptyBorder());
@@ -116,6 +116,7 @@ public class Visualiser extends JFrame implements MouseWheelListener, MouseMotio
 		canvas.addMouseListener(this);
 		canvas.addMouseWheelListener(this);
 		canvas.addMouseMotionListener(this);
+
 		this.add(canvas, BorderLayout.CENTER);
 		setVisible(true);
 		
@@ -237,4 +238,5 @@ public class Visualiser extends JFrame implements MouseWheelListener, MouseMotio
 	@Override public void mouseEntered(MouseEvent arg0) {}
 	@Override public void mouseExited(MouseEvent arg0) {}
 	@Override public void mouseReleased(MouseEvent arg0) {}
+
 }
