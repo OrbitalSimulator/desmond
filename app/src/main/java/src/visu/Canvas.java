@@ -9,10 +9,14 @@ import java.awt.Point;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.FileSystem;
+import java.nio.file.FileSystems;
+import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
+import src.peng.Vector3d;
 import src.univ.*;
 
 /**
@@ -24,7 +28,7 @@ import src.univ.*;
 public class Canvas extends JPanel
 {
 	private static final long serialVersionUID = 1L;
-	public final boolean DEBUG = true;
+	private final int ORBIT_PAINT_RATE = 10;
 	
 	private int xOffset;
 	private int yOffset;
@@ -37,12 +41,17 @@ public class Canvas extends JPanel
 	private double detailDist = 4.8E-7;		// The model in detail scales
 	private double detailSize = 3E-6;
 	private double zoom_rate = 1E-10;
+	
+	private FileSystem fileSystem = FileSystems.getDefault();
 	private Dimension screen;
 	private CelestialBody[][] U;
 	private int time;						// Current time
 	private int endTime;
 	private boolean follow = false;
 	private int following = -1;
+	
+	
+	private ArrayList<Vector3d[]> trajectories;
 	
 	public Canvas(CelestialBody[][] U, Dimension screen)
 	{
@@ -63,14 +72,8 @@ public class Canvas extends JPanel
 		super.paint(G);
 		setBackground(Color.BLACK);
 		Graphics2D g = (Graphics2D) G;
-		
-		// Paint the DTG in the corner
-		Font font = new Font("SansSerif", Font.PLAIN, 24);
-		g.setFont(font);
-		int timeX = 10;
-		int timeY = (int) screen.getHeight()- 140;
-		g.drawString(U[0][time].time.toString(), timeX, timeY);
-		
+		paintDateTime(g);
+
 		if(follow)
 		{
 			distScaling = detailDist;
@@ -79,11 +82,30 @@ public class Canvas extends JPanel
 			yOffset = (int) - (U[following][time].location.getY() * distScaling);	
 		}
 		
-		// Paint Orbits
+		paintOrbits(g);
+		paintCelestialBodies(g);
+	
+		if(trajectories != null)
+		{
+			paintTrajectories(g);
+		}
+	}
+	
+	private void paintDateTime(Graphics2D g)
+	{
+		Font font = new Font("SansSerif", Font.PLAIN, 24);
+		g.setFont(font);
+		int timeX = 10;
+		int timeY = (int) screen.getHeight()- 140;
+		g.drawString(U[0][time].time.toString(), timeX, timeY);
+	}
+	
+	private void paintOrbits(Graphics2D g)
+	{
 		g.setColor(Color.GREEN);
 		for(int i = 0; i < U.length; i++)		
 		{
-			for(int j = 0; j < U[i].length; j += 50)
+			for(int j = 0; j < U[i].length; j += ORBIT_PAINT_RATE)
 			{
 				int x = xOrigin;
 				x += (int) (U[i][j].location.getX() * distScaling);
@@ -96,9 +118,10 @@ public class Canvas extends JPanel
 				g.fillOval(x, y, 2, 2);
 			}
 		}
-		
-		
-		// Run through each CelestialBody and paint it at time t
+	}
+	
+	private void paintCelestialBodies(Graphics2D g)
+	{
 		g.setColor(Color.WHITE);
 		for(int i = 0; i < U.length; i++)		
 		{		
@@ -119,27 +142,34 @@ public class Canvas extends JPanel
 			{
 				try 
 				{ 
-					BufferedImage img = ImageIO.read(new File(U[i][time].image));
+					String path = fileSystem.getPath("").toAbsolutePath().toString();
+					path = path.concat(U[i][time].image);
+					BufferedImage img = ImageIO.read(new File(path));
 					g.drawImage(img, x, y, r, r, null);
 				} 
-				catch (IOException e) {}
+				catch (IOException e) 
+				{
+					System.out.println("Unable to find image: " + U[i][time].name);
+				}
 			}
 			else
 				g.fillOval(x, y, r, r);
 		}
-		
-		// Paint trajectories
+	}
+	
+	private void paintTrajectories(Graphics2D g)
+	{
 		g.setColor(Color.RED);
-		for(int i = 11; i < U.length; i++)		
+		for(Vector3d[] each: trajectories)		
 		{
-			for(int j = 0; j < U[i].length; j++)
+			for(int i = 0; i < each.length; i++)
 			{
 				int x = xOrigin;
-				x += (int) (U[i][j].location.getX() * distScaling);
+				x += (int) (each[i].getX() * distScaling);
 				x += xOffset;
 				
 				int y = yOrigin;
-				y += (int) (U[i][j].location.getY() * distScaling);
+				y += (int) (each[i].getY() * distScaling);
 				y += yOffset;
 				
 				g.fillOval(x, y, 2, 2);
@@ -147,12 +177,37 @@ public class Canvas extends JPanel
 		}
 	}
 	
+	public void addTrajectories(ArrayList<Vector3d[]> trajectories)
+	{
+		if(this.trajectories == null)
+		{
+			this.trajectories = trajectories;
+		}
+		else
+		{
+			for(Vector3d[] each: trajectories)
+			{
+				this.trajectories.add(each);
+			}
+		}
+    	repaint();
+	}
+	
+	public void addTrajectory(Vector3d[] trajectory)
+	{
+		if(this.trajectories == null)
+		{
+			this.trajectories = new ArrayList<Vector3d[]>();	
+		}
+		trajectories.add(trajectory);
+		repaint();
+	}
+	
 	public void incrementTime(int interval)
 	{
 		if((time+interval < endTime) && (time+interval >= 0))
 		{
 			time += interval;
-			if(DEBUG) System.out.println(time);
 			repaint();
 		}
 	}
@@ -162,7 +217,6 @@ public class Canvas extends JPanel
 		if((time < endTime) && (time > 0))
 		{
 			time = t;
-			if(DEBUG) System.out.println(time);
 			repaint();
 		}
 	}
@@ -171,8 +225,6 @@ public class Canvas extends JPanel
 	{
 		distScaling += (quantity * zoom_rate);
 		sizeScaling += (quantity * 100 * zoom_rate);
-		if(DEBUG) System.out.println("Dist: " + distScaling);
-		if(DEBUG) System.out.println("Size: " + sizeScaling);
 		repaint();
 	}
 	

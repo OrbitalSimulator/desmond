@@ -51,7 +51,7 @@ class TestSimulation
 		Vector3dInterface[] container = sim.trajectory(
 			new Vector3d(-1.471000001603588e+11,  -2.860000000266412e+10,   8.278180000000080e+06),
 			new Vector3d(22021.0193300029, -57508.4276505118, -857.448354683806), ts);
-		Vector3d finalPosition = (Vector3d)container[container.length -1];								//Access final posiiton of probe
+		Vector3d finalPosition = (Vector3d)container[container.length -1];								//Access final position of probe
 		System.out.println("Final position"+finalPosition.toString());									//Display
 
 		/*Test*/

@@ -24,10 +24,13 @@ class TestCelestialBody
 	double radius = 100;											// Radius of CelestialBody
 	Vector3d centre = new Vector3d();								// Centre of 0,0,0
 	double epsilon = 10e3;											//Assign error range
-	
+
 	@Test
 	void testCollision() 
 	{
+		LocalTime t1 = LocalTime.parse("00:01");
+		LocalDate d1 = LocalDate.parse("2021-04-01");
+		
 		// Arrange (set up everything for your test)
 		CelestialBody cb = new CelestialBody(centre, centre, 0, radius, null, null, null, LocalDateTime.of(d1, t1));
 		
@@ -51,6 +54,33 @@ class TestCelestialBody
 		{
 			assertEquals(exp[i], act[i]);
 		}
+	}
+	
+	@Test
+	void testTimeInMs_Second()
+	{
+		LocalTime t1 = LocalTime.parse("00:00:01");
+		LocalDate d1 = LocalDate.parse("0001-01-01");
+		CelestialBody cb = new CelestialBody(null, null, 0, 0, null, null, null, LocalDateTime.of(d1, t1));
+		assertEquals(1000, cb.timeInMs());
+	}
+	
+	@Test
+	void testTimeInMs_Min()
+	{
+		LocalTime t1 = LocalTime.parse("00:50:00");
+		LocalDate d1 = LocalDate.parse("0001-01-01");
+		CelestialBody cb = new CelestialBody(null, null, 0, 0, null, null, null, LocalDateTime.of(d1, t1));
+		assertEquals(3e+6, cb.timeInMs());
+	}
+	
+	@Test
+	void testTimeInMs_Hour()
+	{
+		LocalTime t1 = LocalTime.parse("03:00:00");
+		LocalDate d1 = LocalDate.parse("0001-01-01");
+		CelestialBody cb = new CelestialBody(null, null, 0, 0, null, null, null, LocalDateTime.of(d1, t1));
+		assertEquals(1.08e+7, cb.timeInMs());
 	}
 
 	//TODO (Travis) Check if accuracy is important for these tests (Confirm epsilon with group member)

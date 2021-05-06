@@ -14,13 +14,14 @@ import java.lang.System;
 
 class ProbeSimulatorTest {
 
-    static final double ACCURACY = 1E15; // in meters (might need to tweak that)
-
+    static final double DAY_ACCURACY = 5E12; 
+    static final double YEAR_ACCURACY = 5E13; 
+    
     @Test void testTrajectoryOneDayX() {
 
         Vector3dInterface[] trajectory = simulateOneDay();
         double x1 = -1.4218092965609787E11; // reference implementation
-        assertEquals(x1, trajectory[1].getX(), ACCURACY); // delta +-ACCURACY
+        assertEquals(x1, trajectory[1].getX(), DAY_ACCURACY); // delta +-ACCURACY
 
     }
 
@@ -28,7 +29,7 @@ class ProbeSimulatorTest {
 
         Vector3dInterface[] trajectory = simulateOneDay();
         double y1 = -3.3475191084301098E10; // reference implementation
-        assertEquals(y1, trajectory[1].getY(), ACCURACY); // delta +-ACCURACY
+        assertEquals(y1, trajectory[1].getY(), DAY_ACCURACY); // delta +-ACCURACY
 
     }
 
@@ -36,7 +37,7 @@ class ProbeSimulatorTest {
 
         Vector3dInterface[] trajectory = simulateOneDay();
         double z1 = 8334994.892882561; // reference implementation
-        assertEquals(z1, trajectory[1].getZ(), ACCURACY); // delta +-ACCURACY
+        assertEquals(z1, trajectory[1].getZ(), DAY_ACCURACY); // delta +-ACCURACY
 
     }
 
@@ -44,7 +45,7 @@ class ProbeSimulatorTest {
 
         Vector3dInterface[] trajectory = simulateOneYear();
         double x366 = -2.4951517995514418E13; // reference implementation
-        assertEquals(x366, trajectory[366].getX(), ACCURACY); // delta +-ACCURACY
+        assertEquals(x366, trajectory[366].getX(), YEAR_ACCURACY); // delta +-ACCURACY
 
     }
 
@@ -52,7 +53,7 @@ class ProbeSimulatorTest {
 
         Vector3dInterface[] trajectory = simulateOneYear();
         double y366 = -1.794349344879982E12; // reference implementation
-        assertEquals(y366, trajectory[366].getY(), ACCURACY); // delta +-ACCURACY
+        assertEquals(y366, trajectory[366].getY(), YEAR_ACCURACY); // delta +-ACCURACY
 
     }
 
@@ -60,7 +61,7 @@ class ProbeSimulatorTest {
 
         Vector3dInterface[] trajectory = simulateOneYear();
         double z366 = 2.901591968932223E7; // reference implementation
-        assertEquals(z366, trajectory[366].getZ(), ACCURACY); // delta +-ACCURACY
+        assertEquals(z366, trajectory[366].getZ(), YEAR_ACCURACY); // delta +-ACCURACY
 
     }
 

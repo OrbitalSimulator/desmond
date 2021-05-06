@@ -2,7 +2,6 @@ package src.peng;
 
 import java.util.ArrayList;
 
-//TODO (Travis Dawson) Clean up comments in class functions
 public class NewtonGravityFunction implements ODEFunctionInterface
 {
 	public static final double GRAVITY = 6.67430e-11;

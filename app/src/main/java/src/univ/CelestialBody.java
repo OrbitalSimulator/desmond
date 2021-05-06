@@ -102,5 +102,14 @@ public class CelestialBody
 	{
 		return new CelestialBody(position, velocity, mass, radius, name, image, icon, time);
 	}
+	
+	public double timeInMs()
+	{
+		double t = 0;
+		t = t + time.getSecond() * 1000;
+		t = t + time.getMinute() * 60000;
+		t = t + time.getHour() * 3.6E+6;
+		return t;
+	}
 }
 

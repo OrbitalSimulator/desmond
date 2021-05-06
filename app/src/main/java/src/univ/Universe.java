@@ -2,110 +2,144 @@ package src.univ;
 
 import src.peng.Vector3d;
 import src.peng.StateInterface;
-import src.peng.Vector3dInterface;
-import src.config.ConfigFileManager;
-import src.config.DataFileManager;
+import src.conf.DataFileManager;
+import src.conf.SimulationSettings;
+import src.peng.NewtonGravityFunction;
+import src.peng.ODEFunctionInterface;
 import src.peng.State;
+import src.solv.RungeKutta4th;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.ArrayList;
 
 public class Universe
 {
-    public  CelestialBody[] U; 
-    public  CelestialBody[][] U2;
-    private int stepSize;
-    private LocalDate probeStartDate = LocalDate.parse("2021-04-01");
-    private LocalTime probeStartTime = LocalTime.parse("00:00:00");
-   
-    public Universe(Vector3dInterface probeStartPosition, Vector3dInterface probeStartVelocity, int stepInNanoSecs)
+    public CelestialBody[] startVariables; 
+    public CelestialBody[][] universe;
+    public ArrayList<Vector3d[]> trajectories;
+	public LocalDateTime startTime;
+	public LocalDateTime endTime;
+	public int noOfSteps;
+	public double stepSize;
+	public double[] masses;
+	public String[] wayPoints;
+	
+    public Universe(SimulationSettings settings)
     {
-    	stepSize = stepInNanoSecs;
+    	startTime = settings.startTime;
+    	endTime = settings.endTime;
+    	noOfSteps = settings.noOfSteps;
+    	startVariables = settings.celestialBodies;
+		stepSize = settings.stepSize;
+     	masses = new double[startVariables.length];
+    	for(int i = 0; i < startVariables.length; i++)
+    	{
+    		masses[i] = startVariables[i].mass;
+    	}
+    	
+    	universe = new CelestialBody[startVariables.length][noOfSteps+1];
     	try
 		{
-			ConfigFileManager config = new ConfigFileManager();
-			CelestialBody[] temp = config.load("UniverseConfig");
-			U = new CelestialBody[temp.length+1];
-			for(int i = 0; i < temp.length; i++)
-			{
-				U[i] = temp[i];
-			}
-			U[U.length-1] = new CelestialBody((Vector3d)probeStartPosition,
-							    (Vector3d)probeStartVelocity,
-							    15000,
-							    700,
-							    "Probe",
-							    "/src/main/java/misc/craftIcon.png",
-							    "/src/main/java/misc/craftIcon.png",
-							    LocalDateTime.of(probeStartDate, probeStartTime));
+    		System.out.print("Loading from file ...");
+    		universe = DataFileManager.load(settings);
+    		System.out.println(" Done");
 		}
 		catch (Exception e)
 		{
 			System.out.println("Unable to load config file");
-			e.printStackTrace();
-		}
+			System.out.print("Creating new universe ...");
+			universe = generateNewUniverse();
+			System.out.println(" Done");
+			System.out.print("Saving to file ...");
+			saveToFile();
+			System.out.println(" Done");
+     	}
     }
- 
-    public Universe(CelestialBody[] U)
+     
+    private CelestialBody[][] generateNewUniverse()
     {
-    	this.U = U;
+		StateInterface initialState = convertToState(startVariables);
+		ODEFunctionInterface function = new NewtonGravityFunction(masses);
+		RungeKutta4th solver = new RungeKutta4th();
+		StateInterface[] states = solver.solve(function, initialState, stepSize*noOfSteps, stepSize);			
+		return convertToCelestialBody(states);														
     }
     
-    public StateInterface initialState()
+    public State convertToState(CelestialBody[] bodies)
     {
         ArrayList<Vector3d> velocity = new ArrayList<Vector3d>();
         ArrayList<Vector3d> position = new ArrayList<Vector3d>();
 
-        for(int i=0; i< U.length; i++)
+        for(int i = 0; i < bodies.length; i++)
         {
-            velocity.add(U[i].velocity);
-            position.add(U[i].location);
+            velocity.add(bodies[i].velocity);
+            position.add(bodies[i].location);
+        }
+        return new State(velocity, position);
+    }
+        
+    public CelestialBody[][] convertToCelestialBody(StateInterface[] stateInterfaces)
+    {  	
+    	State[] states = (State[]) stateInterfaces;
+    	CelestialBody[][] bodies = new CelestialBody[universe.length][universe[0].length];
+    	LocalDateTime dateTime = startTime;
+    	for(int i = 0; i < states.length; i++)
+        {            
+    		for(int j = 0; j < states[i].velocity.size(); j++)
+            {
+    			bodies[j][i] = startVariables[j].updateCopy(states[i].position.get(j),
+                										states[i].velocity.get(j), 
+                						   				dateTime);
+            }
+            dateTime = dateTime.plusSeconds((long) stepSize);
+        }
+    	return bodies;
+    }
+    
+    public CelestialBody[] convertToCelestialBody(StateInterface stateInterfaces)
+    {  	
+    	State states = (State) stateInterfaces;
+    	CelestialBody[] bodies = new CelestialBody[states.position.size()];
+        LocalDateTime dateTime = startTime;
+  		for(int i = 0; i < states.velocity.size(); i++)
+        {
+   			bodies[i] = startVariables[i].updateCopy(states.position.get(i),
+                									 states.velocity.get(i), 
+                						   			 dateTime);
+   			dateTime = dateTime.plusSeconds((long) stepSize);
+   		}
+    	return bodies;
+    }
+    
+    public void addTrajectory(Vector3d[] trajectory)
+    {
+    	if(trajectories == null)
+    	{
+    		trajectories = new ArrayList<Vector3d[]>();
+    	}
+    	trajectories.add(trajectory);
+    }
+    
+    public State getStateAt(int timeStep)
+    {
+        ArrayList<Vector3d> velocity = new ArrayList<Vector3d>();
+        ArrayList<Vector3d> position = new ArrayList<Vector3d>();
+
+        for(int i = 0; i < universe.length; i++)
+        {
+            velocity.add(universe[i][timeStep].velocity);
+            position.add(universe[i][timeStep].location);
         }
         return new State(velocity, position);
     }
     
-    public double[] getMasses()
+    public void setStateAt(int timeStep, StateInterface state)
     {
-    	double[] masses = new double[U.length];
-    	for(int i = 0; i < masses.length; i++)
-    	{
-    		masses[i] = U[i].mass;
-    	}
-    	return masses;
-    }
-        
-    public void update(StateInterface[] States)
-    {
-    	LocalDate date = probeStartDate;
-    	LocalTime time = probeStartTime;
-    	LocalDateTime dateTime = LocalDateTime.of(date, time);
-    	
-    	U2 = new CelestialBody[U.length][States.length];
-    	for(int i=0; i< States.length; i++)
-        {
-            //Cast each object into a State object
-            State currentState = (State)States[i];
-
-            //Iterate through each planet contained in a single state
-            for(int j=0; j< currentState.velocity.size(); j++)
-            {
-                U2[j][i] = U[j].updateCopy(currentState.position.get(j),
-                						   currentState.velocity.get(j), 
-                						   dateTime);
-            }
-            dateTime.plusNanos(stepSize);
-        }
-    	save();
+    	universe[timeStep] = convertToCelestialBody(state);
     }
     
-    public void save()
+    public void saveToFile()
     {
-    	DataFileManager fileMngr = new DataFileManager();
-    	for(int i = 0; i < U.length; i++)
-    	{
-    		fileMngr.overwrite(U2[i]);
-    	}
+    	DataFileManager.overwrite(universe);
     }
 }

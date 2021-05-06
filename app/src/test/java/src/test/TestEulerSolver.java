@@ -7,11 +7,11 @@ import java.util.ArrayList;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
+import src.solv.EulerSolver;
 import src.peng.ODEFunctionInterface;
 import src.peng.State;
 import src.peng.StateInterface;
 import src.peng.Vector3d;
-import src.peng.EulerSolver;
 import src.peng.NewtonGravityFunction;
 
 class TestEulerSolver 
@@ -81,7 +81,6 @@ class TestEulerSolver
 		assertEquals(5.0, finalResultConverted.time);
 	}
 	
-	//TODO (Travis Dawson) Time array Euler Solver testing
 	@Test
 	public void testFunction3() 
 	{

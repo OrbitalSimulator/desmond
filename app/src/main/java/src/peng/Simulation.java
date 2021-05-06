@@ -1,9 +1,12 @@
 package src.peng;
 
+import java.io.IOException;
+import src.conf.SettingsFileManager;
+import src.conf.SimulationSettings;
 import src.univ.Universe;
 
 public class Simulation 
-{	
+{		
 	/*
 	 * Simulate the solar system, including a probe fired from Earth at 00:00h on 1 April 2020.
 	 *
@@ -13,20 +16,9 @@ public class Simulation
 	 */
 	public Vector3dInterface[] trajectory(Vector3dInterface probeStartPosition, Vector3dInterface probeStartVelocity, double[] ts)
 	{
-		/* Build */
-		int stepSizeNs = (int) ((ts[1] - ts[0]) * 1E9);
-		Universe universe = new Universe(probeStartPosition, probeStartVelocity, stepSizeNs);
-		StateInterface initialState = universe.initialState();							//Generate the initial state of the universe
-		ODEFunctionInterface funct = new NewtonGravityFunction(universe.getMasses());	//Initialise ODEFunctionInterface - contains call method
+		//TODO (Leon) this needs to be implemented to calculate at random steps ... fuck knows why
 
-		/* Compute */
-		RungeKutta4th solver = new RungeKutta4th();		 								//Call physics engine to determine intermediate states of the system.
-		StateInterface[] results = solver.solve(funct, initialState, ts);				//Record intermediate states
-		universe.update(results);														//Convert the obtained results to CelestialBodies for visualisation display
-
-		/* Output */
-		Vector3dInterface[] trajectory = output(results);
-		return trajectory;		
+			return null;
 	}
 
 	/*
@@ -40,34 +32,24 @@ public class Simulation
 	 */
 	public Vector3dInterface[] trajectory(Vector3dInterface probeStartPosition, Vector3dInterface probeStartVelocity, double tf, double h)
 	{
-		/* Build */								
-		int stepSizeNs = (int) (h*1E9);
-		Universe universe = new Universe(probeStartPosition, probeStartVelocity, stepSizeNs);
-		StateInterface initialState = universe.initialState(); 							//Generate the initial state of the universe
-		ODEFunctionInterface funct = new NewtonGravityFunction(universe.getMasses());	//Initialise ODEFunctionInterface - contains call method			
-
-		/* Compute */
-		RungeKutta4th solver = new RungeKutta4th();										//Call physics engine to determine intermediate states of the system.
-		StateInterface[] results = solver.solve(funct, initialState, tf, h);			//Record intermediate states
-		universe.update(results);														//Convert the obtained results to CelestialBodies for visualisation display
-
-		/* Display */
-		Vector3dInterface[] trajectory = output(results);
-		return trajectory;									
-	}
-
-	public Vector3d[] output(StateInterface[] states)
-	{
-		Vector3d[] output = new Vector3d[states.length];				//Instantiate Vector array to length of states
-
-		int index = 0;     
-		for(int i=0; i< states.length; i++) 							
-		{  
-			State temp = (State)states[i];								//Cast the StateInterface into a state object
-			int probeIndex = temp.position.size() -1;					//Access each state and derive the probe location.
-			output[index] = temp.position.get(probeIndex);				//determine last element of each state = probe
-			index++;
-		}
-		return output;
-	}
+		SimulationSettings settings;
+		try {
+			settings = SettingsFileManager.load();
+			settings.noOfSteps = (int) ((tf/h)+2);
+			settings.stepSize = h ;
+			settings.probeStartPosition = probeStartPosition;
+			settings.probeStartVelocity = probeStartVelocity;
+			
+			Universe universe = new Universe(settings); 								
+			Vector3d[] trajectory = TrajectoryPlanner.plot(universe, settings);
+			return trajectory;
+		} 
+		catch (IOException e) 
+		{
+			System.out.println("Settings File Not Found ... Exiting");
+			e.printStackTrace();
+			return null;
+		}								
+	}	
+	
 }

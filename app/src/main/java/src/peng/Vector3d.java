@@ -8,8 +8,7 @@ public class Vector3d implements Vector3dInterface
 {
     protected double x;
     protected double y;
-    protected double z;
-    
+    protected double z; 
 
     public Vector3d()
     {
@@ -146,48 +145,15 @@ public class Vector3d implements Vector3dInterface
         return bd.doubleValue();
     }
     
-    public double getRoundedX(int digit)
-    {
-        return round(x,digit);
-    }
-
-    public double getRoundedY(int digit)
-    {
-    	return round(y,digit);
-    }
-
-    public double getRoundedZ(int digit)
-    { 
-    	return round(z,digit);
-    }
+    public double getRoundedX(int digit) {return round(x,digit);}
+    public double getRoundedY(int digit) {return round(y,digit);}
+    public double getRoundedZ(int digit) {return round(z,digit);}
     
-    public double getX()
-    {
-        return x;
-    }
+    public double getX() {return x;}
+    public double getY() {return y;}
+    public double getZ() {return z;}
 
-    public double getY()
-    {
-        return y;
-    }
-
-    public double getZ()
-    {
-        return z;
-    }
-
-    public void setX(double x)
-    {
-        this.x = x;
-    }
-
-    public void setY(double y)
-    {
-        this.y = y;
-    }
-
-    public void setZ(double z)
-    {
-        this.z = z;
-    }
+    public void setX(double x) {this.x = x;}
+    public void setY(double y) {this.y = y;}
+    public void setZ(double z) {this.z = z;}
 }

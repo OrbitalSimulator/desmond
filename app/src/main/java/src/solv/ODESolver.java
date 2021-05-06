@@ -1,6 +1,10 @@
-package src.peng;
+package src.solv;
 
-public class RungeKutta2nd
+import src.peng.ODEFunctionInterface;
+import src.peng.State;
+import src.peng.StateInterface;
+
+public class ODESolver implements ODESolverInterface
 {
 	/**
      * Solve the differential equation by taking multiple steps of equal size, starting at time 0.
@@ -20,7 +24,7 @@ public class RungeKutta2nd
 
         while(t < tf)
         {
-            currentState = rungeKuttaStep(f, t, currentState, h);					// Determine new current state through a single step of the Euler method
+            currentState = step(f, t, currentState, h);								// Determine new current state through a single step of the Euler method
             results[index] = currentState;											// Add new state to the results array
             index++;
             t += h;																	// Increment the current time by the step
@@ -37,7 +41,7 @@ public class RungeKutta2nd
      */
     public StateInterface[] solve(ODEFunctionInterface f, StateInterface y0, double[] ts)
     {
-    	StateInterface[] results = new State[ts.length];			//Instantiate new StateInterface array of size of ts.length
+    	State[] results = new State[ts.length];						//Instantiate new StateInterface array of size of ts.length
         int index = 0;												//Index to track additions to results
         State currentState = (State) y0;
         results[index++] = currentState;							//Record initial state within results:
@@ -47,27 +51,30 @@ public class RungeKutta2nd
         while(t< ts[ts.length-1])
         {    
             double h = ts[index] - ts[index-1];						//Determine step size
-            currentState = rungeKuttaStep(f, t, currentState, h);	//Determine new current state through a single step of the Euler method
+            currentState = step(f, t, currentState, h);				//Determine new current state through a single step of the Euler method
             results[index] = currentState;							//Add new state to the results array
             index++;												//Increment index
             t += h;													//Increment the current time by the step
         }
         return results;
     }
-    
-	/**
+    /**
      * Update rule for one step.
+     * Essentially adding the calculated changes (In acceleration, position)
      * @param   f   the function defining the differential equation dy/dt=f(t,y)
      * @param   t   the time
      * @param   y   the state
      * @param   h   the step size
      * @return  the new state after taking one step
      */
-    public State rungeKuttaStep(ODEFunctionInterface f, double t, State y, double h)
-    {    	
-    	Rate a = (Rate) f.call(0, y);		// f' at left endpoint
-    	Rate b = (Rate) f.call(t, y);		// f' at right endpoint
-    	Rate rate = a.average(b);			// f' average
-    	return y.addMultiple(h, rate);
+	@Override
+	public StateInterface step(ODEFunctionInterface f, double t, StateInterface y, double h) 
+	{
+		return null; // Implementation required by specific solvers
+	}
+	
+    public State step(ODEFunctionInterface f, double t, State y, double h)
+    {
+    	return null; // Implementation required by specific solvers
     }
 }
