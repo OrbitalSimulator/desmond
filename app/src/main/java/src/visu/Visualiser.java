@@ -45,7 +45,7 @@ import src.univ.CelestialBody;
  * @author L.Debnath
  * @date 14 Mar 21
  */
-public class Visualiser extends JFrame implements KeyListener, MouseWheelListener, MouseMotionListener, ActionListener, ChangeListener, MouseListener
+public class Visualiser extends JFrame implements MouseWheelListener, MouseMotionListener, ActionListener, ChangeListener, MouseListener
 {
 	private static final long serialVersionUID = 1L;
 	
@@ -187,8 +187,6 @@ public class Visualiser extends JFrame implements KeyListener, MouseWheelListene
 		canvas.addMouseListener(this);
 		canvas.addMouseWheelListener(this);
 		canvas.addMouseMotionListener(this);
-		canvas.addKeyListener(this);
-		this.addKeyListener(this);
 		this.add(canvas, BorderLayout.CENTER);
 		setVisible(true);
 		
@@ -292,18 +290,9 @@ public class Visualiser extends JFrame implements KeyListener, MouseWheelListene
 	{
 		canvas.setTime(timeSlider.getValue());
 	}
-	
-	@Override
-	public void keyTyped(KeyEvent e) {}
 
 	@Override
 	public void mouseMoved(MouseEvent arg0) {}
-		
-	@Override
-	public void keyPressed(KeyEvent e) {}
-
-	@Override
-	public void keyReleased(KeyEvent e) {}
 
 	@Override
 	public void mouseEntered(MouseEvent arg0) {}
