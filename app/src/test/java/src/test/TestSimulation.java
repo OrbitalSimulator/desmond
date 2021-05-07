@@ -58,36 +58,37 @@ class TestSimulation
 		assertEquals(new Vector3d(8.569328863702513E11, -1.2493022716897788E12, -1.838286941261663E10), finalPosition);
 	}
 	
-	@Test
-	void testAgainstEphemeris()
-	{
-		int noOfCB = 11;
-		
-		// Find all files that start with "Ephemeris_" and end with ".txt"
-		String[] paths = new String[11];
-		for(int i = 0; i < noOfCB; i++)
-		{
-			
-			StringBuilder s =  new StringBuilder();
-			s.append("/src/test/java/expData/Ephemeris_");
-			s.append(i);
-			s.append(".txt");
-			paths[i] = s.toString();
-		}
-		
-		EphemerisReader er = new EphemerisReader(paths[0]);
-		CelestialBody[] temp = er.getOrbit();
-		CelestialBody[][] U = new CelestialBody[noOfCB][temp.length];
-		U[0] = temp;
-			
-		// Read all of the files and add the array to the list
-		EphemerisReader[] ers = new EphemerisReader[paths.length];
-		for(int i = 1; i < U.length; i++)
-		{
-			er = new EphemerisReader(paths[i]);
-			U[i] = er.getOrbit(); 
-		}
-		
-		Visualiser v = new Visualiser(U);
-	}
+	//TODO (Leon) implement properly or remove
+	//@Test
+	//void testAgainstEphemeris()
+	//{
+	//	int noOfCB = 11;
+	//	
+	//	// Find all files that start with "Ephemeris_" and end with ".txt"
+	//	String[] paths = new String[11];
+	//	for(int i = 0; i < noOfCB; i++)
+	//	{
+	//		
+	//		StringBuilder s =  new StringBuilder();
+	//		s.append("/src/test/java/expData/Ephemeris_");
+	//		s.append(i);
+	//		s.append(".txt");
+	//		paths[i] = s.toString();
+	//	}
+	//	
+	//	EphemerisReader er = new EphemerisReader(paths[0]);
+	//	CelestialBody[] temp = er.getOrbit();
+	//	CelestialBody[][] U = new CelestialBody[noOfCB][temp.length];
+	//	U[0] = temp;
+	//		
+	//	// Read all of the files and add the array to the list
+	//	EphemerisReader[] ers = new EphemerisReader[paths.length];
+	//	for(int i = 1; i < U.length; i++)
+	//	{
+	//		er = new EphemerisReader(paths[i]);
+	//		U[i] = er.getOrbit(); 
+	//	}
+	//	
+	//	Visualiser v = new Visualiser(U);
+	//}
 }

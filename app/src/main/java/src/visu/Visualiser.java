@@ -35,7 +35,7 @@ import src.univ.CelestialBody;
  * @author L.Debnath
  * @date 14 Mar 21
  */
-public class Visualiser extends JFrame implements MouseWheelListener, MouseMotionListener, ActionListener, ChangeListener, MouseListener
+public class Visualiser extends JFrame implements MouseMotionListener, ActionListener, ChangeListener, MouseListener
 {
 	private static final long serialVersionUID = 1L;
 	
@@ -50,7 +50,7 @@ public class Visualiser extends JFrame implements MouseWheelListener, MouseMotio
 	private Timer timer;
 			
 	private Canvas canvas;
-	private JButton[] btn;
+	private JButton[] planetBtn;
 	private JSlider timeSlider;
 
 	public Visualiser(CelestialBody[][] U)
@@ -64,20 +64,19 @@ public class Visualiser extends JFrame implements MouseWheelListener, MouseMotio
 		setResizable(true);
 		
 		// Add planet buttons
-		BufferedImage icon = null;
 		JPanel rPanel = new JPanel();
 		GridLayout rLayout = new GridLayout(0,1);
 		rLayout.setHgap(5);
 		rLayout.setVgap(5);
 		rPanel.setLayout(rLayout);
 		rPanel.setBackground(Color.BLACK);
-		btn = new PlanetButton[U.length];
+		planetBtn = new PlanetButton[U.length];
 		for(int i = 0; i < 11; i++)
 		{
 			Icon btnIcon = ResourceLoader.getIcon(U[i][0].icon);
-			btn[i] = new PlanetButton(btnIcon, i);
-			btn[i].addActionListener(this);
-			rPanel.add(btn[i]);
+			planetBtn[i] = new PlanetButton(btnIcon, i);
+			planetBtn[i].addActionListener(this);
+			rPanel.add(planetBtn[i]);
 		}
 		this.add(rPanel, BorderLayout.EAST);
 		rPanel.setVisible(true);
@@ -114,7 +113,7 @@ public class Visualiser extends JFrame implements MouseWheelListener, MouseMotio
 		int canvasY = (int) screen.getHeight();
 		canvas = new Canvas(U, new Dimension(canvasX, canvasY));
 		canvas.addMouseListener(this);
-		canvas.addMouseWheelListener(this);
+		canvas.addMouseWheelListener(e -> mouseWheelMoved(e));
 		canvas.addMouseMotionListener(this);
 
 		this.add(canvas, BorderLayout.CENTER);
@@ -181,19 +180,16 @@ public class Visualiser extends JFrame implements MouseWheelListener, MouseMotio
 		play = true;
 	}
 
-	@Override
-	public void mouseWheelMoved(MouseWheelEvent e) 
+	private void mouseWheelMoved(MouseWheelEvent e) 
 	{
 		canvas.zoom(e.getPreciseWheelRotation(), e.getLocationOnScreen());
 	}
 	
-	@Override
 	public void mousePressed(MouseEvent e) 
 	{
 		mousePoint = e.getPoint();
 	}
 
-	@Override
 	public void mouseDragged(MouseEvent e) 
 	{	
 		canvas.follow(-1);					// Turn off following
@@ -208,9 +204,9 @@ public class Visualiser extends JFrame implements MouseWheelListener, MouseMotio
 	@Override
 	public void actionPerformed(ActionEvent e) 
 	{
-		for(int i = 0; i < btn.length; i++)
+		for(int i = 0; i < planetBtn.length; i++)
 		{
-			if(e.getSource() == btn[i])
+			if(e.getSource() == planetBtn[i])
 			{			
 				canvas.follow(i);
 				break;

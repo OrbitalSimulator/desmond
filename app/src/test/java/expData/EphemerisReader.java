@@ -301,38 +301,27 @@ public class EphemerisReader
 		switch(name)
 		{
 			case "Sun": 		
-					path = path.concat("/src/main/java/src/misc/sunIcon.png");
-					return path;              
+					return "sunIcon.png";              
 			case "Mercury":	
-					path = path.concat("/src/main/java/src/misc/mercuryIcon.png");
-					return path;                       
+					return "mercuryIcon.png";                       
 			case "Venus": 		
-					path = path.concat("/src/main/java/src/misc/venusIcon.png");
-					return path;                 
+					return "venusIcon.png";                 
 			case "Earth": 
-					path = path.concat("/src/main/java/src/misc/earthIcon.png");
-					return path;              
+					return "earthIcon.png";              
 			case "Moon":
-					path = path.concat("/src/main/java/src/misc/moonIcon.png");
-					return path;                
+					return "moonIcon.png";                
 			case "Mars": 
-					path = path.concat("/src/main/java/src/misc/marsIcon.png");
-					return path;                    
+					return "marsIcon.png";                    
 			case "Jupiter":
-					path = path.concat("/src/main/java/src/misc/jupiterIcon.png");
-					return path;                     
+					return "jupiterIcon.png";                     
 			case "Saturn": 
-					path = path.concat("/src/main/java/src/misc/saturnIcon.png");
-					return path;                  
+					return "saturnIcon.png";                  
 			case "Titan": 
-					path = path.concat("/src/main/java/src/misc/titanIcon.png");
-					return path;              
+					return "titanIcon.png";              
 			case "Uranus": 
-					path = path.concat("/src/main/java/src/misc/uranusIcon.png");
-					return path;                   
+					return "uranusIcon.png";                   
 			case "Neptune":
-					path = path.concat("/src/main/java/src/misc/neptuneIcon.png");
-					return path;              
+					return "neptuneIcon.png";              
 			default:
 				return null;
 		}
