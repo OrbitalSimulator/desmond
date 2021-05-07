@@ -70,7 +70,7 @@ class TestSettingsFileManager
 		
 		double mass = 3.302e23;
 		double radius = 2440e3;
-		String image = "mercuryScaled.png";
+		String image = "/src/main/java/src/misc/mercuryScaled.png";
 		String icon = "mercuryIcon.png";
 		LocalTime cbTime = LocalTime.parse("00:00:00");
 		LocalDate cbDate = LocalDate.parse("2021-04-01");
