@@ -1,8 +1,12 @@
-package src.peng;
+package src.traj;
 
 import java.util.ArrayList;
 
 import src.conf.SimulationSettings;
+import src.peng.NewtonGravityFunction;
+import src.peng.ODEFunctionInterface;
+import src.peng.State;
+import src.peng.Vector3d;
 import src.solv.RungeKutta4th;
 import src.univ.Universe;
 
