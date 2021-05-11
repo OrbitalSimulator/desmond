@@ -33,4 +33,16 @@ public class SimulationSettings
 		this.stepSize = stepSize;
 		this.waypoints = waypoints;
 	}
+	
+	public SimulationSettings copy()
+	{
+		return new SimulationSettings(celestialBodies,
+                	probeStartPosition,
+				    probeStartVelocity,
+				    startTime,
+				    endTime,
+				    noOfSteps,
+				    stepSize,
+				    waypoints);
+	}
 }
