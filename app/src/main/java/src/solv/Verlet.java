@@ -7,7 +7,6 @@ import src.peng.State;
 import src.peng.StateInterface;
 
 import java.util.ArrayList;
-import java.util.Vector;
 
 public class Verlet extends ODESolver implements ODESolverInterface
 {
