@@ -3,6 +3,7 @@ package src.peng;
 import java.io.IOException;
 import src.conf.SettingsFileManager;
 import src.conf.SimulationSettings;
+import src.traj.TrajectoryPlanner;
 import src.univ.Universe;
 
 public class Simulation 
