@@ -1,16 +1,19 @@
 package src.traj;
 
+import java.util.ArrayList;
+
 import src.conf.SimulationSettings;
 import src.peng.NewtonGravityFunction;
 import src.peng.ODEFunctionInterface;
 import src.peng.State;
 import src.peng.Vector3d;
+import src.peng.Vector3dInterface;
 import src.solv.RungeKutta4th;
 import src.univ.Universe;
 
 public class RouteController extends GuidanceController
 {
-	private final double MUTATION_RATE = 100;		
+	private final double VELOCITY_MUTATION = 100;		
 	private final double PROXIMITY_ERROR = 10000;	// TODO (Leon) Load from settings -> add into settings file
 	
 	public RouteController(Universe universe, String target, SimulationSettings settings) 
@@ -21,7 +24,17 @@ public class RouteController extends GuidanceController
 	
 	private Vector3d[] hillClimbAlogrithm(SimulationSettings settings)
 	{
-		// TODO (Leon) add implementation
+		ArrayList<SimulationSettings> settingsGrid = generateSettingsGrid(settings);
+		
+		SimulationSettings bestSettings = settings;
+		Vector3d closestPoint = testRoute(settings);
+		
+		for(SimulationSettings each: settingsGrid)
+		{
+			Vector3d currentPoint = testRoute(each);
+			System.out.println(currentPoint.toString());
+		}
+		
 		return planRoute(settings);
 	}
 
@@ -78,14 +91,27 @@ public class RouteController extends GuidanceController
 			currentPosition = getProbePosition(nextState);
 			trajectory[currentStep++] = currentPosition;
 		}
-		return new Vector3d(); // TODO (Leon) add correct value
+		return trajectory[trajectory.length-1];
 	}
 	
-	private Vector3d[] generateStartVectors(Vector3d initialVector)
+	private ArrayList<SimulationSettings> generateSettingsGrid(SimulationSettings initialSettings)
 	{
-		Vector3d[] outputVectors = new Vector3d[9];
+		ArrayList<SimulationSettings> outputSettings = new ArrayList<SimulationSettings>();
 		
-		return outputVectors;
+		for(int x = -1; x < 1; x++)
+		{
+			for(int y = -1; y < 1; y++)
+			{
+				for(int z = -1; z < 1; z++)
+				{
+					Vector3d changeAmount = new Vector3d(VELOCITY_MUTATION * x, VELOCITY_MUTATION * y, VELOCITY_MUTATION * z);
+					SimulationSettings modifiedSettings = initialSettings.copy();
+					modifiedSettings.probeStartPosition = initialSettings.probeStartPosition.add(changeAmount);
+					outputSettings.add(modifiedSettings);
+				}
+			}
+		}
+		return outputSettings;
 	}
 
 }
