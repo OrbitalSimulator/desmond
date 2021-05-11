@@ -14,72 +14,72 @@ public class Verlet extends ODESolver implements ODESolverInterface
     /**
      * Update rule for one step using the Verlet method
      * @param   function   the function defining the differential equation dy/dt=f(t,y)
-     * @param   t   the time
+     * @param   time   the time
      * @param   currentState   the state
      * @param   step   the step size
      * @return  the new state after taking one step
      */
-    public State step(ODEFunctionInterface function, double t, State currentState, double step)
+    public State step(ODEFunctionInterface function, double time, State currentState, double step)
     {
-        Rate change = (Rate) function.call(t,currentState);
+        Rate change = (Rate) function.call(time, currentState);
 
-        ArrayList<Vector3d> nextPos = nextPositions(currentState, change, step);
+        ArrayList<Vector3d> nextPosition = calculateNextPositions(currentState, change, step);
 
-        State estNextState = estimateNextState(currentState, change, step, nextPos);
-        Rate nextChange = nextRate(function, estNextState, t, step);
+        State estimatedNextState = estimateNextState(currentState, change, step, nextPosition);
+        Rate nextChange = calculateNextRate(function, estimatedNextState, time, step);
 
-        ArrayList<Vector3d> nextVel = nextVelocity(nextChange, currentState, change, step);
+        ArrayList<Vector3d> nextVelocity = calculateNextVelocity(nextChange, currentState, change, step);
 
-        return new State(nextVel, nextPos);
+        return new State(nextVelocity, nextPosition);
     }
 
-    public StateInterface step(ODEFunctionInterface function, double t, StateInterface cState, double step)
+    public StateInterface step(ODEFunctionInterface function, double time, StateInterface cState, double step)
     {
         State currentState = (State)cState;
-        Rate change = (Rate) function.call(t,currentState);
+        Rate change = (Rate) function.call(time, currentState);
 
-        ArrayList<Vector3d> nextPos = nextPositions(currentState, change, step);
+        ArrayList<Vector3d> nextPosition = calculateNextPositions(currentState, change, step);
 
-        State estNextState = estimateNextState(currentState, change, step, nextPos);
-        Rate nextChange = nextRate(function, estNextState, t, step);
+        State estimatedNextState = estimateNextState(currentState, change, step, nextPosition);
+        Rate nextChange = calculateNextRate(function, estimatedNextState, time, step);
 
-        ArrayList<Vector3d> nextVel = nextVelocity(nextChange, currentState, change, step);
+        ArrayList<Vector3d> nextVelocity = calculateNextVelocity(nextChange, currentState, change, step);
 
-        return new State(nextVel, nextPos);
+        return new State(nextVelocity, nextPosition);
     }
 
     /**
      * Method calculated next positions for all celestial bodies
      * @param currentState Current state of universe
      * @param change Current rate of the universe
-     * @param h time step
+     * @param step time step
      * @return Next positions of all celestial bodies in the universe
      */
-    public ArrayList<Vector3d> nextPositions(State currentState, Rate change, double step)
+    public ArrayList<Vector3d> calculateNextPositions(State currentState, Rate change, double step)
     {
-        ArrayList<Vector3d> nextPos = new ArrayList<Vector3d>();
+        ArrayList<Vector3d> nextPosition = new ArrayList<Vector3d>();
         for(int i = 0; i < currentState.velocity.size(); i++)
         {
             Vector3d individualNextPos = verletPosition(currentState.position.get(i),
                                                         currentState.velocity.get(i),
                                                         change.velocityChange.get(i),
                                                         step);
-            nextPos.add(individualNextPos);
+            nextPosition.add(individualNextPos);
         }
-        return nextPos;
+        return nextPosition;
     }
 
     /**
      * Method to calculate the acceleration at th next step in time.
      * @param function the function defining the differential equation dy/dt=f(t,y)
-     * @param estNExtState Estimated next state of the universe
+     * @param estimatedNextState Estimated next state of the universe
      * @param time the time
      * @param step the step size
      * @return The rate at the next point in time from the current state
      */
-    public Rate nextRate(ODEFunctionInterface function, State estNextState, double t, double step)
+    public Rate calculateNextRate(ODEFunctionInterface function, State estimatedNextState, double time, double step)
     {
-        return (Rate)function.call(t + step, estNextState);
+        return (Rate)function.call(time + step, estimatedNextState);
     }
 
     /**
@@ -90,18 +90,18 @@ public class Verlet extends ODESolver implements ODESolverInterface
      * @param step The time step
      * @return The next velocities of all celestial bodies in the universe.
      */
-    public ArrayList<Vector3d> nextVelocity(Rate nextChange, State currentState, Rate change, double step)
+    public ArrayList<Vector3d> calculateNextVelocity(Rate nextChange, State currentState, Rate change, double step)
     {
-        ArrayList<Vector3d> nextVel = new ArrayList<Vector3d>();
+        ArrayList<Vector3d> nextVelocity = new ArrayList<Vector3d>();
         for(int i = 0; i < currentState.velocity.size(); i++)
         {
             Vector3d individualNextVelocity = verletVelocity(currentState.velocity.get(i),
                                                     change.velocityChange.get(i),
                                                     nextChange.velocityChange.get(i),
                                                     step);
-            nextVel.add(individualNextVelocity);
+            nextVelocity.add(individualNextVelocity);
         }
-        return nextVel;
+        return nextVelocity;
     }
 
     //Acceptable or make clearer?
@@ -115,43 +115,43 @@ public class Verlet extends ODESolver implements ODESolverInterface
      */
     public State estimateNextState(State currentState, Rate change, double step, ArrayList<Vector3d> nextPositions)
     {
-        ArrayList<Vector3d> estVelocityNextStep = new ArrayList<Vector3d>();
+        ArrayList<Vector3d> estimatedVelocityNextStep = new ArrayList<Vector3d>();
         for(int i = 0; i < currentState.velocity.size(); i++)
         {
             Vector3d currentVelocity = currentState.velocity.get(i);
-            Vector3d currentAcc = change.velocityChange.get(i);
-            estVelocityNextStep.add(currentVelocity.addMul(step, currentAcc));
+            Vector3d currentAcceleration = change.velocityChange.get(i);
+            estimatedVelocityNextStep.add(currentVelocity.addMul(step, currentAcceleration));
         }
-        return new State(estVelocityNextStep, nextPositions);
+        return new State(estimatedVelocityNextStep, nextPositions);
     }
 
     /**
      * Verlet method to calculate next position.
-     * @param pos Current position of celestial body
-     * @param vel Current velocity of celestial body
-     * @param acc Current acceleration of celestial body
+     * @param position Current position of celestial body
+     * @param velocity Current velocity of celestial body
+     * @param acceleration Current acceleration of celestial body
      * @param step The step size to the next point in time.
      * @return Subsequent position of the celestial body.
      * Equation: x(t+dt) = x(t)+v(t)+0.5*dt*dt*a(t)
      */
-    public Vector3d verletPosition(Vector3d pos, Vector3d vel, Vector3d acc, double step)
+    public Vector3d verletPosition(Vector3d position, Vector3d velocity, Vector3d acceleration, double step)
     {
-        Vector3d p1= pos.add(vel.mul(step));                                                                              //Calculate x(t)+v(t)*dt
-        return p1.add(acc.mul((0.5 * step *step)));                                                                         //Calculate 0.5*dt*dt*a(t)
+        Vector3d p1= position.add(velocity.mul(step));                                                                  //Calculate x(t)+v(t)*dt
+        return p1.add(acceleration.mul((0.5 * step *step)));                                                            //Calculate 0.5*dt*dt*a(t)
     }
 
     /**
      * Verlet method to calculate the next velocity
-     * @param vel The current velocity of the celestial body
-     * @param currentAcc The current acceleration of the celestial body
-     * @param nextAcc The acceleration of the celestial body at (t+step)
+     * @param velocity The current velocity of the celestial body
+     * @param currentAcceleration The current acceleration of the celestial body
+     * @param nextAcceleration The acceleration of the celestial body at (t+step)
      * @param step The step size to the next point in time
      * @return Subsequent velocity of the celestial body
      * Equation: v(t)+0.5*(a(t)+a(t+dt))*dt
      */
-    public Vector3d verletVelocity(Vector3d vel, Vector3d currentAcc, Vector3d nextAcc, double step)
+    public Vector3d verletVelocity(Vector3d velocity, Vector3d currentAcceleration, Vector3d nextAcceleration, double step)
     {
-        Vector3d accSum = currentAcc.add(nextAcc);                                                                      //Calculate a(t)+a(t+dt)
-        return vel.add(accSum.mul(0.5*step));                                                                             //Calculate v(t)+0.5*dt*accSum
+        Vector3d accSum = currentAcceleration.add(nextAcceleration);                                                    //Calculate a(t)+a(t+dt)
+        return velocity.add(accSum.mul(0.5*step));                                                                      //Calculate v(t)+0.5*dt*accSum
     }
 }
