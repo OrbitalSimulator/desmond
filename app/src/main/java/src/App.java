@@ -4,7 +4,7 @@ import java.io.IOException;
 
 import src.conf.SettingsFileManager;
 import src.conf.SimulationSettings;
-import src.peng.TrajectoryPlanner;
+import src.traj.TrajectoryPlanner;
 import src.univ.Universe;
 import src.visu.Visualiser;
 
