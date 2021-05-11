@@ -4,16 +4,18 @@ import java.util.ArrayList;
 
 import src.conf.SimulationSettings;
 import src.solv.RungeKutta4th;
+import src.solv.Verlet;
 import src.univ.Universe;
 
 public abstract class TrajectoryPlanner 
-{	
+{
+	//NOTE NEVER SET PROBE START POSITION TO CENTER OF EARTH
 	public static Vector3d[] plot(Universe universe, SimulationSettings settings)
 	{					
 		double[] masses = addMassToEnd(universe.masses, 700);
 		ODEFunctionInterface funct = new NewtonGravityFunction(masses);
 		
-		RungeKutta4th solver = new RungeKutta4th();									
+		Verlet solver = new Verlet();
 		Vector3d[] trajectory = new Vector3d[settings.noOfSteps];
 		trajectory[0] = (Vector3d) settings.probeStartPosition;
 		
