@@ -73,7 +73,7 @@ public class Universe
     	System.out.print("Creating new universe ...");
     	StateInterface initialState = convertToState(startVariables);
 		ODEFunctionInterface function = new NewtonGravityFunction(masses);
-		RungeKutta4th solver = new RungeKutta4th();
+		Verlet solver = new Verlet();
 		StateInterface[] states = solver.solve(function, initialState, stepSize*noOfSteps, stepSize);		
 		System.out.println(" Done");
 		return convertToCelestialBody(states);														
