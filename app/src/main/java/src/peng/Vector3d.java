@@ -126,10 +126,10 @@ public class Vector3d implements Vector3dInterface
      * Method to overide the equals method of Object class, to provide equality checks between vectors.
      * @param comparison Vector object on which to perform comparisons
      */
-    public boolean equals(Object comparison)
+    public boolean equals(Object o)
     {
-        Vector3d comp = (Vector3d) comparison;                                              //Cast into vector3D
-        if(comp.getX() == this.x && comp.getY() == this.y && comp.getZ() == this.getZ())
+        Vector3d v = (Vector3d) o;
+    	if((v.getX() == x) && (v.getY() == y) && (v.getZ() == z))
         {
             return true;
         }
