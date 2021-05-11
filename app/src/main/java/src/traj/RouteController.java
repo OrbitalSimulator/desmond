@@ -10,7 +10,7 @@ import src.univ.Universe;
 
 public class RouteController extends GuidanceController
 {
-	private final double MUTATION_RATE = 1000;		
+	private final double MUTATION_RATE = 100;		
 	private final double PROXIMITY_ERROR = 10000;	// TODO (Leon) Load from settings -> add into settings file
 	
 	public RouteController(Universe universe, String target, SimulationSettings settings) 
@@ -79,6 +79,13 @@ public class RouteController extends GuidanceController
 			trajectory[currentStep++] = currentPosition;
 		}
 		return new Vector3d(); // TODO (Leon) add correct value
+	}
+	
+	private Vector3d[] generateStartVectors(Vector3d initialVector)
+	{
+		Vector3d[] outputVectors = new Vector3d[9];
+		
+		return outputVectors;
 	}
 
 }
