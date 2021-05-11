@@ -14,30 +14,31 @@ public abstract class TrajectoryPlanner
 {	
 	public static Vector3d[] plot(Universe universe, SimulationSettings settings)
 	{					
-		double[] masses = addMassToEnd(universe.masses, 700);
-		ODEFunctionInterface funct = new NewtonGravityFunction(masses);
-		
-		RungeKutta4th solver = new RungeKutta4th();									
-		Vector3d[] trajectory = new Vector3d[settings.noOfSteps];
-		trajectory[0] = (Vector3d) settings.probeStartPosition;
-		
-		int currentStep = 0;
-		Vector3d currentPosition = (Vector3d) settings.probeStartPosition;
-		Vector3d currentVelocity = (Vector3d) settings.probeStartVelocity;
-		while(currentStep < settings.noOfSteps)
-		{
-			// Add impulse to the probe
-			//if(currentStep == 1000) currentVelocity = currentVelocity.add(new Vector3d(5000,5000,0));
-			
-			double currentTime = currentStep * settings.stepSize;
-			State currentState = addProbe(universe.getStateAt(currentStep), currentPosition, currentVelocity);
-			State nextState = solver.step(funct, currentTime, currentState, settings.stepSize);
-			
-			currentPosition = getProbePosition(nextState);
-			currentPosition = getProbePosition(nextState);
-			trajectory[currentStep++] = currentPosition;
-		}
-		return trajectory;
+		//double[] masses = addMassToEnd(universe.masses, 700);
+		//ODEFunctionInterface funct = new NewtonGravityFunction(masses);
+		//
+		//RungeKutta4th solver = new RungeKutta4th();									
+		//Vector3d[] trajectory = new Vector3d[settings.noOfSteps];
+		//trajectory[0] = (Vector3d) settings.probeStartPosition;
+		//
+		//int currentStep = 0;
+		//Vector3d currentPosition = (Vector3d) settings.probeStartPosition;
+		//Vector3d currentVelocity = (Vector3d) settings.probeStartVelocity;
+		//while(currentStep < settings.noOfSteps)
+		//{
+		//	// Add impulse to the probe
+		//	//if(currentStep == 1000) currentVelocity = currentVelocity.add(new Vector3d(5000,5000,0));
+		//	
+		//	double currentTime = currentStep * settings.stepSize;
+		//	State currentState = addProbe(universe.getStateAt(currentStep), currentPosition, currentVelocity);
+		//	State nextState = solver.step(funct, currentTime, currentState, settings.stepSize);
+		//	
+		//	currentPosition = getProbePosition(nextState);
+		//	currentPosition = getProbePosition(nextState);
+		//	trajectory[currentStep++] = currentPosition;
+		//}
+		RouteController rc = new RouteController(universe, "titan", settings);
+		return rc.getTrajectory();
 	}
 	
 	/*
