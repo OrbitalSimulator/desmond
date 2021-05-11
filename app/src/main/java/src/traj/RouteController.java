@@ -9,22 +9,24 @@ import src.peng.State;
 import src.peng.Vector3d;
 import src.peng.Vector3dInterface;
 import src.solv.RungeKutta4th;
+import src.univ.CelestialBody;
 import src.univ.Universe;
 
 public class RouteController extends GuidanceController
 {
-	private final double VELOCITY_MUTATION = 100;		
+	private final double VELOCITY_MUTATION = 100000;		
 	private final double PROXIMITY_ERROR = 10000;	// TODO (Leon) Load from settings -> add into settings file
 	
-	public RouteController(Universe universe, String target, SimulationSettings settings) 
+	public RouteController(Universe universe, String targetName, SimulationSettings settings) 
 	{
-		super(universe, target);	
-		trajectory = hillClimbAlogrithm(settings);
+		super(universe, targetName);	
+		trajectory = hillClimbAlogrithm(targetName, settings);
 	}
 	
-	private Vector3d[] hillClimbAlogrithm(SimulationSettings settings)
+	private Vector3d[] hillClimbAlogrithm(String targetName, SimulationSettings settings)
 	{
 		ArrayList<SimulationSettings> settingsGrid = generateSettingsGrid(settings);
+		Vector3d target = getTargetVector(targetName, settings);
 		
 		SimulationSettings bestSettings = settings;
 		Vector3d closestPoint = testRoute(settings);
@@ -32,7 +34,12 @@ public class RouteController extends GuidanceController
 		for(SimulationSettings each: settingsGrid)
 		{
 			Vector3d currentPoint = testRoute(each);
-			System.out.println(currentPoint.toString());
+			if(closerToTarget(currentPoint, closestPoint, target))
+			{
+				bestSettings = each;
+				closestPoint = currentPoint;
+				System.out.println(currentPoint.toString());
+			}
 		}
 		
 		return planRoute(settings);
@@ -98,11 +105,11 @@ public class RouteController extends GuidanceController
 	{
 		ArrayList<SimulationSettings> outputSettings = new ArrayList<SimulationSettings>();
 		
-		for(int x = -1; x < 1; x++)
+		for(int x = -1; x <= 1; x++)
 		{
-			for(int y = -1; y < 1; y++)
+			for(int y = -1; y <= 1; y++)
 			{
-				for(int z = -1; z < 1; z++)
+				for(int z = -1; z <= 1; z++)
 				{
 					Vector3d changeAmount = new Vector3d(VELOCITY_MUTATION * x, VELOCITY_MUTATION * y, VELOCITY_MUTATION * z);
 					SimulationSettings modifiedSettings = initialSettings.copy();
@@ -113,5 +120,27 @@ public class RouteController extends GuidanceController
 		}
 		return outputSettings;
 	}
-
+	
+	/*
+	 * returns true if a is closer to the target than b
+	 */
+	private boolean closerToTarget(Vector3d a, Vector3d b, Vector3d target)
+	{
+		double dA = a.dist(target);
+		double dB = b.dist(target);
+		if( dA > dB )
+			return true;
+		return false;
+	}
+	
+	private Vector3d getTargetVector(String target, SimulationSettings settings)
+	{
+		CelestialBody[] bodies = settings.celestialBodies;
+		for(int i = 0; i < bodies.length; i++)
+		{
+			if(bodies[i].name.equalsIgnoreCase(target))
+				return bodies[i].location;
+		}
+		return new Vector3d();
+	}
 }
