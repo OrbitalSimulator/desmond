@@ -33,27 +33,27 @@ public class SetupMenu {
     Vector3d[] newLocations;
     LocalDateTime startTime;
     LocalDateTime endTime;
-    
+
     JTextField[] fieldsRow1X;
     JTextField[] fieldsRow1Y;
     JTextField[] fieldsRow1Z;
-    
+
     JTextField[] fieldsRow2X;
     JTextField[] fieldsRow2Y;
     JTextField[] fieldsRow2Z;
-    
+
     JTextField[] fieldFor101;
     JTextField[] fieldFor102;
     JTextField[] fieldFor103;
-    
+
     JTextField[] fieldFor104;
     JTextField[] fieldFor105;
     JTextField[] fieldFor106;
-    
+
     JTextField[] fieldFor107;
-    
+
     JTextField[] fieldsRow3;
-    
+
     JComboBox[] comboBoxesForDates;
     JComboBox<String>[] comboBoxesForWaypoints;
     JButton[] buttons;
@@ -81,28 +81,28 @@ public class SetupMenu {
         selectValuesOfPlanets = new boolean[U.length];
         fieldsRow3=new JTextField[U.length];
         this.U = U;
-        
+
         startTime= settings.startTime;
         endTime=settings.endTime;
         comboBoxesForWaypoints = new JComboBox[2];
-        
+
         buttons = new JButton[6];
         arrayOfButtons = new JRadioButton[U.length];
         comboBoxesForDates = new JComboBox[6];
-        
+
         fieldFor101 = new JTextField[U.length];
         fieldFor102 = new JTextField[U.length];
         fieldFor103 = new JTextField[U.length];
-        
+
         fieldFor104 = new JTextField[U.length];
         fieldFor105 = new JTextField[U.length];
         fieldFor106 = new JTextField[U.length];
-        
+
         fieldFor107 = new JTextField[U.length];
         for(int i=0;i<comboBoxesForDates.length;i++){
             comboBoxesForDates[i]=new JComboBox();
         }
-        
+
         for(int i = 0; i<comboBoxesForDates.length; i=i+3){
             for(int j=00;j<32;j++){
                 comboBoxesForDates[0].setSelectedItem(startTime.getDayOfMonth());
@@ -110,7 +110,7 @@ public class SetupMenu {
                 comboBoxesForDates[i].addItem(j);
             }
         }
-        
+
         for(int i=1;i<5;i=i+3){
             for(int j=00;j<13;j++){
                 comboBoxesForDates[1].setSelectedItem(startTime.getMonthValue());
@@ -118,7 +118,7 @@ public class SetupMenu {
                 comboBoxesForDates[i].addItem(j);
             }
         }
-        
+
         for(int i=2;i<6;i=i+3){
             for(int j=1990;j<2060;j++){
                 comboBoxesForDates[2].setSelectedItem(startTime.getYear());
@@ -126,7 +126,7 @@ public class SetupMenu {
                 comboBoxesForDates[i].addItem(j);
             }
         }
-        
+
         for(int i=0;i< comboBoxesForWaypoints.length;i++){
             comboBoxesForWaypoints[i]=new JComboBox();
             for (CelestialBody celestialBody : U) {
@@ -152,7 +152,7 @@ public class SetupMenu {
         titles[15] = new JLabel("x10^");
         titles[16] = new JLabel("Mass");
         titles[17] = new JLabel("x10^");
-        
+
         comboBoxesForWaypoints[0].setSelectedItem(settings.waypoints[0]);
         comboBoxesForWaypoints[1].setSelectedItem("titan");
         panelForDates = new JPanel();
@@ -169,21 +169,21 @@ public class SetupMenu {
         }
 
         panelArray = new JPanel[8];
-        
+
         for(int i=0;i<panelArray.length;i++){
             panelArray[i] = new JPanel();
             panelArray[i].setLayout(new GridLayout(U.length+1,0));
         }
         mainFrame.add(mainPanel,BorderLayout.CENTER);
         mainFrame.add(panelForDates,BorderLayout.NORTH);
-        
+
         newVelocities = new Vector3d[U.length];
         newLocations = new Vector3d[U.length];
-        
+
         fieldsRow1X=new JTextField[U.length];
         fieldsRow1Y=new JTextField[U.length];
         fieldsRow1Z=new JTextField[U.length];
-        
+
         fieldsRow2X=new JTextField[U.length];
         fieldsRow2Y=new JTextField[U.length];
         fieldsRow2Z=new JTextField[U.length];
@@ -211,22 +211,22 @@ public class SetupMenu {
             panelArray[0].add(arrayOfButtons[i]);
             fieldsRow1X[i]= new JTextField(U[i].velocity.getX()+"");
             panelArray[1].add(fieldsRow1X[i]);
-            
+
             fieldsRow1Y[i]= new JTextField(U[i].velocity.getY()+"");
             panelArray[2].add(fieldsRow1Y[i]);
-            
+
             fieldsRow1Z[i]= new JTextField(U[i].velocity.getZ()+"");
             panelArray[3].add(fieldsRow1Z[i]);
-            
+
             fieldsRow2X[i] = new JTextField(U[i].location.getX()+"");
             panelArray[4].add(fieldsRow2X[i]);
-            
+
             fieldsRow2Y[i] = new JTextField(U[i].location.getY()+"");
             panelArray[5].add(fieldsRow2Y[i]);
-            
+
             fieldsRow2Z[i] = new JTextField(U[i].location.getZ()+"");
             panelArray[6].add(fieldsRow2Z[i]);
-            
+
             fieldsRow3[i] = new JTextField(U[i].mass+"");
             panelArray[7].add(fieldsRow3[i]);
         }
@@ -235,32 +235,32 @@ public class SetupMenu {
         buttons[0] = new JButton("Start Universe");
         buttons[0].setVisible(false);
         buttons[0].addActionListener(e -> start());
-        
+
         buttons[1] = new JButton("Set Waypoints");
         buttons[1].addActionListener(e -> setWaypoints());
-        
+
         buttons[2] = new JButton("Set Dates");
         buttons[2].addActionListener(e-> setDates());
-        
+
         buttons[3] = new JButton("Change Values");
         buttons[3].addActionListener(e-> changeValues());
-        
+
         buttons[4] = new JButton("Set Values");
         buttons[4].addActionListener(e-> setValues());
         buttons[4].setVisible(false);
-        
+
         buttons[5] = new JButton("Undo Changes");
         buttons[5].addActionListener(e-> undo());
-        
+
         for (JButton jButton : buttons) {
             button.add(jButton);
         }
-        
+
         mainFrame.add(button,BorderLayout.SOUTH);
         for (int i=0;i<panelArray.length;i++) {
             mainPanel.add(panelArray[i]);
         }
-        
+
         panelForDates.add(titles[2]);
         for(int i=0;i<comboBoxesForWaypoints.length;i++){
             panelForDates.add(comboBoxesForWaypoints[i]);
@@ -296,7 +296,7 @@ public class SetupMenu {
         Visualiser visualiser = new Visualiser(universe.universe);
         visualiser.addTrajectory(TrajectoryPlanner.plot(universe, settings));
     }
-    
+
     private void setWaypoints(){
         buttons[0].setVisible(true);
         waypoints = new String[2];
@@ -305,7 +305,7 @@ public class SetupMenu {
             System.out.println(waypoints[i]);
         }
     }
-    
+
     //Bug with datatype
     //ToDo
     private void setDates(){
@@ -323,7 +323,7 @@ public class SetupMenu {
         endTime = LocalDateTime.of(date, time);
 
     }
-    
+
     private void changeValues(){
         mainPanel.setVisible(false);
         newPanel=new JPanel();
@@ -387,25 +387,20 @@ public class SetupMenu {
         }
         mainFrame.add(newPanel);
     }
-    
     private void setValues(){
         for(int i=0;i<U.length;i++){
-
             U[i].mass= Math.pow(10,Double.parseDouble(fieldFor107[i].getText()))*Double.parseDouble(fieldsRow3[i].getText());
-            newVelocities[i] = new Vector3d(Integer.parseInt(fieldsRow1X[i].getText()),Integer.parseInt(fieldsRow1Y[i].getText()),Integer.parseInt(fieldsRow1Z[i].getText()));
-            newLocations[i] = new Vector3d(Integer.parseInt(fieldsRow2X[i].getText()),Integer.parseInt(fieldsRow2Y[i].getText()),Integer.parseInt(fieldsRow2Z[i].getText()));
+            newVelocities[i] = new Vector3d(Math.pow(10,Double.parseDouble(fieldFor101[i].getText()))*Double.parseDouble(fieldsRow1X[i].getText()),Math.pow(10,Double.parseDouble(fieldFor102[i].getText()))*Double.parseDouble(fieldsRow1Y[i].getText()),Math.pow(10,Double.parseDouble(fieldFor103[i].getText()))*Double.parseDouble(fieldsRow1Z[i].getText()));
+            newLocations[i] = new Vector3d(Math.pow(10,Double.parseDouble(fieldFor104[i].getText()))*Double.parseDouble(fieldsRow2X[i].getText()),Math.pow(10,Double.parseDouble(fieldFor105[i].getText()))*Double.parseDouble(fieldsRow2Y[i].getText()),Math.pow(10,Double.parseDouble(fieldFor106[i].getText()))*Double.parseDouble(fieldsRow2Z[i].getText()));
             U[i].velocity=newVelocities[i];
             U[i].location=newLocations[i];
         }
-
-
     }
-
     private void undo(){
         buttons[4].setVisible(false);
         newPanel.setVisible(false);
         mainPanel.setVisible(true);
 
-    }
 
+    }
 }
