@@ -19,13 +19,18 @@ public class App
 		{
 			settings = SettingsFileManager.load();
 			SetupMenu setupMenu = new SetupMenu(settings);
+			while(!setupMenu.inputComplete())
+			{
+				Thread.sleep(100);
+			}
 			settings = setupMenu.getSettings();
 			Universe universe = new Universe(settings);
 			Visualiser visualiser = new Visualiser(universe.universe);
 			visualiser.addTrajectory(TrajectoryPlanner.plot(universe, settings));
 		}
-		catch(IOException e)
-		{
+		catch(IOException e){
+			e.printStackTrace();
+		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
     }

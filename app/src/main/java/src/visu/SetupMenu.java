@@ -32,7 +32,7 @@ public class SetupMenu {
     private Vector3d[] newLocations;
     private LocalDateTime startTime;
     private LocalDateTime endTime;
-    SimulationSettings settingsToSimulate;
+    SimulationSettings settings;
 
     private JTextField[] fieldForVelocityX;
     private JTextField[] fieldForVelocityY;
@@ -62,13 +62,13 @@ public class SetupMenu {
 
     private String[] waypointsToReturn;
     private boolean[] selectValuesOfPlanets;
-    private SimulationSettings settings;
-    public boolean completed;
-    Universe universe;
-    public SetupMenu(SimulationSettings settings) throws IOException {
+    private boolean inputComplete = false;
 
-        this.U=settings.celestialBodies;
-        this.settings=settings;
+    
+    public SetupMenu(SimulationSettings settings) throws IOException 
+    {
+        this.U = settings.celestialBodies;
+        this.settings = settings;
 
         mainFrame = new JFrame("Setup Menu");
         mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -79,8 +79,6 @@ public class SetupMenu {
         mainPanel = new JPanel();
         mainPanel.setLayout(new GridLayout(0,8));
 
-        universe = new Universe(settings);
-
         rowValueForLayout = U.length+1;
         titles = new JLabel[18];
         titles[0] = new JLabel("Start Date");
@@ -88,12 +86,12 @@ public class SetupMenu {
         titles[2] = new JLabel("Waypoints");
         titles[3] = new JLabel("Name");
         
-        this.U=settings.celestialBodies;
+        this.U = settings.celestialBodies;
         selectValuesOfPlanets = new boolean[U.length];
         fieldForMass =new JTextField[U.length];
 
-        startTime= settings.startTime;
-        endTime=settings.endTime;
+        startTime = settings.startTime;
+        endTime =settings.endTime;
         comboBoxesForWaypoints = new JComboBox[2];
 
         buttons = new JButton[6];
@@ -108,7 +106,6 @@ public class SetupMenu {
         fieldForPowerof10LocationY = new JTextField[U.length];
         fieldForPowerof10LocationZ = new JTextField[U.length];
 
-        completed=false;
         fieldForPowerof10Mass = new JTextField[U.length];
         for(int i=0;i<comboBoxesForDates.length;i++){
             comboBoxesForDates[i]=new JComboBox();
@@ -144,8 +141,7 @@ public class SetupMenu {
                 comboBoxesForWaypoints[i].addItem(celestialBody.name);
             }
         }
-
-
+        
         comboBoxesForWaypoints[0].setSelectedItem(settings.waypoints[0]);
         comboBoxesForWaypoints[1].setSelectedItem("titan");
         panelForDates = new JPanel();
@@ -182,8 +178,6 @@ public class SetupMenu {
         fieldForLocationZ =new JTextField[U.length];
 
         generateTitles();
-
-
 
         for(int i=0;i<U.length;i++){
             fieldForPowerof10VelocityX[i]=new JTextField("x 10^");
@@ -253,9 +247,9 @@ public class SetupMenu {
         }
         mainFrame.setVisible(true);
     }
+    
     private void start()
     {
-        
         mainFrame.setVisible(false);
         for(int i=0;i<U.length;i++){
             selectValuesOfPlanets[i]=arrayOfButtons[i].isSelected();
@@ -278,9 +272,9 @@ public class SetupMenu {
         waypointsToReturn = new String[2];
         waypointsToReturn[0] = waypoints[0];
         waypointsToReturn[1] = waypoints[1];
-        settingsToSimulate=new SimulationSettings(settings.celestialBodies,startPoint, settings.probeStartVelocity,settings.startTime,settings.endTime,settings.noOfSteps,settings.stepSize, waypointsToReturn);
-
+        inputComplete = true;
     }
+    
     private void setWaypoints(){
         buttons[0].setVisible(true);
         waypoints = new String[2];
@@ -290,22 +284,20 @@ public class SetupMenu {
         }
     }
 
-    //Bug with datatype
-    //ToDo
-    private void setDates(){
-
-        String startYear= Integer.toString((Integer) comboBoxesForDates[2].getSelectedItem());
-        String startMonth= Integer.toString((Integer) comboBoxesForDates[1].getSelectedItem());
-        String startDay= Integer.toString((Integer) comboBoxesForDates[0].getSelectedItem());
-        String endYear= Integer.toString((Integer) comboBoxesForDates[5].getSelectedItem());
-        String endMonth= Integer.toString((Integer) comboBoxesForDates[4].getSelectedItem());
-        String endDay= (Integer.toString((Integer) comboBoxesForDates[3].getSelectedItem()));
+    // TODO (Alp) repair set date
+    private void setDates()
+    {
+        String startYear = Integer.toString((Integer) comboBoxesForDates[2].getSelectedItem());
+        String startMonth = Integer.toString((Integer) comboBoxesForDates[1].getSelectedItem());
+        String startDay = Integer.toString((Integer) comboBoxesForDates[0].getSelectedItem());
+        String endYear = Integer.toString((Integer) comboBoxesForDates[5].getSelectedItem());
+        String endMonth = Integer.toString((Integer) comboBoxesForDates[4].getSelectedItem());
+        String endDay = (Integer.toString((Integer) comboBoxesForDates[3].getSelectedItem()));
         LocalDate startDate = LocalDate.parse(startYear+"-"+startMonth+"-"+startDay);
         LocalTime time = LocalTime.parse("00:00:01");
         startTime = LocalDateTime.of(startDate, time);
         LocalDate date = LocalDate.parse(endYear+"-"+endMonth+"-"+endDay);
         endTime = LocalDateTime.of(date, time);
-
     }
 
     private void editVelocityLocationMass()
@@ -381,13 +373,16 @@ public class SetupMenu {
         buttons[4].setVisible(false);
         newPanel.setVisible(false);
         mainPanel.setVisible(true);
-
-
     }
 
     public SimulationSettings getSettings()
     {
-        return settingsToSimulate;
+        return settings;
+    }
+    
+    public boolean inputComplete()
+    {
+    	return inputComplete;
     }
 
     private void generateTitles()
@@ -419,7 +414,4 @@ public class SetupMenu {
         panelArray[6].add(titles[14]);
         panelArray[7].add(titles[16]);
     }
-    
-
-
 }
