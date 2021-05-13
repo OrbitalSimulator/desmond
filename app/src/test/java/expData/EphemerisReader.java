@@ -30,19 +30,7 @@ public class EphemerisReader
 	private String startOfEph = "$$SOE";
 	private String endOfEph  = "$$EOE";
 	private LinkedList<CelestialBody> bodies;
-	
-	//0  Ephemeris_Sol.txt
-	//1  Ephemeris_Merc.txt
-	//2  Ephemeris_Venu.txt
-	//3  Ephemeris_Eart.txt
-	//4  Ephemeris_Luna.txt
-	//5  Ephemeris_Mars.txt
-	//6  Ephemeris_Jupt.txt
-	//7  Ephemeris_Satu.txt
-	//8  Ephemeris_Tita.txt
-	//9  Ephemeris_Uran.txt
-	//10 Ephemeris_Nept.txt
-		
+			
 	public EphemerisReader(String fileName)
 	{
 		this.fileName = fileName;
@@ -250,48 +238,35 @@ public class EphemerisReader
 	
 	private String lookUpImage(String name)
 	{
-		FileSystem fileSystem = FileSystems.getDefault();
-		String path = fileSystem.getPath("").toAbsolutePath().toString();
-		
 		switch(name)
-		{
-			case "Sun": 		
-					path = path.concat("/src/main/java/src/misc/sunScaled.png");
-					return path;              
-			case "Mercury":	
-					path = path.concat("/src/main/java/src/misc/mercuryScaled.png");
-					return path;                       
-			case "Venus": 		
-					path = path.concat("/src/main/java/src/misc/venusScaled.png");
-					return path;                 
-			case "Earth": 
-					path = path.concat("/src/main/java/src/misc/earthScaled.png");
-					return path;              
-			case "Moon":
-					path = path.concat("/src/main/java/src/misc/moonScaled.png");
-					return path;                
-			case "Mars": 
-					path = path.concat("/src/main/java/src/misc/marsScaled.png");
-					return path;                    
-			case "Jupiter":
-					path = path.concat("/src/main/java/src/misc/jupiterScaled.png");
-					return path;                     
-			case "Saturn": 
-					path = path.concat("/src/main/java/src/misc/saturnScaled.png");
-					return path;                  
-			case "Titan": 
-					path = path.concat("/src/main/java/src/misc/titanScaled.png");
-					return path;              
-			case "Uranus": 
-					path = path.concat("/src/main/java/src/misc/uranusScaled.png");
-					return path;                   
-			case "Neptune":
-					path = path.concat("/src/main/java/src/misc/neptuneScaled.png");
-					return path;              
-			default:
-				return null;
-		}
+        {
+            case "Sun":             
+                    return "sunScaled.png";
+            case "Mercury": 
+            		return "mercuryScaled.png";
+            case "Venus":
+                    return "venusScaled.png";
+            case "Earth":
+                    return "earthScaled.png";
+            case "Moon":
+                    return "moonScaled.png";
+            case "Mars":
+                    return "marsScaled.png";
+            case "Jupiter":
+                    return "jupiterScaled.png";
+            case "Saturn":
+                    return "saturnScaled.png";
+            case "Titan":
+                    return "titanScaled.png";
+            case "Uranus":
+                    return "uranusScaled.png";
+            case "Neptune":
+                    return "neptuneScaled.png";
+            default:
+                    return null;
+        }
 	}
+
 	
 	private String lookUpIcon(String name)
 	{
