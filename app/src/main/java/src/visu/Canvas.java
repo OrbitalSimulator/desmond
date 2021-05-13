@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
+import src.misc.ResourceLoader;
 import src.peng.Vector3d;
 import src.univ.*;
 
@@ -138,22 +139,14 @@ public class Canvas extends JPanel
 			y += yOffset;
 			
 			// If the planet has a skin, draw a scaled image
-			if(U[i][time].image != null)
-			{
-				try 
-				{ 
-					String path = fileSystem.getPath("").toAbsolutePath().toString();
-					path = path.concat(U[i][time].image);
-					BufferedImage img = ImageIO.read(new File(path));
-					g.drawImage(img, x, y, r, r, null);
-				} 
-				catch (IOException e) 
-				{
-					System.out.println("Unable to find image: " + U[i][time].name);
-				}
-			}
-			else
-				g.fillOval(x, y, r, r);
+            if(U[i][time].image != null)
+            {
+                    BufferedImage img = ResourceLoader.getImage(U[i][time].image);
+                    g.drawImage(img, x, y, r, r, null);
+            }
+            else
+                    g.fillOval(x, y, r, r);
+
 		}
 	}
 	
