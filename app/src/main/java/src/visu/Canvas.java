@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.nio.file.FileSystem;
 import java.nio.file.FileSystems;
 import java.util.ArrayList;
+import java.util.Stack;
 
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
@@ -30,6 +31,7 @@ public class Canvas extends JPanel
 {
 	private static final long serialVersionUID = 1L;
 	private final int ORBIT_PAINT_RATE = 10;
+	private final int TRAJ_PAINT_RATE = 20;
 	
 	private int xOffset;
 	private int yOffset;
@@ -43,24 +45,27 @@ public class Canvas extends JPanel
 	private double detailSize = 3E-6;
 	private double zoom_rate = 1E-10;
 	
-	private FileSystem fileSystem = FileSystems.getDefault();
 	private Dimension screen;
 	private CelestialBody[][] U;
+
 	private int time;						// Current time
 	private int endTime;
 	private boolean follow = false;
 	private int following = -1;
 	
-	
-	private ArrayList<Vector3d[]> trajectories;
+	private Stack<Vector3d[]> tempStack = new Stack<Vector3d[]>();
+	private Stack<Vector3d[]> permStack = new Stack<Vector3d[]>();
+	private ArrayList<Vector3d[]> tempTrajs = new ArrayList<Vector3d[]>();
+	private ArrayList<Vector3d[]> permTrajs = new ArrayList<Vector3d[]>();
+	private boolean purgeTempTrajs = false;
 	
 	public Canvas(CelestialBody[][] U, Dimension screen)
 	{
 		this.U = U;
+		this.screen = screen;
+		setSize(screen);
 		time = 0;
 		endTime = U[0].length;
-		setSize(screen);
-		this.screen = screen;
 		xOffset = 0;
 		yOffset = 0;
 		xOrigin = getWidth()/ 2;
@@ -85,11 +90,8 @@ public class Canvas extends JPanel
 		
 		paintOrbits(g);
 		paintCelestialBodies(g);
-	
-		if(trajectories != null)
-		{
-			paintTrajectories(g);
-		}
+		paintTempTrajs(g);
+		paintPermTrajs(g);
 	}
 	
 	private void paintDateTime(Graphics2D g)
@@ -150,10 +152,52 @@ public class Canvas extends JPanel
 		}
 	}
 	
-	private void paintTrajectories(Graphics2D g)
+	private void paintTempTrajs(Graphics2D g)
 	{
+		while(!tempStack.isEmpty())
+		{
+			tempTrajs.add(tempStack.pop());
+		}
+		
+		if(purgeTempTrajs)
+		{
+			tempStack.removeAllElements();
+			tempTrajs.clear();
+		}
+		
+		if(tempTrajs.isEmpty())
+			return;
+		
 		g.setColor(Color.RED);
-		for(Vector3d[] each: trajectories)		
+		for(Vector3d[] each: tempTrajs)		
+		{
+			for(int i = 0; i < each.length; i+= TRAJ_PAINT_RATE)
+			{
+				int x = xOrigin;
+				x += (int) (each[i].getX() * distScaling);
+				x += xOffset;
+				
+				int y = yOrigin;
+				y += (int) (each[i].getY() * distScaling);
+				y += yOffset;
+				
+				g.fillOval(x, y, 2, 2);
+			}
+		}
+	}
+	
+	private void paintPermTrajs(Graphics2D g)
+	{
+		while(!permStack.isEmpty())
+		{
+			permTrajs.add(permStack.pop());
+		}
+		
+		if(permTrajs.isEmpty())
+			return;
+		
+		g.setColor(Color.YELLOW);
+		for(Vector3d[] each: permTrajs)		
 		{
 			for(int i = 0; i < each.length; i++)
 			{
@@ -170,29 +214,21 @@ public class Canvas extends JPanel
 		}
 	}
 	
-	public void addTrajectories(ArrayList<Vector3d[]> trajectories)
+	public void addPermTraj(Vector3d[] trajectory)
 	{
-		if(this.trajectories == null)
-		{
-			this.trajectories = trajectories;
-		}
-		else
-		{
-			for(Vector3d[] each: trajectories)
-			{
-				this.trajectories.add(each);
-			}
-		}
-    	repaint();
+		permStack.add(trajectory);
+		repaint();
 	}
 	
-	public void addTrajectory(Vector3d[] trajectory)
+	public void addTempTraj(Vector3d[] trajectory)
 	{
-		if(this.trajectories == null)
-		{
-			this.trajectories = new ArrayList<Vector3d[]>();	
-		}
-		trajectories.add(trajectory);
+		tempStack.add(trajectory);
+		repaint();
+	}
+	
+	public void clearTempTraj()
+	{
+		purgeTempTrajs = true;
 		repaint();
 	}
 	
