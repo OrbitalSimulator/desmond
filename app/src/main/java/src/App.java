@@ -25,8 +25,8 @@ public class App
 			}
 			settings = setupMenu.getSettings();
 			Universe universe = new Universe(settings);
-			Visualiser visualiser = new Visualiser(universe.universe);
-			visualiser.addTrajectory(TrajectoryPlanner.plot(universe, settings));
+			Visualiser.getInstance().addUniverse(universe.universe);		
+			Visualiser.getInstance().addPermTrajectory(TrajectoryPlanner.plot(universe, settings));
 		}
 		catch(IOException e){
 			e.printStackTrace();

@@ -37,6 +37,6 @@ class TestVisualiser
 			U[i] = er.getOrbit(); 
 		}
 		
-		Visualiser v = new Visualiser(U);
+		Visualiser.getInstance().addUniverse(U);
 	}
 }

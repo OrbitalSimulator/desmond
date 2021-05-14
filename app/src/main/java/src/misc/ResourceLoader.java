@@ -29,4 +29,22 @@ public abstract class ResourceLoader
 		}
 		return new ImageIcon(image);
 	}
+	
+	public static BufferedImage getImage(String name)
+    {
+            FileSystem fileSystem = FileSystems.getDefault();
+            String systemPath = fileSystem.getPath("").toAbsolutePath().toString();
+            String appPath = "/src/main/java/src/misc/";
+            String path = systemPath + appPath + name;
+            BufferedImage image;
+            try {
+                    image = ImageIO.read(new File(path));
+            } catch (IOException e) {
+                    image = null;
+                    System.out.println(name + " not found");
+                    e.printStackTrace();
+            }
+            return image;
+    }
+
 }

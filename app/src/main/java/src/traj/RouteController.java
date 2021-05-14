@@ -11,6 +11,7 @@ import src.peng.Vector3dInterface;
 import src.solv.RungeKutta4th;
 import src.univ.CelestialBody;
 import src.univ.Universe;
+import src.visu.Visualiser;
 
 public class RouteController extends GuidanceController
 {
@@ -98,6 +99,8 @@ public class RouteController extends GuidanceController
 			currentPosition = getProbePosition(nextState);
 			trajectory[currentStep++] = currentPosition;
 		}
+		Visualiser.getInstance().clearTempTrajectories();
+		Visualiser.getInstance().addPermTrajectory(trajectory);
 		return trajectory;
 	}
 	
@@ -126,6 +129,7 @@ public class RouteController extends GuidanceController
 			currentPosition = getProbePosition(nextState);
 			trajectory[currentStep++] = currentPosition;
 		}
+		Visualiser.getInstance().addTempTrajectory(trajectory);
 		return trajectory[trajectory.length-1];
 	}
 	
