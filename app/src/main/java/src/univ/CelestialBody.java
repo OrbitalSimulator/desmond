@@ -54,6 +54,24 @@ public class CelestialBody
 			return true;
 		return false;
 	}
+	
+	/**
+	 * Returns the closest point on the surface of {@code this} CelesialBody to the target.
+	 * @param target
+	 * @return
+	 */
+	public Vector3d closestLaunchPoint(Vector3d target)
+	{
+		Vector3d P1 = this.location;
+		Vector3d P2 = target;
+		double dX = P2.getX() - P1.getX();
+		double dY = P2.getY() - P1.getY();
+		double dZ = P2.getZ() - P1.getZ();
+		
+		Vector3d slope = new Vector3d(dX, dY, dZ);
+		slope = slope.unitVector();
+		return slope.mul(radius);
+	}
 
 	/**
 	 * Calculate the Sphere of Influence of an orbiting planet.

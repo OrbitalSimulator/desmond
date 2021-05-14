@@ -56,6 +56,71 @@ class TestCelestialBody
 		}
 	}
 	
+	//-----------------------------------------------------------------------
+	
+		@Test
+		void testClosestLaunchPositionPositiveX()
+		{
+			double x = buildLaunchTest(new Vector3d(5,5,5)).getX();
+			assertEquals(1.15, x);
+		}
+		
+		@Test
+		void testClosestLaunchPositionPositiveY()
+		{
+			double y = buildLaunchTest(new Vector3d(5,5,5)).getY();
+			assertEquals(1.15, y);
+		}
+		
+		@Test
+		void testClosestLaunchPositionPositiveZ()
+		{
+			double z = buildLaunchTest(new Vector3d(5,5,5)).getZ();
+			double error = 0.001;
+			assertEquals(1.15, z);
+		}
+		
+		@Test
+		void testClosestLaunchPositionNegativeX()
+		{
+			double x = buildLaunchTest(new Vector3d(-5,-5,-5)).getX();
+			double error = 0.001;
+			assertEquals(-1.15, x);
+		}
+		
+		@Test
+		void testClosestLaunchPositionNegativeY()
+		{
+			double y = buildLaunchTest(new Vector3d(-5,-5,-5)).getY();
+			double error = 0.001;
+			assertEquals(-1.15, y);
+		}
+		
+		@Test
+		void testClosestLaunchPositionNegativeZ()
+		{
+			double z = buildLaunchTest(new Vector3d(-5,-5,-5)).getZ();
+			double error = 0.001;
+			assertEquals(-1.15, z);
+		}
+		
+		private Vector3d buildLaunchTest(Vector3d target)
+		{
+			// Site used for calculating results:
+			// http://www.ambrsoft.com/TrigoCalc/Sphere/SpherLineIntersection_.htm 
+			
+			Vector3d position = new Vector3d(0,0,0);
+			Vector3d velocity = new Vector3d(0,0,0);
+			
+			double radius = 2;
+			CelestialBody cb = new CelestialBody(position, velocity, 0, radius, null, null, null, LocalDateTime.now());
+			Vector3d launchPt =  cb.closestLaunchPoint(target);
+			Vector3d launchPtRounded = new Vector3d(launchPt.getRoundedX(2),launchPt.getRoundedY(2), launchPt.getRoundedZ(2));
+			return launchPtRounded;
+		}
+		
+		//-----------------------------------------------------------------------
+	
 	@Test
 	void testTimeInMs_Second()
 	{
