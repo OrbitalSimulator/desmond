@@ -38,6 +38,7 @@ import src.univ.CelestialBody;
 public class Visualiser extends JFrame implements MouseMotionListener, ActionListener, ChangeListener, MouseListener
 {
 	private static final long serialVersionUID = 1L;
+	private static Visualiser instance;
 	
 	private Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
 	private Point mousePoint = new Point();
@@ -53,7 +54,34 @@ public class Visualiser extends JFrame implements MouseMotionListener, ActionLis
 	private JButton[] planetBtn;
 	private JSlider timeSlider;
 
-	public Visualiser(CelestialBody[][] U)
+	private Visualiser()
+	{
+		// Left empty on purpose
+	}
+	
+	public static Visualiser getInstance()
+	{
+		if(instance == null)
+			instance = new Visualiser();
+		return instance;
+	}
+		
+	public void addTempTrajectory(Vector3d[] trajectory)
+	{
+		canvas.addTempTraj(trajectory);
+	}
+	
+	public void addPermTrajectory(Vector3d[] trajectory)
+	{
+		canvas.addPermTraj(trajectory);
+	}
+	
+	public void clearTempTrajectories()
+	{
+		canvas.clearTempTraj();
+	}
+	
+	public void addUniverse(CelestialBody[][] U)
 	{
 		System.out.print("Starting visualisation ...");
 		setTitle("Desmond");
@@ -139,16 +167,6 @@ public class Visualiser extends JFrame implements MouseMotionListener, ActionLis
 		timer = new Timer(1, timeEvent);
 		timer.start();
 		System.out.println(" Done");
-	}
-	
-	public void addTrajectories(ArrayList<Vector3d[]> trajectories)
-	{
-		canvas.addTrajectories(trajectories);
-	}
-	
-	public void addTrajectory(Vector3d[] trajectory)
-	{
-		canvas.addTrajectory(trajectory);
 	}
 	
 	private JButton createButton(String iconName)
