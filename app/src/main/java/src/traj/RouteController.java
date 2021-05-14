@@ -96,7 +96,7 @@ public class RouteController extends GuidanceController
 			State nextState = solver.step(funct, currentTime, currentState, settings.stepSize);
 			
 			currentPosition = getProbePosition(nextState);
-			currentPosition = getProbePosition(nextState);
+			currentVelocity = getProbeVelocity(nextState);
 			trajectory[currentStep++] = currentPosition;
 		}
 		Visualiser.getInstance().clearTempTrajectories();
@@ -126,7 +126,7 @@ public class RouteController extends GuidanceController
 			State nextState = solver.step(funct, currentTime, currentState, settings.stepSize);
 			
 			currentPosition = getProbePosition(nextState);
-			currentPosition = getProbePosition(nextState);
+			currentVelocity = getProbeVelocity(nextState);
 			trajectory[currentStep++] = currentPosition;
 		}
 		Visualiser.getInstance().addTempTrajectory(trajectory);
