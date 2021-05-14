@@ -21,7 +21,7 @@ public class RouteController extends GuidanceController
 	public RouteController(Universe universe, String targetName, SimulationSettings settings) 
 	{
 		super(universe, targetName);
-		mutationRate = 1000;
+		mutationRate = 800;
 		Vector3d target = getTargetVector(targetName, universe, settings);
 		trajectory = hillClimbAlogrithm(target, settings);
 	}
