@@ -5,7 +5,6 @@ import src.conf.SimulationSettings;
 import src.peng.Vector3d;
 import src.peng.Vector3dInterface;
 import src.univ.CelestialBody;
-import src.univ.Universe;
 import javax.swing.*;
 import java.awt.*;
 import java.io.IOException;
@@ -64,7 +63,19 @@ public class SetupMenu {
     private boolean[] selectValuesOfPlanets;
     private boolean inputComplete = false;
 
-    
+    private int intValueOfStartDay;
+    private int intValueOfStartMonth;
+
+
+    private int intValueOfEndDay;
+    private int intValueOfEndMonth;
+
+    private String startDay;
+    private String startMonth;
+    private String endDay;
+    private String endMonth;
+
+
     public SetupMenu(SimulationSettings settings) throws IOException 
     {
         this.U = settings.celestialBodies;
@@ -287,12 +298,36 @@ public class SetupMenu {
     // TODO (Alp) repair set date
     private void setDates()
     {
+        intValueOfStartDay=(Integer)comboBoxesForDates[0].getSelectedItem();
+        intValueOfStartMonth=(Integer)comboBoxesForDates[1].getSelectedItem();
+        intValueOfEndDay=(Integer)comboBoxesForDates[3].getSelectedItem();
+        intValueOfEndMonth=(Integer)comboBoxesForDates[4].getSelectedItem();
+        if(intValueOfStartDay<10){
+            startDay = "0"+Integer.toString((Integer) intValueOfStartDay);
+        }
+        else{
+            startDay = Integer.toString((Integer) intValueOfStartDay);
+        }
+        if(intValueOfStartMonth<10){
+            startMonth = "0"+Integer.toString((Integer) intValueOfStartMonth);
+        }
+        else{
+            String startMonth = Integer.toString((Integer) intValueOfStartMonth);
+        }
+        if(intValueOfStartDay<10){
+            endDay = "0"+Integer.toString((Integer) intValueOfEndDay);
+        }
+        else{
+            endDay = Integer.toString((Integer) intValueOfEndDay);
+        }
+        if(intValueOfStartDay<10){
+            endMonth = "0"+Integer.toString((Integer) intValueOfEndMonth);
+        }
+        else{
+            endMonth = Integer.toString((Integer) intValueOfEndMonth);
+        }
         String startYear = Integer.toString((Integer) comboBoxesForDates[2].getSelectedItem());
-        String startMonth = Integer.toString((Integer) comboBoxesForDates[1].getSelectedItem());
-        String startDay = Integer.toString((Integer) comboBoxesForDates[0].getSelectedItem());
         String endYear = Integer.toString((Integer) comboBoxesForDates[5].getSelectedItem());
-        String endMonth = Integer.toString((Integer) comboBoxesForDates[4].getSelectedItem());
-        String endDay = (Integer.toString((Integer) comboBoxesForDates[3].getSelectedItem()));
         LocalDate startDate = LocalDate.parse(startYear+"-"+startMonth+"-"+startDay);
         LocalTime time = LocalTime.parse("00:00:01");
         startTime = LocalDateTime.of(startDate, time);
@@ -377,6 +412,14 @@ public class SetupMenu {
 
     public SimulationSettings getSettings()
     {
+        settings=new SimulationSettings(settings.celestialBodies,
+                                        startPoint,
+                                        settings.probeStartVelocity,
+                                        startTime,
+                                        endTime, 
+                                        settings.noOfSteps,
+                                        settings.stepSize, 
+                                        waypointsToReturn);
         return settings;
     }
     
