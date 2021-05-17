@@ -68,9 +68,11 @@ public class CelestialBody
 		double dY = P1.getY() - P2.getY();
 		double dZ = P1.getZ() - P2.getZ();
 		
-		Vector3d slope = new Vector3d(dX, dY, dZ);
-		slope = slope.unitVector();
-		return slope.mul(radius);
+		Vector3d vector = new Vector3d(dX, dY, dZ);
+		vector = vector.unitVector();
+		vector = vector.mul(radius);
+		vector = this.location.add(vector);
+		return vector;
 	}
 
 	/**
