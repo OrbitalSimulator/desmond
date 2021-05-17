@@ -8,14 +8,17 @@ public abstract class TrajectoryPlanner
 {	
 	public static Vector3d[] plot(Universe universe, SimulationSettings settings)
 	{					
-		// Lookup start planet
-		//	-> V = V of start planet
+		int startPlanet = 7;
+		int endPlanet = 9;
+		
 		// Lookup end planet
 		//	-> P = startPlanet(t = 0).closestLaunchPoint(endPlanet(t = end)
+		Vector3d end = universe.universe[startPlanet][universe.universe.length-1].location;
 		
-		
-		Vector3d titan = universe.universe[8][universe.universe.length-1].location;
-		universe.universe[3][0].closestLaunchPoint(titan);
+		// Lookup start planet
+		//	-> V = V of start planet
+		settings.probeStartPosition = universe.universe[endPlanet][0].closestLaunchPoint(end);
+		settings.probeStartVelocity = universe.universe[endPlanet][0].velocity;
 		
 		RouteController rc = new RouteController(universe, "titan", settings);
 		return rc.getTrajectory();
