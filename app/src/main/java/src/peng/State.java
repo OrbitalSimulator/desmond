@@ -95,6 +95,20 @@ public class State implements StateInterface
         return sum;
     }
     
+    /**
+     * Displays State in String format
+     * @return String representing state object
+     */
+    public String toCSV()
+    {
+        String sum = "";
+        for(int i=0; i< velocity.size(); i++)
+        {
+            sum += "\nV:,"+ velocity.get(i).toCSV() + ",P:"+ position.get(i).toCSV()+ ",";
+        }
+        return sum;
+    }
+    
     
     /**
      * Adds the argument with this state and returns the answer
