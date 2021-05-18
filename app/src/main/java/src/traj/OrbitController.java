@@ -9,12 +9,12 @@ import src.solv.Verlet;
 import src.univ.CelestialBody;
 import src.univ.Universe;
 
+//Working under assumption that probe will always approach target at offset 90 degrees to the planet.
 public class OrbitController extends GuidanceController
 {
-	private double orbitalHeight;
-	private int targetIndexInState;
-	private double orbitalError = 50e3;
-	private double scaler = 8000;
+	private double scaler = 3000;
+	private double dampener = 5000;
+	public static final boolean DEBUG = true;
 
 	public OrbitController(Universe universe, String target,  SimulationSettings settings)
 	{
@@ -35,15 +35,16 @@ public class OrbitController extends GuidanceController
 		Vector3d currentPosition = (Vector3d) settings.probeStartPosition;
 		Vector3d currentVelocity = (Vector3d) settings.probeStartVelocity;
 
-		orbitalHeight = calculateOrbitalHeight(currentPosition, target, universe);
-
 		while(currentStep < settings.noOfSteps)
 		{
 			double currentTime = currentStep * settings.stepSize;
 			State currentState = addProbe(universe.getStateAt(currentStep), currentPosition, currentVelocity);
 			State nextState = solver.step(funct, currentTime, currentState, settings.stepSize);
 
-			Vector3d impulse = calculateImpulsionToRemainInOrbit(nextState);
+			//TODO Access target Planet at the current state
+			//TODO Use int target to access planet
+			CelestialBody targetPlanet = universe.universe[0][currentStep];
+			Vector3d impulse = calculateImpulsionToRemainInOrbit(nextState, targetPlanet);
 
 			currentPosition = getProbePosition(nextState);
 			currentVelocity = getProbeVelocity(nextState).add(impulse);
@@ -53,64 +54,48 @@ public class OrbitController extends GuidanceController
 		return trajectory;
 	}
 
-	public Vector3d calculateImpulsionToRemainInOrbit(State nextState)
+	public Vector3d calculateImpulsionToRemainInOrbit(State nextState, CelestialBody target)
 	{
-		Vector3d probeNextPosition = getProbePosition(nextState);
-		Vector3d targetNextPosition = nextState.position.get(targetIndexInState);
-		double currentHeight = probeNextPosition.dist(targetNextPosition);
-		System.out.println("Current height: "+ currentHeight+ "  orbitalHeight: "+orbitalHeight);
-		Vector3d impulse = new Vector3d(0,0,0);
+		Vector3d probeNextPosition = getProbePosition(nextState); 														//Probe next position
 
-		if(Math.abs(orbitalHeight - currentHeight) >= orbitalError) 													//Orbital breech detected
+		Vector3d impulse = new Vector3d(0,0,0);
+		String probeOrbitalStatus = target.orbitalBoundaryBreech(probeNextPosition);
+
+		if(probeOrbitalStatus.equalsIgnoreCase("Outer boundary"))
 		{
-			if(currentHeight >= orbitalHeight)															//Case 1: Probe has hit outer boundary
+			Vector3d directionVector = calculateProbeLinearDirectionVector(probeNextPosition);
+			directionVector = directionVector.mul(-1);																	//Invert directionalVector
+			impulse = directionVector.mul(scaler);
+			//TODO delete DEBUG
+			if(DEBUG)
 			{
 				System.out.println(" First Case: Outer");
-				Vector3d directionVector = calculateDirectionToTarget(probeNextPosition, targetNextPosition);
-				System.out.println(directionVector.toString());
-				impulse = directionVector.mul(scaler);
+				System.out.println("Direction Vector: " +directionVector.toString());
 			}
-			else																										//Case 2: Probe has hit inner boundary
+		}
+		else if(probeOrbitalStatus.equalsIgnoreCase("Inner boundary"))
+		{
+			Vector3d directionVector = calculateProbeLinearDirectionVector(probeNextPosition);
+			impulse = directionVector.mul(scaler);
+			//TODO delete DEBUG
+			if(DEBUG)
 			{
 				System.out.println(" Second case: Inner");
-				Vector3d directionVector = calculateDirectionToTarget(probeNextPosition, targetNextPosition);
-				directionVector = directionVector.mul(-1); 															    //Invert directionalVector
-				System.out.println(directionVector.toString());
-				impulse = directionVector.mul(scaler);
+				System.out.println("Direction Vector: " +directionVector.toString());
 			}
-			scaler = scaler - scaler/10000; 																							//Apply dampener
-			orbitalError = orbitalError - 1000;
 		}
-		System.out.println("Impulse: " + impulse.toString());
+
+		if(!probeOrbitalStatus.equalsIgnoreCase("Neutral"))													//Apply dampener
+		{
+			scaler = scaler - scaler/dampener;
+		}
+
 		return impulse;
 	}
 
-	//orbital Height  - Method to determine height of orbit. Originating from probe initial position and target planet
-	public double calculateOrbitalHeight(Vector3d initialPosition, String target, Universe universe)
+	public Vector3d calculateProbeLinearDirectionVector(Vector3d probePosition)
 	{
-		Vector3d targetPlanetPosition = identifyTargetPlanet(universe, target).location;
-		return  initialPosition.dist(targetPlanetPosition);
-	}
-
-	//Determine's target celestial body from universe
-	//TODO Implement version capable of identifying position at start of orbit (traj + orbit cohesion)
-	public CelestialBody identifyTargetPlanet(Universe universe, String target)
-	{
-		for(int i = 0; i< universe.universe.length; i++)
-		{
-			if(universe.universe[i][0].name.equalsIgnoreCase(target))
-			{
-				targetIndexInState = i;
-				return universe.universe[i][0];
-			}
-		}
-		throw new RuntimeException("Target planet was not identified");
-	}
-
-	public Vector3d calculateDirectionToTarget(Vector3d probePosition, Vector3d targetPosition)
-	{
-		Vector3d directionalVector = targetPosition.sub(probePosition);
-		return directionalVector.unitVector();
+		return probePosition.unitVector();
 	}
 
 }
