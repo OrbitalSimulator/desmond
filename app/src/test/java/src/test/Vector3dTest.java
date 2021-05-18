@@ -17,7 +17,7 @@ class Vector3dTest {
     @Test void testOrthogonal()
     {
         Vector3d v = new Vector3d(3, -1, 2);
-        Vector3d vOrthogonal = v.returnOrthogonal(1, 1);
+        Vector3d vOrthogonal = v.returnOrthogonal(1, -1);
         double result = v.dotProduct(vOrthogonal);
         assertEquals(0, result);
     }

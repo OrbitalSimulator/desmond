@@ -12,7 +12,7 @@ import src.univ.Universe;
 //Working under assumption that probe will always approach target at offset 90 degrees to the planet.
 public class OrbitController extends GuidanceController
 {
-	private double scaler = 3000;
+	private double scaler = 800;
 	private double dampener = 5000;
 	public static final boolean DEBUG = false;
 
@@ -32,8 +32,9 @@ public class OrbitController extends GuidanceController
 		trajectory[0] = (Vector3d) settings.probeStartPosition;
 
 		int currentStep = settings.stepOffset;
+		//TODO Make such that temp is the last state of the CelestialBody
 		CelestialBody temp = universe.universe[target][0];
-		Vector3d currentPosition = temp.determineOffsetTargetPosition(temp.location.getX(), temp.location.getY());
+		Vector3d currentPosition = temp.determineOffsetTargetPosition(temp.location.getX(), temp.location.getZ());
 		//Vector3d currentPosition = (Vector3d) settings.probeStartPosition;
 		Vector3d currentVelocity = (Vector3d) settings.probeStartVelocity;
 
@@ -43,8 +44,6 @@ public class OrbitController extends GuidanceController
 			State currentState = addProbe(universe.getStateAt(currentStep), currentPosition, currentVelocity);
 			State nextState = solver.step(funct, currentTime, currentState, settings.stepSize);
 
-			//TODO Access target Planet at the current state
-			//TODO Use int target to access planet
 			CelestialBody targetPlanet = universe.universe[target][currentStep];
 			Vector3d impulse = calculateImpulsionToRemainInOrbit(nextState, targetPlanet);
 
