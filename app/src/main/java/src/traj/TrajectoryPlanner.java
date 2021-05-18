@@ -29,5 +29,11 @@ public abstract class TrajectoryPlanner
 		RouteController rc = new RouteController(universe, 8, settings);
 		return rc.getTrajectory();
 	}
+
+	public static Vector3d[] plotOrbit(Universe universe, SimulationSettings settings)
+	{
+		OrbitController oc = new OrbitController(universe, "sun", settings);
+		return oc.getTrajectory();
+	}
 	
 }

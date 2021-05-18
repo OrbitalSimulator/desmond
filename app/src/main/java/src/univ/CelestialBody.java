@@ -24,6 +24,9 @@ public class CelestialBody
 	public Vector3d location;
 	public LocalDateTime time = null;
 
+	public double orbitalHeight = 9.999999997607184E10;
+	public double orbitalError = 0.01e3;
+
 	public CelestialBody(Vector3d location, Vector3d velocity, double mass, double radius, String name, String image, String icon, LocalDateTime time)
 	{
 		this.location = location;
@@ -92,6 +95,26 @@ public class CelestialBody
 		}
 
 		return a*(Math.pow((mSmaller/mGreater), (2.0/5.0)));
+	}
+
+	//Determine if a orbital breech has been detected, update orbit status accordingly
+	public String orbitalBoundaryBreech(Vector3d probePosition)
+	{
+		String status = "Neutral"; 												//Initialize default return status
+		double currentOrbitalHeight = location.dist(probePosition);
+
+		if(Math.abs(orbitalHeight - currentOrbitalHeight) >= orbitalError)
+		{
+			if(currentOrbitalHeight >= orbitalHeight)
+			{
+				status = "Outer boundary";
+			}
+			else
+			{
+				status = "Inner boundary";
+			}
+		}
+		return status;
 	}
 
 	/**
