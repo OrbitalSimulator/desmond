@@ -5,7 +5,7 @@ import src.peng.Rate;
 import src.peng.State;
 import src.peng.StateInterface;
 
-public abstract class RungeKutta3rd extends ODESolver
+public class RungeKutta3rd extends ODESolver
 { 
 	/**
      * Update rule for one step.
