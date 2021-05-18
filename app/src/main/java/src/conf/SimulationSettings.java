@@ -14,7 +14,7 @@ public class SimulationSettings
 	public int noOfSteps;
 	public double stepSize;
 	public String[] waypoints;
-	public int stepOffset = 0; //TODO (Leon) build this into a method, or a new waypoint class
+	public int stepOffset = 0;
 
 	public SimulationSettings(CelestialBody[] celestialBodies,
 			                  Vector3dInterface probeStartPosition,

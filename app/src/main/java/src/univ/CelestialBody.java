@@ -67,9 +67,9 @@ public class CelestialBody
 	{
 		Vector3d P1 = this.location;
 		Vector3d P2 = target;
-		double dX = P1.getX() - P2.getX() ;
-		double dY = P1.getY() - P2.getY();
-		double dZ = P1.getZ() - P2.getZ();
+		double dX = P2.getX() - P1.getX();
+		double dY = P2.getY() - P1.getY();
+		double dZ = P2.getZ() - P1.getZ();
 		
 		Vector3d vector = new Vector3d(dX, dY, dZ);
 		vector = vector.unitVector();
