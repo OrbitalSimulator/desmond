@@ -67,15 +67,6 @@ public class Vector3d implements Vector3dInterface
     }
 
     /**
-     * Represent the vector in String format
-     * @return String representing the vector.
-     */
-    public String toString() 
-    {
-        return "("+ this.x + ","+this.y + ","+this.z+")";
-    }
-
-    /**
      * Copy of the parameterized vector
      * @return An identical, but new Vector3d object
      */
@@ -143,6 +134,24 @@ public class Vector3d implements Vector3dInterface
         BigDecimal bd = new BigDecimal(Double.toString(value));
         bd = bd.setScale(places, RoundingMode.HALF_UP);
         return bd.doubleValue();
+    }
+    
+    /**
+     * Represent the vector in String format
+     * @return String representing the vector.
+     */
+    public String toString() 
+    {
+        return "("+ this.x + ","+this.y + ","+this.z+")";
+    }
+    
+    /**
+     * Represent the vector in String format
+     * @return String representing the vector.
+     */
+    public String toCSV() 
+    {
+        return this.x + "," + this.y + ","+ this.z + ",";
     }
     
     public double getRoundedX(int digit) {return round(x,digit);}
