@@ -20,4 +20,11 @@ public abstract class TrajectoryPlanner
 		SimulationSettings leg2 = rc1.getFinalSettings();
 		RouteController rc2 = new RouteController(universe, end, start, leg2);
 	}
+
+	public static Vector3d[] plotOrbit(Universe universe, SimulationSettings settings)
+	{
+		//OrbitController oc = new OrbitController(universe, 1, settings);
+		//return oc.getTrajectory();
+		return null;
+	}
 }
