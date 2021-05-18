@@ -9,11 +9,11 @@ import src.univ.Universe;
 public class GuidanceController 
 {
 	protected Universe universe;
-	protected String target;
+	protected int target;
 	protected Vector3d[] trajectory;
 	protected Vector3d[] corrections;
 		
-	public GuidanceController(Universe universe, String target) 
+	public GuidanceController(Universe universe, int target) 
 	{
 		this.universe = universe;
 		this.target = target;
