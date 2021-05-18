@@ -42,7 +42,7 @@ public class Canvas extends JPanel
 	private double generalDist = 5E-9;		// The model in general scales
 	private double generalSize = 1E-6;
 	private double detailDist = 4.8E-7;		// The model in detail scales
-	private double detailSize = 3E-6;
+	private double detailSize = 1E-6;
 	private double zoom_rate = 1E-10;
 	
 	private Dimension screen;
