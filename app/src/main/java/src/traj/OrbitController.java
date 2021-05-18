@@ -16,7 +16,7 @@ public class OrbitController extends GuidanceController
 	private double dampener = 5000;
 	public static final boolean DEBUG = true;
 
-	public OrbitController(Universe universe, String target,  SimulationSettings settings)
+	public OrbitController(Universe universe, int target)
 	{
 		super(universe, target);
 		trajectory = planRoute(settings, target, universe);

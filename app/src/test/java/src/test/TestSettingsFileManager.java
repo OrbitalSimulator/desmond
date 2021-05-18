@@ -42,7 +42,7 @@ class TestSettingsFileManager
 	void testLoadSteps() 
 	{
 		SimulationSettings settings = loadSettings();
-		assertEquals(11712, settings.noOfSteps);
+		assertEquals(1171, settings.noOfSteps);
 	}
 
 	
@@ -50,19 +50,19 @@ class TestSettingsFileManager
 	void testLoadStepSize() 
 	{
 		SimulationSettings settings = loadSettings();
-		assertEquals(2700, settings.stepSize);
+		assertEquals(8100, settings.stepSize);
 	}
 
 	@Test
 	void loadProbePosition(){
                 SimulationSettings settings = loadSettings();
-                assertEquals(new Vector3d(-1.471922101663588e+11, -2.860995816266412e+10, 8.278183193596080e+06), settings.probeStartPosition);
+                assertEquals(new Vector3d(-1.472343904597218e+11,-2.860995816266412e+10,8.278183193596080e+06), settings.probeStartPosition);
 	}
 
 	@Test
 	void loadProbeVelocity(){
                 SimulationSettings settings = loadSettings();
-                assertEquals(new Vector3d(21240.816883792304, -57621.75558355437, -268.76563663220065), settings.probeStartVelocity);
+                assertEquals(new Vector3d(5.427193405797901e+03,-2.931056622265021e+04, 6.575428158157592e-01), settings.probeStartVelocity);
 	}
 
 	@Test
@@ -92,7 +92,7 @@ class TestSettingsFileManager
 	@Test
 	void loadCelestialBodyImage(){
                 SimulationSettings settings = loadSettings();
-                assertEquals("/src/main/java/src/misc/mercuryScaled.png", settings.celestialBodies[1].image);
+                assertEquals("mercuryScaled.png", settings.celestialBodies[1].image);
         }
 
         @Test

@@ -7,9 +7,7 @@ import src.peng.NewtonGravityFunction;
 import src.peng.ODEFunctionInterface;
 import src.peng.State;
 import src.peng.Vector3d;
-import src.peng.Vector3dInterface;
 import src.solv.RungeKutta4th;
-import src.univ.CelestialBody;
 import src.univ.Universe;
 import src.visu.Visualiser;
 
@@ -18,12 +16,12 @@ public class RouteController extends GuidanceController
 	private double mutationRate;		
 	private final int GENERATION_KILL = 100;
 	
-	public RouteController(Universe universe, String targetName, SimulationSettings settings) 
+	public RouteController(Universe universe, int target, SimulationSettings settings) 
 	{
-		super(universe, targetName);
-		mutationRate = 1000;
-		Vector3d target = getTargetVector(targetName, universe, settings);
-		trajectory = hillClimbAlogrithm(target, settings);
+		super(universe, target);
+		mutationRate = 10;
+		Vector3d targetVector = universe.universe[target][settings.getEndStep()].location;
+		trajectory = hillClimbAlogrithm(targetVector, settings);
 	}
 	
 	/**
@@ -41,7 +39,7 @@ public class RouteController extends GuidanceController
 			SimulationSettings newSettings = takeStep(target, settings);
 			if(newSettings.probeStartVelocity.equals(settings.probeStartVelocity))
 			{
-				if(mutationRate > 0.01)
+				if(mutationRate > 0.001)
 					mutationRate = mutationRate/10;
 				else
 					keepGoing = false;
@@ -51,7 +49,6 @@ public class RouteController extends GuidanceController
 			generations++;
 			System.out.println(generations + " " + settings.probeStartVelocity.toString());
 		}
-		
 		return planRoute(settings);
 	}
 	
@@ -87,6 +84,7 @@ public class RouteController extends GuidanceController
 		trajectory[0] = (Vector3d) settings.probeStartPosition;
 		
 		int currentStep = 0;
+		
 		Vector3d currentPosition = (Vector3d) settings.probeStartPosition;
 		Vector3d currentVelocity = (Vector3d) settings.probeStartVelocity;
 		while(currentStep < settings.noOfSteps)

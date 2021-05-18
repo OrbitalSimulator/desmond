@@ -27,7 +27,7 @@ class TestSolvers
 	static final double EARTH_ONE_YEAR_Y = -2.821059740389257E10;
 	static final double EARTH_ONE_YEAR_Z =  2.031783034570143E07;
 	
-    static final double DAY_ACCURACY = 725; 
+    static final double DAY_ACCURACY = 974; 
     static final double YEAR_ACCURACY = 5.733198703E09; 
     
 	
