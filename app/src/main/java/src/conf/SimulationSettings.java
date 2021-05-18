@@ -46,4 +46,14 @@ public class SimulationSettings
 				    stepSize,
 				    waypoints);
 	}
+	
+	public int getStartStep()
+	{
+		return stepOffset;
+	}
+	
+	public int getEndStep()
+	{
+		return noOfSteps + stepOffset;
+	}
 }
