@@ -163,7 +163,7 @@ public class Canvas extends JPanel
 		{
 			tempStack.removeAllElements();
 			tempTrajs.clear();
-			purgeTempTrajs = true;
+			purgeTempTrajs = false;
 		}
 		
 		if(tempTrajs.isEmpty())
