@@ -14,7 +14,7 @@ public class OrbitController extends GuidanceController
 {
 	private double scaler = 3000;
 	private double dampener = 5000;
-	public static final boolean DEBUG = true;
+	public static final boolean DEBUG = false;
 
 	public OrbitController(Universe universe, int target, SimulationSettings settings)
 	{
@@ -32,7 +32,9 @@ public class OrbitController extends GuidanceController
 		trajectory[0] = (Vector3d) settings.probeStartPosition;
 
 		int currentStep = settings.stepOffset;
-		Vector3d currentPosition = (Vector3d) settings.probeStartPosition;
+		CelestialBody temp = universe.universe[target][0];
+		Vector3d currentPosition = temp.determineOffsetTargetPosition(temp.location.getX(), temp.location.getY());
+		//Vector3d currentPosition = (Vector3d) settings.probeStartPosition;
 		Vector3d currentVelocity = (Vector3d) settings.probeStartVelocity;
 
 		while(currentStep < settings.noOfSteps)

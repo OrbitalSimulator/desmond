@@ -78,6 +78,17 @@ public class CelestialBody
 		return vector;
 	}
 
+	public Vector3d determineOffsetTargetPosition(double xApproximate, double yApproximate)
+	{
+		Vector3d orthogonalToTargetPosition = location.returnOrthogonal(xApproximate, yApproximate);
+		Vector3d orthogonalUnitVector = orthogonalToTargetPosition.unitVector();
+		System.out.println("Orthogonal unit vector "+ orthogonalUnitVector.toString());
+
+		Vector3d orthogonalDistance = orthogonalUnitVector.mul(orbitalHeight);
+		Vector3d targetPosition = location.add(orthogonalDistance);
+		return targetPosition;
+	}
+
 	/**
 	 * Calculate the Sphere of Influence of an orbiting planet.
 	 * @param a The semi-major axis of the orbit/ the distance to the orbiting planet.
