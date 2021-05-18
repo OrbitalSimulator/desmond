@@ -16,13 +16,13 @@ public class OrbitController extends GuidanceController
 	private double dampener = 5000;
 	public static final boolean DEBUG = true;
 
-	public OrbitController(Universe universe, int target)
+	public OrbitController(Universe universe, int target, SimulationSettings settings)
 	{
 		super(universe, target);
 		trajectory = planRoute(settings, target, universe);
 	}
 
-	private Vector3d[] planRoute(SimulationSettings settings, String target, Universe universe)
+	private Vector3d[] planRoute(SimulationSettings settings, int target, Universe universe)
 	{
 		double[] masses = addMassToEnd(universe.masses, 700);
 		ODEFunctionInterface funct = new NewtonGravityFunction(masses);
@@ -31,7 +31,7 @@ public class OrbitController extends GuidanceController
 		Vector3d[] trajectory = new Vector3d[settings.noOfSteps+1];
 		trajectory[0] = (Vector3d) settings.probeStartPosition;
 
-		int currentStep = 0;
+		int currentStep = settings.stepOffset;
 		Vector3d currentPosition = (Vector3d) settings.probeStartPosition;
 		Vector3d currentVelocity = (Vector3d) settings.probeStartVelocity;
 
@@ -43,7 +43,7 @@ public class OrbitController extends GuidanceController
 
 			//TODO Access target Planet at the current state
 			//TODO Use int target to access planet
-			CelestialBody targetPlanet = universe.universe[0][currentStep];
+			CelestialBody targetPlanet = universe.universe[target][currentStep];
 			Vector3d impulse = calculateImpulsionToRemainInOrbit(nextState, targetPlanet);
 
 			currentPosition = getProbePosition(nextState);
