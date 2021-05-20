@@ -136,15 +136,14 @@ class TestCelestialBody
 	}
 	/* Tests that the acceleration() method calculates the gravitational acceleration of the earth correctly*/
 	@Test
-	void testAcceleration()
+	void testPlanetaryGravitationalAcceleration()
 	{
 		/*Earth's gravitational acceleration*/
 		double exactAcceleration = 9.8;
 		
 		/*Test*/
 		CelestialBody earth = new CelestialBody(new Vector3d(), new Vector3d(), 5.97*Math.pow(10,24), 6378000, "Earth", "", "", LocalDateTime.of(d1, t1));
-		double testAcceleration = earth.acceleration();
-		System.out.println(testAcceleration);
+		double testAcceleration = earth.planetaryGravitationalAcceleration();
 		assertTrue(inRange(exactAcceleration, testAcceleration, epsilon));
 	}
 	/* Tests that the orbitalPeriodMethod() method calculates the orbital period of the earth around the sun correctly*/
@@ -162,7 +161,6 @@ class TestCelestialBody
 		
 		/*Test*/
 		double testOrbitalPeriod = sun.orbitalPeriod(r2);
-		System.out.println(testOrbitalPeriod);
 		assertTrue(inRange(exactOrbitalPeriod, testOrbitalPeriod, epsilon));
 	}
 	/**
