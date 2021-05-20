@@ -87,7 +87,26 @@ public class CelestialBody
 		return Math.sqrt((G*mass)/r);
 		
 	}
-	
+	/**
+	 * Calculates the gravitational acceleration of a planet
+	 * @return acceleration in m/s^2
+	 */
+	public double planetaryGravitationalAcceleration()
+	{
+		double G = 6.67408e-11;	
+		return (G*mass)/(radius*radius);
+	}
+	/**
+	 * Calculates the orbital period of a planet
+	 * @param r2 The height of the orbit above the planet's surface (meters)
+	 * @return time (seconds) it takes for an object to orbit once around another object
+	 */
+	public double orbitalPeriod(double r2)
+	{
+		double G = 6.67408e-11;
+		double r = radius+r2;
+		return Math.sqrt(((r*r*r)*(4*(Math.PI * Math.PI)))/(G*mass));
+	}
 	public void setImage(String image)
 	{
 		this.image = image;
