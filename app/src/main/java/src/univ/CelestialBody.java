@@ -87,7 +87,17 @@ public class CelestialBody
 		return Math.sqrt((G*mass)/r);
 		
 	}
-	
+	public double acceleration()
+	{
+		double G = 6.67408e-11;	
+		return (G*mass)/(radius*radius);
+	}
+	public double orbitalPeriod(double r2)
+	{
+		double G = 6.67408e-11;
+		double r = radius+r2;
+		return Math.sqrt(((r*r*r)*(4*(Math.PI * Math.PI)))/(G*mass));
+	}
 	public void setImage(String image)
 	{
 		this.image = image;
