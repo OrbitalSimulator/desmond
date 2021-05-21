@@ -37,12 +37,12 @@ public class Canvas extends JPanel
 	private int yOffset;
 	private int xOrigin;
 	private int yOrigin;
-	private double distScaling = 5E-9;		// The starting scale sizes
-	private double sizeScaling = 1E-6;
+	private double distScaling = 4E-10;		// The starting scale sizes
+	private double sizeScaling = 2E-7;
 	private double generalDist = 5E-9;		// The model in general scales
 	private double generalSize = 1E-6;
 	private double detailDist = 4.8E-7;		// The model in detail scales
-	private double detailSize = 3E-6;
+	private double detailSize = 1E-6;
 	private double zoom_rate = 1E-10;
 	
 	private Dimension screen;
@@ -66,8 +66,8 @@ public class Canvas extends JPanel
 		setSize(screen);
 		time = 0;
 		endTime = U[0].length;
-		xOffset = 0;
-		yOffset = 0;
+		xOffset = -224;
+		yOffset = 170;
 		xOrigin = getWidth()/ 2;
 		yOrigin = getHeight()/ 2;
 	}
@@ -163,6 +163,7 @@ public class Canvas extends JPanel
 		{
 			tempStack.removeAllElements();
 			tempTrajs.clear();
+			purgeTempTrajs = false;
 		}
 		
 		if(tempTrajs.isEmpty())

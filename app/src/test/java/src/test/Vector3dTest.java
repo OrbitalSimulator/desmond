@@ -14,6 +14,14 @@ class Vector3dTest {
         assertEquals(-1.1, v.getX());
     }
 
+    @Test void testOrthogonal()
+    {
+        Vector3d v = new Vector3d(3, -1, 2);
+        Vector3d vOrthogonal = v.returnOrthogonal(1, -1);
+        double result = v.dotProduct(vOrthogonal);
+        assertEquals(0, result);
+    }
+
     @Test void testSetX() {
         Vector3dInterface v = new Vector3d();
         v.setX(-1.1);

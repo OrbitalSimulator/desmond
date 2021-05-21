@@ -8,22 +8,26 @@ import src.peng.ODEFunctionInterface;
 import src.peng.State;
 import src.peng.Vector3d;
 import src.peng.Vector3dInterface;
+import src.solv.ODESolver;
 import src.solv.RungeKutta4th;
-import src.univ.CelestialBody;
 import src.univ.Universe;
 import src.visu.Visualiser;
 
 public class RouteController extends GuidanceController
 {
-	private double mutationRate;		
-	private final int GENERATION_KILL = 100;
+	private double mutationRate;
+	private double initialSpeed;
+	private final int GENERATION_KILL = 50;
+	private final double MAXIMUM_SPEED = 2000; 
+	private ODESolver solver = new RungeKutta4th();
 	
-	public RouteController(Universe universe, String targetName, SimulationSettings settings) 
+	public RouteController(Universe universe, int source, int target, SimulationSettings settings) 
 	{
-		super(universe, targetName);
+		super(universe, target);
 		mutationRate = 1000;
-		Vector3d target = getTargetVector(targetName, universe, settings);
-		trajectory = hillClimbAlogrithm(target, settings);
+		initialSpeed = settings.probeStartVelocity.norm();
+		Vector3d targetVector = universe.universe[target][settings.getEndStep()].location;
+		trajectory = hillClimbAlogrithm(targetVector, settings);
 	}
 	
 	/**
@@ -39,9 +43,10 @@ public class RouteController extends GuidanceController
 		while(keepGoing && (generations < GENERATION_KILL)) 
 		{
 			SimulationSettings newSettings = takeStep(target, settings);
+			
 			if(newSettings.probeStartVelocity.equals(settings.probeStartVelocity))
 			{
-				if(mutationRate > 0.01)
+				if(mutationRate > 0.001)
 					mutationRate = mutationRate/10;
 				else
 					keepGoing = false;
@@ -49,9 +54,10 @@ public class RouteController extends GuidanceController
 			else
 				settings = newSettings;
 			generations++;
-			System.out.println(generations + " " + settings.probeStartVelocity.toString());
+			System.out.println(generations + " " + settings.probeStartVelocity.toString() 
+				+ " Speed: " + (settings.probeStartVelocity.norm()-initialSpeed));
+			Visualiser.getInstance().clearTempTrajectories();
 		}
-		
 		return planRoute(settings);
 	}
 	
@@ -82,11 +88,11 @@ public class RouteController extends GuidanceController
 		double[] masses = addMassToEnd(universe.masses, 700);
 		ODEFunctionInterface funct = new NewtonGravityFunction(masses);
 		
-		RungeKutta4th solver = new RungeKutta4th();	
 		Vector3d[] trajectory = new Vector3d[settings.noOfSteps];
 		trajectory[0] = (Vector3d) settings.probeStartPosition;
 		
 		int currentStep = 0;
+		
 		Vector3d currentPosition = (Vector3d) settings.probeStartPosition;
 		Vector3d currentVelocity = (Vector3d) settings.probeStartVelocity;
 		while(currentStep < settings.noOfSteps)
@@ -101,6 +107,11 @@ public class RouteController extends GuidanceController
 		}
 		Visualiser.getInstance().clearTempTrajectories();
 		Visualiser.getInstance().addPermTrajectory(trajectory);
+		
+		finalSettings = settings.copy();
+		finalSettings.probeStartPosition = currentPosition;
+		finalSettings.probeStartVelocity = currentVelocity;
+		finalSettings.stepOffset = currentStep;
 		return trajectory;
 	}
 	
@@ -112,7 +123,6 @@ public class RouteController extends GuidanceController
 		double[] masses = addMassToEnd(universe.masses, 700);
 		ODEFunctionInterface funct = new NewtonGravityFunction(masses);
 		
-		RungeKutta4th solver = new RungeKutta4th();	
 		Vector3d[] trajectory = new Vector3d[settings.noOfSteps];
 		trajectory[0] = (Vector3d) settings.probeStartPosition;
 		
@@ -146,24 +156,14 @@ public class RouteController extends GuidanceController
 					Vector3d changeAmount = new Vector3d(mutationRate * x, mutationRate * y, mutationRate * z);
 					SimulationSettings modifiedSettings = initialSettings.copy();
 					modifiedSettings.probeStartVelocity = modifiedSettings.probeStartVelocity.add(changeAmount);
-					outputSettings.add(modifiedSettings);
+					if(!overMaxSpeed(modifiedSettings.probeStartVelocity))
+						outputSettings.add(modifiedSettings);
 				}
 			}
 		}
 		return outputSettings;
 	}
-		
-	private Vector3d getTargetVector(String target, Universe universe, SimulationSettings settings)
-	{
-		int lastStep = settings.noOfSteps + settings.stepOffset;
-		for(int i = 0; i < universe.universe.length; i++)
-		{
-			if(target.equalsIgnoreCase(universe.universe[i][lastStep].name))
-				return universe.universe[i][lastStep].location;
-		}
-		return new Vector3d();
-	}
-	
+			
 	/*
 	 * returns {@code true} if a is closer to the target than b
 	 */
@@ -172,6 +172,15 @@ public class RouteController extends GuidanceController
 		double dA = a.dist(target);
 		double dB = b.dist(target);
 		if( dA < dB )
+			return true;
+		return false;
+	}
+	
+	private boolean overMaxSpeed(Vector3dInterface vector)
+	{
+		double relativeSpeed = vector.norm() - initialSpeed;
+		double absSpeed = Math.abs(relativeSpeed);
+		if(absSpeed > MAXIMUM_SPEED)
 			return true;
 		return false;
 	}

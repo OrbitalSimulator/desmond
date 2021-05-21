@@ -2,6 +2,7 @@ package src.traj;
 
 import java.util.ArrayList;
 
+import src.conf.SimulationSettings;
 import src.peng.State;
 import src.peng.Vector3d;
 import src.univ.Universe;
@@ -9,11 +10,12 @@ import src.univ.Universe;
 public class GuidanceController 
 {
 	protected Universe universe;
-	protected String target;
+	protected int target;
 	protected Vector3d[] trajectory;
 	protected Vector3d[] corrections;
+	protected SimulationSettings finalSettings;
 		
-	public GuidanceController(Universe universe, String target) 
+	public GuidanceController(Universe universe, int target) 
 	{
 		this.universe = universe;
 		this.target = target;
@@ -27,6 +29,11 @@ public class GuidanceController
 	public Vector3d[] getCorrections() 
 	{
 		return corrections;
+	}
+	
+	public SimulationSettings getFinalSettings()
+	{
+		return finalSettings;
 	}
 	
 	/*

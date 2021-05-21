@@ -24,6 +24,9 @@ public class CelestialBody
 	public Vector3d location;
 	public LocalDateTime time = null;
 
+	public double orbitalHeight = 9.999999997607184E10;
+	public double orbitalError = 0.01e3;
+
 	public CelestialBody(Vector3d location, Vector3d velocity, double mass, double radius, String name, String image, String icon, LocalDateTime time)
 	{
 		this.location = location;
@@ -54,6 +57,37 @@ public class CelestialBody
 			return true;
 		return false;
 	}
+	
+	/**
+	 * Returns the closest point on the surface of {@code this} CelesialBody to the target.
+	 * @param target
+	 * @return
+	 */
+	public Vector3d closestLaunchPoint(Vector3d target)
+	{
+		Vector3d P1 = this.location;
+		Vector3d P2 = target;
+		double dX = P2.getX() - P1.getX();
+		double dY = P2.getY() - P1.getY();
+		double dZ = P2.getZ() - P1.getZ();
+		
+		Vector3d vector = new Vector3d(dX, dY, dZ);
+		vector = vector.unitVector();
+		vector = vector.mul(radius);
+		vector = this.location.add(vector);
+		return vector;
+	}
+
+	public Vector3d determineOffsetTargetPosition(double xApproximate, double yApproximate)
+	{
+		Vector3d orthogonalToTargetPosition = location.returnOrthogonal(xApproximate, yApproximate);
+		Vector3d orthogonalUnitVector = orthogonalToTargetPosition.unitVector();
+		System.out.println("Orthogonal unit vector "+ orthogonalUnitVector.toString());
+
+		Vector3d orthogonalDistance = orthogonalUnitVector.mul(orbitalHeight);
+		Vector3d targetPosition = location.add(orthogonalDistance);
+		return targetPosition;
+	}
 
 	/**
 	 * Calculate the Sphere of Influence of an orbiting planet.
@@ -72,6 +106,26 @@ public class CelestialBody
 		}
 
 		return a*(Math.pow((mSmaller/mGreater), (2.0/5.0)));
+	}
+
+	//Determine if a orbital breech has been detected, update orbit status accordingly
+	public String orbitalBoundaryBreech(Vector3d probePosition)
+	{
+		String status = "Neutral"; 												//Initialize default return status
+		double currentOrbitalHeight = location.dist(probePosition);
+
+		if(Math.abs(orbitalHeight - currentOrbitalHeight) >= orbitalError)
+		{
+			if(currentOrbitalHeight >= orbitalHeight)
+			{
+				status = "Outer boundary";
+			}
+			else
+			{
+				status = "Inner boundary";
+			}
+		}
+		return status;
 	}
 
 	/**

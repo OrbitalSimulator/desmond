@@ -84,6 +84,12 @@ public class Vector3d implements Vector3dInterface
         return new Vector3d(this.x + other.getX(), this.y + other.getY(), this.z + other.getZ());
     }
 
+    public Vector3d returnOrthogonal(double xApproximate, double zApproximate)
+    {
+        double yCalculated = (-this.x * xApproximate - this.z * zApproximate)/ this.y;
+        return new Vector3d(xApproximate, yCalculated, zApproximate);
+    }
+
     /**
      * Vector subtraction
      * @param other vector to subtract
