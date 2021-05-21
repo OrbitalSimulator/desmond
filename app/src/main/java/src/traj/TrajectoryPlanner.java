@@ -35,13 +35,13 @@ public abstract class TrajectoryPlanner
 		RouteController outController = new RouteController(universe, earth, titan, outSettings);
 		trajectories.add(outController.getTrajectory());
 		
-		CelestialBody titanStartPsn = universe.universe[titan][wp1];
+		CelestialBody titanStartPsn = universe.universe[titan][wp2];
 		Vector3d earthEndPsn = universe.universe[earth][settings.noOfSteps].location;
 		
 		SimulationSettings backSettings = outController.getFinalSettings();
 		backSettings.probeStartPosition = titanStartPsn.closestLaunchPoint(earthEndPsn);
-		backSettings.probeStartVelocity = universe.universe[titan][wp1].velocity;;
-		backSettings.noOfSteps = (settings.noOfSteps/10 * 6);
+		backSettings.probeStartVelocity = universe.universe[titan][wp2].velocity;;
+		backSettings.noOfSteps = (settings.noOfSteps/10 * 4);
 		backSettings.stepOffset = wp2;
 		RouteController backController = new RouteController(universe, titan, earth, backSettings);
 		trajectories.add(backController.getTrajectory());
