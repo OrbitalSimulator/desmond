@@ -26,7 +26,7 @@ public class App
 			settings = setupMenu.getSettings();
 			Universe universe = new Universe(settings);
 			Visualiser.getInstance().addUniverse(universe.universe);		
-			Visualiser.getInstance().addPermTrajectory(TrajectoryPlanner.plotOrbit(universe, settings));
+			Visualiser.getInstance().addPermTrajectory(TrajectoryPlanner.plot(universe, settings));
 		}
 		catch(IOException e){
 			e.printStackTrace();
