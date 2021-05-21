@@ -22,20 +22,27 @@ public abstract class TrajectoryPlanner
 		int earth = 3;
 		int titan = 8;
 		
-		CelestialBody earthPsn = universe.universe[earth][0];
-		Vector3d titanPsn = universe.universe[titan][settings.noOfSteps].location;
+		int wp1 = settings.noOfSteps/10 * 2;
+		int wp2 = settings.noOfSteps/10 * 4;
+		
+		CelestialBody earthStartPsn = universe.universe[earth][0];
+		Vector3d titanEndPsn = universe.universe[titan][wp1].location;
 		
 		SimulationSettings outSettings = settings.copy();
 		outSettings.probeStartVelocity = universe.universe[earth][0].velocity;
-		outSettings.probeStartPosition = earthPsn.closestLaunchPoint(titanPsn);
-		outSettings.noOfSteps = settings.noOfSteps/2;
+		outSettings.probeStartPosition = earthStartPsn.closestLaunchPoint(titanEndPsn);
+		outSettings.noOfSteps = wp1;
 		RouteController outController = new RouteController(universe, earth, titan, outSettings);
 		trajectories.add(outController.getTrajectory());
 		
+		CelestialBody titanStartPsn = universe.universe[titan][wp1];
+		Vector3d earthEndPsn = universe.universe[earth][settings.noOfSteps].location;
+		
 		SimulationSettings backSettings = outController.getFinalSettings();
-		backSettings.probeStartVelocity = new Vector3d();
-		backSettings.noOfSteps = settings.noOfSteps/2;
-		backSettings.stepOffset = settings.noOfSteps/2;
+		backSettings.probeStartPosition = titanStartPsn.closestLaunchPoint(earthEndPsn);
+		backSettings.probeStartVelocity = universe.universe[titan][wp1].velocity;;
+		backSettings.noOfSteps = (settings.noOfSteps/10 * 6);
+		backSettings.stepOffset = wp2;
 		RouteController backController = new RouteController(universe, titan, earth, backSettings);
 		trajectories.add(backController.getTrajectory());
 		
