@@ -10,6 +10,7 @@ import src.peng.Vector3d;
 import src.peng.Vector3dInterface;
 import src.solv.ODESolver;
 import src.solv.RungeKutta4th;
+import src.solv.Verlet;
 import src.univ.Universe;
 import src.visu.Visualiser;
 
@@ -17,14 +18,14 @@ public class RouteController extends GuidanceController
 {
 	private double mutationRate;
 	private double initialSpeed;
-	private final int GENERATION_KILL = 50;
+	private final int GENERATION_KILL = 100;
 	private final double MAXIMUM_SPEED = 2000; 
 	private ODESolver solver = new RungeKutta4th();
 	
 	public RouteController(Universe universe, int source, int target, SimulationSettings settings) 
 	{
 		super(universe, target);
-		mutationRate = 1000;
+		mutationRate = 5000;
 		initialSpeed = settings.probeStartVelocity.norm();
 		Vector3d targetVector = universe.universe[target][settings.getEndStep()].location;
 		trajectory = hillClimbAlogrithm(targetVector, settings);
@@ -110,7 +111,9 @@ public class RouteController extends GuidanceController
 		
 		finalSettings = settings.copy();
 		finalSettings.probeStartPosition = currentPosition;
+		System.out.println("Final position: " + currentPosition);
 		finalSettings.probeStartVelocity = currentVelocity;
+		System.out.println("Final velocity: " + currentVelocity);
 		finalSettings.stepOffset = currentStep;
 		return trajectory;
 	}

@@ -1,31 +1,64 @@
 package src.traj;
 
+import java.util.ArrayList;
+
 import src.conf.SimulationSettings;
 import src.peng.Vector3d;
+import src.univ.CelestialBody;
 import src.univ.Universe;
 
 public abstract class TrajectoryPlanner 
 {	
-	public static Vector3d[] plot(Universe universe, SimulationSettings settings)
-	{					
-		int start = 3;
-		int end = 7;
-		
-		settings.probeStartVelocity = universe.universe[start][0].velocity;
-		
-		SimulationSettings leg1 = settings.copy();
-		leg1.noOfSteps = 2700;
-		RouteController rc1 = new RouteController(universe, start, end, leg1);
-		
-		SimulationSettings leg2 = rc1.getFinalSettings();
-		RouteController rc2 = new RouteController(universe, end, start, leg2);
-
-		return rc2.getTrajectory();
+	static ArrayList<Vector3d[]> trajectories = new ArrayList<>();
+	
+	public static Vector3d[] simplePlot(Universe universe, SimulationSettings settings)
+	{												
+		LaunchController lc = new LaunchController(universe, 0, settings);
+		return lc.getTrajectory();
 	}
-
-	public static Vector3d[] plotOrbit(Universe universe, SimulationSettings settings)
+	
+	public static Vector3d[] plotRoute(Universe universe, SimulationSettings settings)
+	{							
+		int earth = 3;
+		int titan = 8;
+		
+		CelestialBody earthPsn = universe.universe[earth][0];
+		Vector3d titanPsn = universe.universe[titan][settings.noOfSteps].location;
+		
+		SimulationSettings outSettings = settings.copy();
+		outSettings.probeStartVelocity = universe.universe[earth][0].velocity;
+		outSettings.probeStartPosition = earthPsn.closestLaunchPoint(titanPsn);
+		outSettings.noOfSteps = settings.noOfSteps/2;
+		RouteController outController = new RouteController(universe, earth, titan, outSettings);
+		trajectories.add(outController.getTrajectory());
+		
+		SimulationSettings backSettings = outController.getFinalSettings();
+		backSettings.probeStartVelocity = new Vector3d();
+		backSettings.noOfSteps = settings.noOfSteps/2;
+		backSettings.stepOffset = settings.noOfSteps/2;
+		RouteController backController = new RouteController(universe, titan, earth, backSettings);
+		trajectories.add(backController.getTrajectory());
+		
+		return sewUpTrajectories();
+	}
+	
+	public static Vector3d[] sewUpTrajectories()
 	{
-		OrbitController oc = new OrbitController(universe, 0, settings);
-		return oc.getTrajectory();
+		int totalSteps = 0;
+		for(Vector3d[] each: trajectories)
+		{
+			totalSteps += each.length;
+		}
+		
+		Vector3d[] array = new Vector3d[totalSteps];
+		int pntr = 0;
+		for(Vector3d[] each: trajectories)
+		{
+			for(int i = 0; i < each.length; i++)
+			{
+				array[pntr++] = each[i];
+			}
+		}
+		return array;
 	}
 }
