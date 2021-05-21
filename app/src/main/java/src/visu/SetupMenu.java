@@ -20,15 +20,23 @@ public class SetupMenu {
     private CelestialBody [] bodiesToReturn;
     private int rowValueForLayout;
     private int amountOfBodies;
-    private JPanel mainPanel;
+
+    private JPanel panelForBodies;
+    private JPanel panelForWaypoints;
+
+
     private JPanel panelForDates;
     private JPanel button;
+
     private JPanel[] panelArray;
+
     private Vector3dInterface startPoint;
     private Vector3dInterface endPoint;
     private JLabel[] titles;
+
     private Vector3d[] newVelocities;
     private Vector3d[] newLocations;
+
     private LocalDateTime startTime;
     private LocalDateTime endTime;
     SimulationSettings settings;
@@ -40,9 +48,7 @@ public class SetupMenu {
     private JTextField[] fieldForLocationX;
     private JTextField[] fieldForLocationY;
     private JTextField[] fieldForLocationZ;
-
     private JTextField[] fieldForMass;
-
     private JTextField[] fieldForPowerof10VelocityX;
     private JTextField[] fieldForPowerof10VelocityY;
     private JTextField[] fieldForPowerof10VelocityZ;
@@ -54,10 +60,17 @@ public class SetupMenu {
     private JTextField[] fieldForPowerof10Mass;
 
     private JComboBox<Integer>[] comboBoxesForDates;
+
     private JComboBox<String>[] comboBoxesForWaypoints;
+
     private JButton[] buttons;
     private JRadioButton[] arrayOfButtons;
     private String[] waypoints;
+
+    private JRadioButton[] startPointArray;
+    private JRadioButton[] wayPoint1Array;
+    private JRadioButton[] wayPoint2Array;
+    private JRadioButton[] endPointArray;
 
     private String[] waypointsToReturn;
     private boolean[] selectValuesOfPlanets;
@@ -74,38 +87,58 @@ public class SetupMenu {
     private String startMonth;
     private String endDay;
     private String endMonth;
+    private JPanel[] waypointPanel;
 
-
-    public SetupMenu(SimulationSettings settings) throws IOException 
+    //Alp  ToDo
+    //- Waypoint boxes on setup menu -> make easier for user interaction
+    //- Vector information -> slimmer boxes (potentially held in a panel)
+    public SetupMenu(SimulationSettings settings) throws IOException
     {
         this.U = settings.celestialBodies;
         this.settings = settings;
 
         mainFrame = new JFrame("Setup Menu");
         mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        mainFrame.setSize(1850,750);
+        mainFrame.setSize(1601,619);
         mainFrame.setLocationRelativeTo(null);
         mainFrame.setLayout(new BorderLayout());
 
-        mainPanel = new JPanel();
-        mainPanel.setLayout(new GridLayout(0,8));
-
+        panelForBodies = new JPanel();
+        panelForBodies.setLayout(new BoxLayout(panelForBodies,BoxLayout.LINE_AXIS));
+        panelForWaypoints = new JPanel();
+        panelForWaypoints.setLayout(new BoxLayout(panelForWaypoints,BoxLayout.Y_AXIS));
         rowValueForLayout = U.length+1;
-        titles = new JLabel[18];
+        titles = new JLabel[21];
         titles[0] = new JLabel("Start Date");
         titles[1] = new JLabel("End Date");
-        titles[2] = new JLabel("Waypoints");
-        titles[3] = new JLabel("Name");
-        
+        titles[2] = new JLabel("Start Point");
+        titles[3] = new JLabel("Waypoint 1");
+        titles[4] = new JLabel("Waypoint 2");
+        titles[5] = new JLabel("End Point");
+        titles[6] = new JLabel("Name");
+        titles[7] = new JLabel("Velocity X");
+        titles[8] = new JLabel("x10^");
+        titles[9] = new JLabel("Velocity Y");
+        titles[10] = new JLabel("x10^");
+        titles[11] = new JLabel("Velocity Z");
+        titles[12] = new JLabel("x10^");
+        titles[13] = new JLabel("Location X");
+        titles[14] = new JLabel("x10^");
+        titles[15] = new JLabel("Location Y");
+        titles[16] = new JLabel("x10^");
+        titles[17] = new JLabel("Location Z");
+        titles[18] = new JLabel("x10^");
+        titles[19] = new JLabel("Mass");
+        titles[20] = new JLabel("x10^");
         this.U = settings.celestialBodies;
         selectValuesOfPlanets = new boolean[U.length];
         fieldForMass =new JTextField[U.length];
 
         startTime = settings.startTime;
         endTime =settings.endTime;
-        comboBoxesForWaypoints = new JComboBox[2];
 
-        buttons = new JButton[6];
+
+        buttons = new JButton[5];
         arrayOfButtons = new JRadioButton[U.length];
         comboBoxesForDates = new JComboBox[6];
 
@@ -118,65 +151,28 @@ public class SetupMenu {
         fieldForPowerof10LocationZ = new JTextField[U.length];
 
         fieldForPowerof10Mass = new JTextField[U.length];
-        for(int i=0;i<comboBoxesForDates.length;i++){
-            comboBoxesForDates[i]=new JComboBox();
+
+        comboBoxesForWaypoints=new JComboBox[4];
+        generateBoxes(mainFrame);
+        waypointPanel=new JPanel[4];
+        startPointArray=new JRadioButton[U.length];
+        wayPoint1Array=new JRadioButton[U.length];
+        wayPoint2Array=new JRadioButton[U.length];
+        endPointArray=new JRadioButton[U.length];
+
+        for(int i=0;i< waypointPanel.length;i++){
+            waypointPanel[i]=new JPanel();
+            waypointPanel[i].setLayout(new BoxLayout(waypointPanel[i],BoxLayout.X_AXIS));
         }
+        panelArray = new JPanel[10];
 
-        for(int i = 0; i<comboBoxesForDates.length; i=i+3){
-            for(int j = 0; j<32; j++){
-                comboBoxesForDates[0].setSelectedItem(startTime.getDayOfMonth());
-                comboBoxesForDates[3].setSelectedItem(endTime.getDayOfMonth());
-                comboBoxesForDates[i].addItem(j);
-            }
-        }
-
-        for(int i=1;i<5;i=i+3){
-            for(int j = 0; j<13; j++){
-                comboBoxesForDates[1].setSelectedItem(startTime.getMonthValue());
-                comboBoxesForDates[4].setSelectedItem(endTime.getMonthValue());
-                comboBoxesForDates[i].addItem(j);
-            }
-        }
-
-        for(int i=2;i<6;i=i+3){
-            for(int j=1990;j<2060;j++){
-                comboBoxesForDates[2].setSelectedItem(startTime.getYear());
-                comboBoxesForDates[5].setSelectedItem(endTime.getYear());
-                comboBoxesForDates[i].addItem(j);
-            }
-        }
-
-        for(int i=0;i< comboBoxesForWaypoints.length;i++){
-            comboBoxesForWaypoints[i]=new JComboBox();
-            for (CelestialBody celestialBody : U) {
-                comboBoxesForWaypoints[i].addItem(celestialBody.name);
-            }
-        }
-        
-        comboBoxesForWaypoints[0].setSelectedItem(settings.waypoints[0]);
-        comboBoxesForWaypoints[1].setSelectedItem("titan");
-        panelForDates = new JPanel();
-        panelForDates.setLayout(new GridLayout(0,11));
-        panelForDates.add(titles[0]);
-
-        for(int i=0;i<3;i++){
-            panelForDates.add(comboBoxesForDates[i]);
-        }
-
-       panelForDates.add(titles[1]);
-        for(int i=3;i<6;i++){
-            panelForDates.add(comboBoxesForDates[i]);
-        }
-
-        panelArray = new JPanel[8];
-
-        for(int i=0;i<panelArray.length;i++){
+        for(int i=0;i< panelArray.length;i++){
             panelArray[i] = new JPanel();
             panelArray[i].setLayout(new GridLayout(U.length+1,0));
         }
-        mainFrame.add(mainPanel,BorderLayout.CENTER);
-        mainFrame.add(panelForDates,BorderLayout.NORTH);
 
+        mainFrame.add(panelForWaypoints,BorderLayout.EAST);
+        mainFrame.add(panelForBodies);
         newVelocities = new Vector3d[U.length];
         newLocations = new Vector3d[U.length];
 
@@ -188,87 +184,36 @@ public class SetupMenu {
         fieldForLocationY =new JTextField[U.length];
         fieldForLocationZ =new JTextField[U.length];
 
-        generateTitles();
+        generateTitles(panelForBodies);
 
-        for(int i=0;i<U.length;i++){
-            fieldForPowerof10VelocityX[i]=new JTextField("x 10^");
-            fieldForPowerof10VelocityY[i]=new JTextField("x 10^");
-            fieldForPowerof10VelocityZ[i]=new JTextField("x 10^");
-            fieldForPowerof10LocationX[i]=new JTextField("x 10^");
-            fieldForPowerof10LocationY[i]=new JTextField("x 10^");
-            fieldForPowerof10LocationZ[i]=new JTextField("x 10^");
-            fieldForPowerof10Mass[i]=new JTextField("x 10^");
-            arrayOfButtons[i] = new JRadioButton(U[i].name);
-            panelArray[0].add(arrayOfButtons[i]);
-            fieldForVelocityX[i]= new JTextField(U[i].velocity.getX()+"");
-            panelArray[1].add(fieldForVelocityX[i]);
+        generateFields(panelForBodies);
 
-            fieldForVelocityY[i]= new JTextField(U[i].velocity.getY()+"");
-            panelArray[2].add(fieldForVelocityY[i]);
+        generateButtons(mainFrame);
 
-            fieldForVelocityZ[i]= new JTextField(U[i].velocity.getZ()+"");
-            panelArray[3].add(fieldForVelocityZ[i]);
 
-            fieldForLocationX[i] = new JTextField(U[i].location.getX()+"");
-            panelArray[4].add(fieldForLocationX[i]);
+        generateWaypointChooser();
 
-            fieldForLocationY[i] = new JTextField(U[i].location.getY()+"");
-            panelArray[5].add(fieldForLocationY[i]);
 
-            fieldForLocationZ[i] = new JTextField(U[i].location.getZ()+"");
-            panelArray[6].add(fieldForLocationZ[i]);
-
-            fieldForMass[i] = new JTextField(U[i].mass+"");
-            panelArray[7].add(fieldForMass[i]);
-        }
-        button = new JPanel();
-        button.setLayout(new GridLayout(0,6));
-        buttons[0] = new JButton("Start Universe");
-        buttons[0].setVisible(false);
-        buttons[0].addActionListener(e -> start());
-
-        buttons[1] = new JButton("Set Waypoints");
-        buttons[1].addActionListener(e -> setWaypoints());
-
-        buttons[2] = new JButton("Set Dates");
-        buttons[2].addActionListener(e-> setDates());
-
-        buttons[3] = new JButton("Change Values");
-        buttons[3].addActionListener(e-> editVelocityLocationMass());
-
-        buttons[4] = new JButton("Set Values");
-        buttons[4].addActionListener(e-> setValues());
-        buttons[4].setVisible(false);
-
-        buttons[5] = new JButton("Undo Changes");
-        buttons[5].addActionListener(e-> undo());
-
-        for (JButton jButton : buttons) {
-            button.add(jButton);
-        }
-
-        mainFrame.add(button,BorderLayout.SOUTH);
-        for (JPanel jPanel : panelArray) {
-            mainPanel.add(jPanel);
-        }
-
-        panelForDates.add(titles[2]);
-        for (JComboBox<String> comboBoxesForWaypoint : comboBoxesForWaypoints) {
-            panelForDates.add(comboBoxesForWaypoint);
-        }
         mainFrame.setVisible(true);
     }
-    
+
     private void start()
     {
-        mainFrame.setVisible(false);
-        for(int i=0;i<U.length;i++){
-            selectValuesOfPlanets[i]=arrayOfButtons[i].isSelected();
+        for (int i = 0; i < U.length; i++) {
+            settings.celestialBodies[i].mass =  Double.parseDouble(fieldForMass[i].getText());
+            newVelocities[i] = new Vector3d(Double.parseDouble(fieldForVelocityX[i].getText()),  Double.parseDouble(fieldForVelocityY[i].getText()),  Double.parseDouble(fieldForVelocityZ[i].getText()));
+            newLocations[i] = new Vector3d(Double.parseDouble(fieldForLocationX[i].getText()), Double.parseDouble(fieldForLocationY[i].getText()), Double.parseDouble(fieldForLocationZ[i].getText()));
+            settings.celestialBodies[i].velocity = newVelocities[i];
+            settings.celestialBodies[i].location = newLocations[i];
         }
-        for(int i=0;i<selectValuesOfPlanets.length;i++){
-            if(selectValuesOfPlanets[i]=true){
-                for(int j=0;j<amountOfBodies;j++){
-                    bodiesToReturn[j]=U[i];
+        mainFrame.setVisible(false);
+        for (int i = 0; i < U.length; i++) {
+            selectValuesOfPlanets[i] = arrayOfButtons[i].isSelected();
+        }
+        for (int i = 0; i < selectValuesOfPlanets.length; i++) {
+            if (selectValuesOfPlanets[i] = true) {
+                for (int j = 0; j < amountOfBodies; j++) {
+                    bodiesToReturn[j] = U[i];
                 }
             }
         }
@@ -276,26 +221,29 @@ public class SetupMenu {
             if (waypoints[0].equals(celestialBody.name)) {
                 startPoint = celestialBody.location;
             }
-            if (waypoints[1].equals(celestialBody.name)) {
+            if (waypoints[3].equals(celestialBody.name)) {
                 endPoint = celestialBody.location;
             }
         }
-        waypointsToReturn = new String[2];
-        waypointsToReturn[0] = waypoints[0];
-        waypointsToReturn[1] = waypoints[1];
-        inputComplete = true;
-    }
-    
-    private void setWaypoints(){
-        buttons[0].setVisible(true);
-        waypoints = new String[2];
-        for(int i=0;i< waypoints.length;i++){
-            waypoints[i] = (String)comboBoxesForWaypoints[i].getSelectedItem();
-            System.out.println(waypoints[i]);
+        waypointsToReturn = new String[waypoints.length];
+        for(int i=0;i< waypointsToReturn.length;i++){
+            waypointsToReturn[i]=waypoints[i];
         }
+        inputComplete = true;
+
     }
 
-    // TODO (Alp) repair set date
+    private void setWaypoints()
+    {
+        waypoints = new String[4];
+        for(int i=0;i< waypoints.length;i++)
+        {
+            waypoints[i] = (String)comboBoxesForWaypoints[i].getSelectedItem();
+        }
+        buttons[0].setEnabled(true);
+
+    }
+
     private void setDates()
     {
         intValueOfStartDay=(Integer)comboBoxesForDates[0].getSelectedItem();
@@ -337,7 +285,7 @@ public class SetupMenu {
 
     private void editVelocityLocationMass()
     {
-        mainPanel.setVisible(false);
+        panelForBodies.setVisible(false);
         newPanel=new JPanel();
         buttons[4].setVisible(true);
         newPanel.setLayout(new GridLayout(0,15));
@@ -346,9 +294,11 @@ public class SetupMenu {
             panelArray[i] = new JPanel();
             panelArray[i].setLayout(new GridLayout(U.length+1,0));
         }
-        for(int i=3;i< titles.length;i++)
+        for(int i=0;i< panelArray.length;i++)
         {
-           panelArray[i-3].add(titles[i]);
+
+            panelArray[i].add(titles[i+6]);
+
         }
         for(int i=0;i<U.length;i++)
         {
@@ -389,72 +339,179 @@ public class SetupMenu {
             newPanel.add(panelArray[i]);
         }
         mainFrame.add(newPanel);
+        buttons[4].setEnabled(true);
     }
 
     private void setValues()
     {
-        for(int i=0;i<U.length;i++)
-        {
-            U[i].mass= Math.pow(10,Double.parseDouble(fieldForPowerof10Mass[i].getText()))*Double.parseDouble(fieldForMass[i].getText());
-            newVelocities[i] = new Vector3d(Math.pow(10,Double.parseDouble(fieldForPowerof10VelocityX[i].getText()))*Double.parseDouble(fieldForVelocityX[i].getText()),Math.pow(10,Double.parseDouble(fieldForPowerof10VelocityY[i].getText()))*Double.parseDouble(fieldForVelocityY[i].getText()),Math.pow(10,Double.parseDouble(fieldForPowerof10VelocityZ[i].getText()))*Double.parseDouble(fieldForVelocityZ[i].getText()));
-            newLocations[i] = new Vector3d(Math.pow(10,Double.parseDouble(fieldForPowerof10LocationX[i].getText()))*Double.parseDouble(fieldForLocationX[i].getText()),Math.pow(10,Double.parseDouble(fieldForPowerof10LocationY[i].getText()))*Double.parseDouble(fieldForLocationY[i].getText()),Math.pow(10,Double.parseDouble(fieldForPowerof10LocationZ[i].getText()))*Double.parseDouble(fieldForLocationZ[i].getText()));
-            U[i].velocity=newVelocities[i];
-            U[i].location=newLocations[i];
-        }
-    }
 
-    private void undo()
-    {
-        buttons[4].setVisible(false);
-        newPanel.setVisible(false);
-        mainPanel.setVisible(true);
+
+        for (int i = 0; i < U.length; i++) {
+            U[i].mass = Math.pow(10, Double.parseDouble(fieldForPowerof10Mass[i].getText())) * Double.parseDouble(fieldForMass[i].getText());
+            newVelocities[i] = new Vector3d(Math.pow(10, Double.parseDouble(fieldForPowerof10VelocityX[i].getText())) * Double.parseDouble(fieldForVelocityX[i].getText()), Math.pow(10, Double.parseDouble(fieldForPowerof10VelocityY[i].getText())) * Double.parseDouble(fieldForVelocityY[i].getText()), Math.pow(10, Double.parseDouble(fieldForPowerof10VelocityZ[i].getText())) * Double.parseDouble(fieldForVelocityZ[i].getText()));
+            newLocations[i] = new Vector3d(Math.pow(10, Double.parseDouble(fieldForPowerof10LocationX[i].getText())) * Double.parseDouble(fieldForLocationX[i].getText()), Math.pow(10, Double.parseDouble(fieldForPowerof10LocationY[i].getText())) * Double.parseDouble(fieldForLocationY[i].getText()), Math.pow(10, Double.parseDouble(fieldForPowerof10LocationZ[i].getText())) * Double.parseDouble(fieldForLocationZ[i].getText()));
+            U[i].velocity = newVelocities[i];
+            U[i].location = newLocations[i];
+        }
+
     }
 
     public SimulationSettings getSettings()
     {
         settings=new SimulationSettings(settings.celestialBodies,
-                                        startPoint,
-                                        settings.probeStartVelocity,
-                                        startTime,
-                                        endTime, 
-                                        settings.noOfSteps,
-                                        settings.stepSize, 
-                                        waypointsToReturn);
+                startPoint,
+                settings.probeStartVelocity,
+                startTime,
+                endTime,
+                settings.noOfSteps,
+                settings.stepSize,
+                waypointsToReturn);
         return settings;
     }
-    
+
     public boolean inputComplete()
     {
-    	return inputComplete;
+        return inputComplete;
     }
 
-    private void generateTitles()
+    private void generateTitles(JPanel panel)
     {
-        titles[0] = new JLabel("Start Date");
-        titles[1] = new JLabel("End Date");
-        titles[2] = new JLabel("Waypoints");
-        titles[3] = new JLabel("Name");
-        titles[4] = new JLabel("Velocity X");
-        titles[5] = new JLabel("x10^");
-        titles[6] = new JLabel("Velocity Y");
-        titles[7] = new JLabel("x10^");
-        titles[8] = new JLabel("Velocity Z");
-        titles[9] = new JLabel("x10^");
-        titles[10] = new JLabel("Location X");
-        titles[11] = new JLabel("x10^");
-        titles[12] = new JLabel("Location Y");
-        titles[13] = new JLabel("x10^");
-        titles[14] = new JLabel("Location Z");
-        titles[15] = new JLabel("x10^");
-        titles[16] = new JLabel("Mass");
-        titles[17] = new JLabel("x10^");
-        panelArray[0].add(titles[3]);
-        panelArray[1].add(titles[4]);
-        panelArray[2].add(titles[6]);
-        panelArray[3].add(titles[8]);
-        panelArray[4].add(titles[10]);
-        panelArray[5].add(titles[12]);
-        panelArray[6].add(titles[14]);
-        panelArray[7].add(titles[16]);
+
+        panelArray[0].add(titles[6]);
+        panelArray[1].add(titles[7]);
+        panelArray[2].add(titles[9]);
+        panelArray[3].add(titles[11]);
+        panelArray[4].add(titles[13]);
+        panelArray[5].add(titles[15]);
+        panelArray[6].add(titles[17]);
+        panelArray[7].add(titles[19]);
+        for(int i=0;i< panelArray.length;i++){
+            panel.add(panelArray[i]);
+        }
+    }
+
+    private void generateFields(JPanel panel)
+    {
+        for(int i=0;i<U.length;i++){
+            fieldForPowerof10VelocityX[i]=new JTextField("x 10^");
+            fieldForPowerof10VelocityY[i]=new JTextField("x 10^");
+            fieldForPowerof10VelocityZ[i]=new JTextField("x 10^");
+            fieldForPowerof10LocationX[i]=new JTextField("x 10^");
+            fieldForPowerof10LocationY[i]=new JTextField("x 10^");
+            fieldForPowerof10LocationZ[i]=new JTextField("x 10^");
+            fieldForPowerof10Mass[i]=new JTextField("x 10^");
+            arrayOfButtons[i] = new JRadioButton(U[i].name);
+            panelArray[0].add(arrayOfButtons[i]);
+            fieldForVelocityX[i]= new JTextField(U[i].velocity.getX()+"");
+            panelArray[1].add(fieldForVelocityX[i]);
+            fieldForVelocityY[i]= new JTextField(U[i].velocity.getY()+"");
+            panelArray[2].add(fieldForVelocityY[i]);
+            fieldForVelocityZ[i]= new JTextField(U[i].velocity.getZ()+"");
+            panelArray[3].add(fieldForVelocityZ[i]);
+            fieldForLocationX[i] = new JTextField(U[i].location.getX()+"");
+            panelArray[4].add(fieldForLocationX[i]);
+            fieldForLocationY[i] = new JTextField(U[i].location.getY()+"");
+            panelArray[5].add(fieldForLocationY[i]);
+            fieldForLocationZ[i] = new JTextField(U[i].location.getZ()+"");
+            panelArray[6].add(fieldForLocationZ[i]);
+            fieldForMass[i] = new JTextField(U[i].mass+"");
+            panelArray[7].add(fieldForMass[i]);
+        }
+        for (JPanel jPanel : panelArray) {
+            panel.add(jPanel);
+        }
+    }
+
+    private void generateBoxes(JFrame frame)
+    {
+        for(int i=0;i<comboBoxesForDates.length;i++){
+            comboBoxesForDates[i]=new JComboBox();
+        }
+        for(int i = 0; i<comboBoxesForDates.length; i=i+3){
+            for(int j = 0; j<32; j++){
+                comboBoxesForDates[0].setSelectedItem(startTime.getDayOfMonth());
+                comboBoxesForDates[3].setSelectedItem(endTime.getDayOfMonth());
+                comboBoxesForDates[i].addItem(j);
+            }
+        }
+        for(int i=1;i<5;i=i+3){
+            for(int j = 0; j<13; j++){
+                comboBoxesForDates[1].setSelectedItem(startTime.getMonthValue());
+                comboBoxesForDates[4].setSelectedItem(endTime.getMonthValue());
+                comboBoxesForDates[i].addItem(j);
+            }
+        }
+        for(int i=2;i<6;i=i+3){
+            for(int j=1990;j<2060;j++){
+                comboBoxesForDates[2].setSelectedItem(startTime.getYear());
+                comboBoxesForDates[5].setSelectedItem(endTime.getYear());
+                comboBoxesForDates[i].addItem(j);
+            }
+        }
+        panelForDates = new JPanel();
+        panelForDates.setLayout(new BoxLayout(panelForDates,BoxLayout.X_AXIS));
+        panelForDates.add(titles[0]);
+
+        for(int i=0;i<3;i++){
+            panelForDates.add(comboBoxesForDates[i]);
+        }
+
+        panelForDates.add(titles[1]);
+        for(int i=3;i<6;i++){
+            panelForDates.add(comboBoxesForDates[i]);
+        }
+        frame.add(panelForDates,BorderLayout.NORTH);
+    }
+
+    private void generateButtons(JFrame frame)
+    {
+        button = new JPanel();
+        button.setLayout(new GridLayout(0,5));
+        buttons[0] = new JButton("Start Universe");
+        buttons[0].setEnabled(false);
+        buttons[0].addActionListener(e -> start());
+
+        buttons[1] = new JButton("Set Waypoints");
+        buttons[1].addActionListener(e -> setWaypoints());
+
+        buttons[2] = new JButton("Set Dates");
+        buttons[2].addActionListener(e-> setDates());
+
+        buttons[3] = new JButton("Change Values");
+        buttons[3].addActionListener(e-> editVelocityLocationMass());
+
+        buttons[4] = new JButton("Set Values");
+        buttons[4].addActionListener(e-> setValues());
+        buttons[4].setEnabled(false);
+
+
+        for (JButton jButton : buttons) {
+            button.add(jButton);
+        }
+        frame.add(button,BorderLayout.SOUTH);
+    }
+
+    private void generateWaypointChooser()
+    {
+        for(int i=0;i< comboBoxesForWaypoints.length;i++)
+        {
+            comboBoxesForWaypoints[i]=new JComboBox<String>();
+            for(int j=0;j<U.length;j++){
+                comboBoxesForWaypoints[i].addItem(U[j].name);
+            }
+        }
+
+        waypointPanel[0].add(titles[2]);
+        waypointPanel[1].add(titles[3]);
+        waypointPanel[2].add(titles[4]);
+        waypointPanel[3].add(titles[5]);
+        waypointPanel[0].add(comboBoxesForWaypoints[0]);
+        waypointPanel[1].add(comboBoxesForWaypoints[1]);
+        waypointPanel[2].add(comboBoxesForWaypoints[2]);
+        waypointPanel[3].add(comboBoxesForWaypoints[3]);
+
+        for(int i=0;i< waypointPanel.length;i++){
+            panelForWaypoints.add(waypointPanel[i]);
+        }
     }
 }
