@@ -9,33 +9,38 @@ import java.io.FileNotFoundException;
 
 public abstract class Logger extends FileManager
 {
-    public static void log(String str) throws IOException
+    public static void log(String str)
     {
-        String filePath = getFilePath("log.csv");
-		File file = new File(filePath);
-		FileWriter writer = new FileWriter(file, true);
+        try{
+            String filePath = getFilePath("log.csv");
+            File file = new File(filePath);
+            FileWriter writer = new FileWriter(file, true);
 
-        if(!file.exists()){
-            file.createNewFile();
+            writer.write(str + "," + "\n");
+            writer.close();
         }
-        writer.write(str + ",");
-        writer.close();
+        catch(IOException e){
+            e.printStackTrace();
+        }
 
     }
 
-    public static void log(String[] str) throws IOException
+    public static void log(String[] str)
     {
-        String filePath = getFilePath("log.csv");
-		File file = new File(filePath);
-        FileWriter writer = new FileWriter(file, true);
+        try{
+            String filePath = getFilePath("log.csv");
+            File file = new File(filePath);
+            FileWriter writer = new FileWriter(file, true);
 
-        if(!file.exists()){
-            file.createNewFile();
+            for(int i = 0; i < str.length; i++){
+                writer.write(str[i] + ",");
+            }
+            writer.write("\n");
+            writer.close();
         }
-        for(int i = 0; i < str.length; i++){
-            writer.write(str[i] + ",");
+        catch(IOException e){
+            e.printStackTrace();
         }
-        writer.close();
     }
 
     private static String getFilePath(String fileName)

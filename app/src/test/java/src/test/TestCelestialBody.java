@@ -199,7 +199,35 @@ class TestCelestialBody
 		System.out.println(velocityForOrbit);
 		assertTrue(inRange(exactOrbitalVelocity,velocityForOrbit, epsilon));
 	}
-
+	/* Tests that the acceleration() method calculates the gravitational acceleration of the earth correctly*/
+	@Test
+	void testPlanetaryGravitationalAcceleration()
+	{
+		/*Earth's gravitational acceleration*/
+		double exactAcceleration = 9.8;
+		
+		/*Test*/
+		CelestialBody earth = new CelestialBody(new Vector3d(), new Vector3d(), 5.97*Math.pow(10,24), 6378000, "Earth", "", "", LocalDateTime.of(d1, t1));
+		double testAcceleration = earth.planetaryGravitationalAcceleration();
+		assertTrue(inRange(exactAcceleration, testAcceleration, epsilon));
+	}
+	/* Tests that the orbitalPeriodMethod() method calculates the orbital period of the earth around the sun correctly*/
+	@Test
+	void testOrbitalPeriod()
+	{
+		/*Sun*/
+		CelestialBody sun = new CelestialBody(new Vector3d(), new Vector3d(), 1.988500e30, 696340e3, "Sun", "", "",  LocalDateTime.of(d1, t1));
+		double sunRadius =  696340e3;
+		double distSunToEarth = 149.6e9;
+		double r2 = distSunToEarth - sunRadius;
+		
+		/*Earth's orbital period in seconds*/
+		double exactOrbitalPeriod = 31553280;
+		
+		/*Test*/
+		double testOrbitalPeriod = sun.orbitalPeriod(r2);
+		assertTrue(inRange(exactOrbitalPeriod, testOrbitalPeriod, epsilon));
+	}
 	/**
 	 * Boolean method to determine if a double is within range
 	 * @param exact The accurate answer to the equations

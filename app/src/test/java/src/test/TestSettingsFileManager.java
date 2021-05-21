@@ -22,7 +22,7 @@ class TestSettingsFileManager
 		SimulationSettings settings = loadSettings();
 		LocalTime time = LocalTime.parse("00:00:00");
 		LocalDate date = LocalDate.parse("2020-04-01");
-		LocalDateTime startDateTime = LocalDateTime.of(date, time);	
+		LocalDateTime startDateTime = LocalDateTime.of(date, time);
 
 		assertEquals(startDateTime, settings.startTime);
 	}
@@ -56,7 +56,7 @@ class TestSettingsFileManager
 	@Test
 	void loadProbePosition(){
                 SimulationSettings settings = loadSettings();
-                assertEquals(new Vector3d(-1.472343904597218e+11,-2.860995816266412e+10,8.278183193596080e+06), settings.probeStartPosition);
+                assertEquals(new Vector3d(-1.471922101663588e+11,-2.861632917e10,8.278183193596080e+06), settings.probeStartPosition);
 	}
 
 	@Test
@@ -114,7 +114,7 @@ class TestSettingsFileManager
 	{ 
 		try 
 		{
-			return SettingsFileManager.load();	
+			return SettingsFileManager.loadTest();
 		} catch (Exception e) {
 			e.printStackTrace();
 			fail(e.getMessage());
