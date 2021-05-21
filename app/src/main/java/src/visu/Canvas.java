@@ -38,7 +38,7 @@ public class Canvas extends JPanel
 	private int xOrigin;
 	private int yOrigin;
 	private double distScaling = 4E-10;		// The starting scale sizes
-	private double sizeScaling = 2E-7;
+	private double sizeScaling = 1.5E-7;
 	private double generalDist = 5E-9;		// The model in general scales
 	private double generalSize = 1E-6;
 	private double detailDist = 4E-7;		// The model in detail scales

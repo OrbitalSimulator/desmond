@@ -26,6 +26,17 @@ public abstract class SettingsFileManager extends FileManager
 		}
 		return readConfigFile(file);
 	}
+	
+	public static SimulationSettings load(String fileName) throws IOException
+	{
+		String filePath = getFilePath(fileName);
+		File file = new File(filePath);
+		if(!file.exists())
+		{
+			throw new FileNotFoundException(filePath + " Not found");
+		}
+		return readConfigFile(file);
+	}
 
 	public static SimulationSettings loadTest() throws IOException
 	{

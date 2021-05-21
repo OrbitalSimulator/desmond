@@ -17,9 +17,23 @@ public class Simulation
 	 */
 	public Vector3dInterface[] trajectory(Vector3dInterface probeStartPosition, Vector3dInterface probeStartVelocity, double[] ts)
 	{
-		//TODO (Leon) this needs to be implemented to calculate at random steps ... fuck knows why
-
+		SimulationSettings settings;
+		try {
+			settings = SettingsFileManager.load();
+			// TODO Add number of steps and calculate each point to return 
+			settings.probeStartPosition = probeStartPosition;
+			settings.probeStartVelocity = probeStartVelocity;
+			
+			Universe universe = new Universe(settings); 								
+			Vector3d[] trajectory = TrajectoryPlanner.simplePlot(universe, settings);
+			return trajectory;
+		} 
+		catch (IOException e) 
+		{
+			System.out.println("Settings File Not Found ... Exiting");
+			e.printStackTrace();
 			return null;
+		}	
 	}
 
 	/*
@@ -42,7 +56,7 @@ public class Simulation
 			settings.probeStartVelocity = probeStartVelocity;
 			
 			Universe universe = new Universe(settings); 								
-			Vector3d[] trajectory = TrajectoryPlanner.plot(universe, settings);
+			Vector3d[] trajectory = TrajectoryPlanner.simplePlot(universe, settings);
 			return trajectory;
 		} 
 		catch (IOException e) 
