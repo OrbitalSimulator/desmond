@@ -18,13 +18,13 @@ public class RouteController extends GuidanceController
 	private double mutationRate;
 	private double initialSpeed;
 	private final int GENERATION_KILL = 100;
-	private final double MAXIMUM_SPEED = 2500; 
+	private final double MAXIMUM_SPEED = 5000; 
 	private ODESolver solver = new Verlet();
 	
 	public RouteController(Universe universe, int source, int target, SimulationSettings settings) 
 	{
 		super(universe, target);
-		mutationRate = 500;
+		mutationRate = 5000;
 		initialSpeed = settings.probeStartVelocity.norm();
 		Vector3d targetVector = universe.universe[target][settings.getEndStep()].location;
 		trajectory = hillClimbAlogrithm(targetVector, settings);
