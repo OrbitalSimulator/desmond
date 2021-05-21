@@ -9,7 +9,6 @@ import src.peng.State;
 import src.peng.Vector3d;
 import src.peng.Vector3dInterface;
 import src.solv.ODESolver;
-import src.solv.RungeKutta4th;
 import src.solv.Verlet;
 import src.univ.Universe;
 import src.visu.Visualiser;
@@ -20,7 +19,7 @@ public class RouteController extends GuidanceController
 	private double initialSpeed;
 	private final int GENERATION_KILL = 100;
 	private final double MAXIMUM_SPEED = 2000; 
-	private ODESolver solver = new RungeKutta4th();
+	private ODESolver solver = new Verlet();
 	
 	public RouteController(Universe universe, int source, int target, SimulationSettings settings) 
 	{
