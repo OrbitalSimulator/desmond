@@ -1,13 +1,13 @@
 ##HEADER
 202004010000
 202104010000
-11712
-2700
+87600
+3600
 ## Format:
 ## Start Time
 ## End Time
-## Number of Steps [Optimum: 11712]
-## Step Size [day:86400] [hour:3600] [min:60] [sec:1] [Optimum: 2700]
+## Number of Steps
+## Step Size [day:86400] [hour:3600] [min:60] [sec:1] [Optimum: 3600]
 ##END
 
 ##CELESTIAL BODIES
