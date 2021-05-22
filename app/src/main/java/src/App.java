@@ -23,7 +23,7 @@ public class App
 			{
 				Thread.sleep(1000);
 			}
-			settings = setupMenu.getSettings();
+			//settings = setupMenu.getSettings();
 			Universe universe = new Universe(settings);
 			Visualiser.getInstance().addUniverse(universe.universe);
 			TrajectoryPlanner.simplePlot(universe, settings);
