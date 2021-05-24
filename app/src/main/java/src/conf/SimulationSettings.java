@@ -2,6 +2,7 @@ package src.conf;
 
 import java.time.LocalDateTime;
 import src.peng.Vector3dInterface;
+import src.peng.Vector3d;
 import src.univ.CelestialBody;
 
 public class SimulationSettings 
@@ -33,6 +34,11 @@ public class SimulationSettings
 		this.noOfSteps = noOfSteps;
 		this.stepSize = stepSize;
 		this.waypoints = waypoints;
+	}
+
+	public void setStartVelocity(double velocityX)
+	{
+		probeStartVelocity = new Vector3d(velocityX, 0, 0);
 	}
 	
 	public SimulationSettings copy()

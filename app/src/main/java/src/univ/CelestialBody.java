@@ -89,6 +89,14 @@ public class CelestialBody
 		return targetPosition;
 	}
 
+	//Offsets the position, to be at 90 degrees above target planet's final position
+	//finalStateOfTarget represents CB at final state, thus knowing its final position.
+	public Vector3d calculateTargetPoint()
+	{
+		double updatedYValue = location.getY() - orbitalHeight;
+		return new Vector3d(location.getX(),updatedYValue, location.getZ());
+	}
+
 	/**
 	 * Calculate the Sphere of Influence of an orbiting planet.
 	 * @param a The semi-major axis of the orbit/ the distance to the orbiting planet.
