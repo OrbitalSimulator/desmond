@@ -24,8 +24,8 @@ public class CelestialBody
 	public Vector3d location;
 	public LocalDateTime time = null;
 
-	public double orbitalHeight = 9.999999997607184E10;
-	public double orbitalError = 0.01e3;
+	public double orbitalHeight = 450e3;
+	public double orbitalError = 0.001e3;
 
 	public CelestialBody(Vector3d location, Vector3d velocity, double mass, double radius, String name, String image, String icon, LocalDateTime time)
 	{
@@ -87,6 +87,14 @@ public class CelestialBody
 		Vector3d orthogonalDistance = orthogonalUnitVector.mul(orbitalHeight);
 		Vector3d targetPosition = location.add(orthogonalDistance);
 		return targetPosition;
+	}
+
+	//Offsets the position, to be at 90 degrees above target planet's final position
+	//finalStateOfTarget represents CB at final state, thus knowing its final position.
+	public Vector3d calculateTargetPoint()
+	{
+		double updatedYValue = location.getY() - orbitalHeight;
+		return new Vector3d(location.getX(),updatedYValue, location.getZ());
 	}
 
 	/**
