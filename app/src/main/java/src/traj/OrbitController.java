@@ -12,7 +12,7 @@ import src.univ.Universe;
 //Working under assumption that probe will always approach target at offset 90 degrees to the planet.
 public class OrbitController extends GuidanceController
 {
-	private double scaler = 1000;
+	private double scaler = 0;
 	private double dampener = 10000;
 	public static final boolean DEBUG =  false;
 
@@ -104,13 +104,16 @@ public class OrbitController extends GuidanceController
 		return probePosition.unitVector();
 	}
 
+	//TODO Logger to obtain route evaluation for logging and determine local maxima.
+	//Values to obtain current orbit:
+	// velocityLowerLimit = 1200.; change = 6000; number of steps = 80000; step size = 12; orbitalHeight = 450e3; Acceptable error = 100e3
 	public double orbitalHillClimbing(Universe universe, int target, SimulationSettings settings)
 	{
-		double velocityLowerLimit = 0.0;
+		double velocityLowerLimit = 1200.0;
 
-		double change = 30000;
+		double change = 6000;
 
-		double acceptableError = 1e3;
+		double acceptableError = 10e3;
 		double currentError = Double.MAX_VALUE;
 
 		Vector3d[] route = new Vector3d[settings.noOfSteps+1];
@@ -120,8 +123,10 @@ public class OrbitController extends GuidanceController
 
 		double currentVelocity =  velocityLowerLimit + change;
 
+		int temp = 20;
 
-		while(currentError > acceptableError)
+		//while(currentError > acceptableError)
+		while(temp>0)
 		{
 			currentError = routeEvaluation(currentVelocity, settings, universe, target, orbitalHeight);
 
@@ -140,6 +145,7 @@ public class OrbitController extends GuidanceController
 			}
 
 			currentVelocity = velocityLowerLimit + change;
+			temp--;
 		}
 		System.out.println("Optimum velocity is: "+ currentVelocity);
 		return currentVelocity;

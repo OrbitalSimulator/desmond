@@ -25,7 +25,7 @@ public abstract class TrajectoryPlanner
 
 	public static Vector3d[] plotOrbit(Universe universe, SimulationSettings settings)
 	{
-		OrbitController oc = new OrbitController(universe, 0, settings);
+		OrbitController oc = new OrbitController(universe, 8, settings);
 		return oc.getTrajectory();
 	}
 }

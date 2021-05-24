@@ -24,7 +24,7 @@ public class CelestialBody
 	public Vector3d location;
 	public LocalDateTime time = null;
 
-	public  double orbitalHeight = 9.9e10;
+	public  double orbitalHeight = 450e3;
 	public double orbitalError = 0.001e3;
 
 	public CelestialBody(Vector3d location, Vector3d velocity, double mass, double radius, String name, String image, String icon, LocalDateTime time)
