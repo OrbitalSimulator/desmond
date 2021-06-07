@@ -130,7 +130,7 @@ public class OrbitController extends GuidanceController
 		{
 			currentError = routeEvaluation(currentVelocity, settings, universe, target, orbitalHeight);
 
-			System.out.println("\nCurrent velocity: "+ currentVelocity);
+			System.out.println("Current velocity: "+ currentVelocity);
 			System.out.println("Lower limit error: "+ lowerLimitError);
 			System.out.println("Current Error: "+ currentError);
 

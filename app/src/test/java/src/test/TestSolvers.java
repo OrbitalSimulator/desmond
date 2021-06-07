@@ -10,18 +10,15 @@ import org.junit.jupiter.api.Test;
 import log.TestLogger;
 import src.conf.SettingsFileManager;
 import src.conf.SimulationSettings;
+import src.solv.*;
 import src.univ.CelestialBody;
 import src.univ.Universe;
 import src.peng.NewtonGravityFunction;
 import src.peng.ODEFunctionInterface;
 import src.peng.State;
 import src.peng.StateInterface;
+import src.peng.ExponentialFunction;
 import src.peng.Vector3d;
-import src.solv.EulerSolver;
-import src.solv.RungeKutta2nd;
-import src.solv.RungeKutta3rd;
-import src.solv.RungeKutta4th;
-import src.solv.Verlet;
 
 /* --------------------------------------------------------------------------------------------------*/
 /** Testing Strategy: Each solver will be run for a year at the following step sizes:
@@ -91,6 +88,28 @@ class TestSolvers
 		double stepSize = STEP_1;
 		int noOfSteps = YEAR_1;
 		logSolversTests(fileName, stepSize, noOfSteps);
+	}
+
+	@Test void testSolverExponential()
+	{
+		/*Solver and function setup*/
+		ODEFunctionInterface exponentialFunction = new ExponentialFunction();
+		ODESolver solver = new Verlet();
+
+		/*Initialize current state at time 0*/
+		ArrayList<Vector3d> velocity = new ArrayList<Vector3d>();
+		velocity.add(new Vector3d());
+
+		ArrayList<Vector3d> position = new ArrayList<Vector3d>();
+		Vector3d derivative = new Vector3d(0, Math.exp(0),0);
+		position.add(derivative);
+		State currentState = new State(velocity, position);
+		System.out.println(currentState.toString());
+
+		/*Solver test with 1 sec time step*/
+		State nextState = solver.step(exponentialFunction, 0, currentState, 1);
+		System.out.println(nextState.toString());
+
 	}
 	
 	public void logSolversTests(String fileName, double stepSize, int noOfSteps) 
