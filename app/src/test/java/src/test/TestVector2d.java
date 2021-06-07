@@ -47,7 +47,7 @@ class TestVector2d {
 	void testSub() {
 		Vector2d a = new Vector2d(1.1, -1.2);
 		Vector2d b = new Vector2d(-1.3, 1.4);
-		Vector2d r = a.add(b);
+		Vector2d r = a.sub(b);
 		assertEquals(1.1 - (-1.3), r.getX());
 		assertEquals(-1.2 - 1.4, r.getY());
 	}
