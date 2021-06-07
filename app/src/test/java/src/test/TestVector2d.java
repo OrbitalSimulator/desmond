@@ -64,7 +64,7 @@ class TestVector2d {
 	void testAddMul() {
 		Vector2d a = new Vector2d(1.1, -1.2);
 		Vector2d b = new Vector2d(-1.3, 1.4);
-		Vecotr2d r = a.addMul(0.5, b);
+		Vector2d r = a.addMul(0.5, b);
 		assertEquals(1.1 + 0.5 * (-1.2), r.getX());
 		assertEquals(-1.3 + 0.5 * 1.4, r.getY());
 	}
