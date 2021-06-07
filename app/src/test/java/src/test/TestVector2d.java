@@ -84,9 +84,9 @@ class TestVector2d {
 	
 	@Test
 	void testDotProduct() {
-		Vector2d a = new Vector2d(1.1, -1.2);
-		Vector2d b = new Vector2d(-1.3, 1.4);
-		assertEquals(-3.11, a.dotProduct(b));
+		Vector2d a = new Vector2d(1.0, 0.0);
+		Vector2d b = new Vector2d(0.0, 1.0);
+		assertEquals(2.0, a.dotProduct(b));
 	}
 	
 	@Test
