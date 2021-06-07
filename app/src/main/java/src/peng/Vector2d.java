@@ -153,7 +153,7 @@ public class Vector2d
      */
     public String toCSV() 
     {
-        return this.x + "," + this.y;
+        return this.x + "," + this.y + ",";
     }
     
     public double getRoundedX(int digit) {return round(x,digit);}
