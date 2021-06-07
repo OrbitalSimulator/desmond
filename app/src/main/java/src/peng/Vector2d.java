@@ -121,7 +121,7 @@ public class Vector2d
      */
     public boolean equals(Object o)
     {
-        Vector3d v = (Vector3d) o;
+        Vector2d v = (Vector2d) o;
     	if((v.getX() == x) && (v.getY() == y))
         {
             return true;
