@@ -48,7 +48,7 @@ class TestVector2d {
 		Vector2d a = new Vector2d(1.1, -1.2);
 		Vector2d b = new Vector2d(-1.3, 1.4);
 		Vector2d r = a.add(b);
-		assertEquals(1.1 + 1.3, r.getX());
+		assertEquals(1.1 - (-1.3), r.getX());
 		assertEquals(-1.2 - 1.4, r.getY());
 	}
 
@@ -65,8 +65,8 @@ class TestVector2d {
 		Vector2d a = new Vector2d(1.1, -1.2);
 		Vector2d b = new Vector2d(-1.3, 1.4);
 		Vector2d r = a.addMul(0.5, b);
-		assertEquals(1.1 + 0.5 * (-1.2), r.getX());
-		assertEquals(-1.3 + 0.5 * 1.4, r.getY());
+		assertEquals(1.1 + 0.5 * (-1.3), r.getX());
+		assertEquals(-1.2 + 0.5 * 1.4, r.getY());
 	}
 
 	@Test
