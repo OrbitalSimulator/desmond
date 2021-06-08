@@ -1,13 +1,13 @@
 package src.solv;
 
-public  class Error
+public abstract class Error
 {
-    public  static double absoluteError(double a, double b)
+    public  static double absolute(double a, double b)
     {
         return Math.abs(a-b);
     }
 
-    public  static double relativeError(double a, double b)
+    public  static double relative(double a, double b)
     {
         return Math.abs((a-b)/a);
     }
