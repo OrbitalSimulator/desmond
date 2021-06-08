@@ -29,7 +29,7 @@ public class Verlet extends ODESolver implements ODESolverInterface
 
         ArrayList<Vector3d> nextVel = nextVelocity(nextChange, currentState, change, step);
 
-        return new State(nextVel, nextPos);
+        return new State(nextVel, nextPos, t+step);
     }
 
     public StateInterface step(ODEFunctionInterface function, double t, StateInterface cState, double step)

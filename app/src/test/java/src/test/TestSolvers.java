@@ -89,29 +89,6 @@ class TestSolvers
 		int noOfSteps = YEAR_1;
 		logSolversTests(fileName, stepSize, noOfSteps);
 	}
-
-	@Test void testSolverExponential()
-	{
-		/*Solver and function setup*/
-		ODEFunctionInterface exponentialFunction = new ExponentialFunction();
-		ODESolver solver = new Verlet();
-
-		/*Initialize current state at time 0*/
-		ArrayList<Vector3d> velocity = new ArrayList<Vector3d>();
-		Vector3d derivative = new Vector3d(0, Math.exp(0),0);
-		velocity.add(derivative);
-
-		ArrayList<Vector3d> position = new ArrayList<Vector3d>();
-		position.add(new Vector3d());
-
-		State currentState = new State(velocity, position);
-		System.out.println(currentState.toString());
-
-		/*Solver test with 1 sec time step*/
-		State nextState = solver.step(exponentialFunction, 0, currentState, 0.2);
-		System.out.println(nextState.toString());
-
-	}
 	
 	public void logSolversTests(String fileName, double stepSize, int noOfSteps) 
 	{
