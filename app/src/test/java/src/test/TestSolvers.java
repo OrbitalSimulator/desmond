@@ -10,18 +10,15 @@ import org.junit.jupiter.api.Test;
 import log.TestLogger;
 import src.conf.SettingsFileManager;
 import src.conf.SimulationSettings;
+import src.solv.*;
 import src.univ.CelestialBody;
 import src.univ.Universe;
 import src.peng.NewtonGravityFunction;
 import src.peng.ODEFunctionInterface;
 import src.peng.State;
 import src.peng.StateInterface;
+import src.peng.ExponentialFunction;
 import src.peng.Vector3d;
-import src.solv.EulerSolver;
-import src.solv.RungeKutta2nd;
-import src.solv.RungeKutta3rd;
-import src.solv.RungeKutta4th;
-import src.solv.Verlet;
 
 /* --------------------------------------------------------------------------------------------------*/
 /** Testing Strategy: Each solver will be run for a year at the following step sizes:
