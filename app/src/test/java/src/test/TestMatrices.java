@@ -74,6 +74,22 @@ public class TestMatrices
     }
 
     @Test
+    void testAlternatingSigns()
+    {
+        Matrix3d matrix = new Matrix3d();
+
+        assertEquals(matrix.determineAlternatingSign(0, 0), 1);
+        assertEquals(matrix.determineAlternatingSign(0, 1), -1);
+        assertEquals(matrix.determineAlternatingSign(0, 2), 1);
+        assertEquals(matrix.determineAlternatingSign(1, 0), -1);
+        assertEquals(matrix.determineAlternatingSign(1, 1), 1);
+        assertEquals(matrix.determineAlternatingSign(1, 2), -1);
+        assertEquals(matrix.determineAlternatingSign(2, 0), 1);
+        assertEquals(matrix.determineAlternatingSign(2, 1), -1);
+        assertEquals(matrix.determineAlternatingSign(2, 2), 1);
+    }
+
+    @Test
     void testIsInvertable()
     {
         double[] row1 = {1, 2, 3};
@@ -105,6 +121,67 @@ public class TestMatrices
         System.out.println("Accurate transpose: \n" + accurateTranspose.toString());
 
         assertTrue(transpose.equals(accurateTranspose));
+    }
 
+    @Test
+    void testScalerMultipication3D()
+    {
+        double[] row1 = {1, 2, 3};
+        double[] row2 = {0, 1, 4};
+        double[] row3 = {5, 6, 0};
+        Matrix3d matrix = new Matrix3d(row1, row2, row3);
+        System.out.println("Matrix: \n" + matrix.toString());
+
+        Matrix3d scaledMatrix = matrix.scalerMultiplication(2);
+        System.out.println("Scaled matrix by 2: \n" + scaledMatrix.toString());
+
+        /*Correct output matrix*/
+        double[] row1Output = {2, 4, 6};
+        double[] row2Output = {0, 2, 8};
+        double[] row3Output = {10, 12, 0};
+        Matrix3d accurateMatrix = new Matrix3d(row1Output, row2Output, row3Output);
+
+        assertTrue(scaledMatrix.equals(accurateMatrix));
+    }
+
+    @Test
+    void testNonInvertableMatrix()
+    {
+        double[] row1 = {1, 0, 0};
+        double[] row2 = {0, 1, 0};
+        double[] row3 = {0, 0, 0};
+        Matrix3d matrix = new Matrix3d(row1, row2, row3);
+        System.out.println("Non-Invertable matrix: \n" + matrix.toString());
+
+        try
+        {
+            matrix.calculateInverseMatrix();
+        }
+        catch(RuntimeException e)
+        {
+            System.out.println(e.getMessage());
+            assertEquals(e.getMessage(),"Matrix is not invertable");
+        }
+    }
+
+    @Test
+    void testInverseMatrix()
+    {
+        double[] row1 = {1, 2, 3};
+        double[] row2 = {0, 1, 4};
+        double[] row3 = {5, 6, 0};
+        Matrix3d matrix = new Matrix3d(row1, row2, row3);
+        System.out.println("Matrix: \n" + matrix.toString());
+
+        Matrix3d inverseMatrix = matrix.calculateInverseMatrix();
+        System.out.println("Inverse matrix: \n" + inverseMatrix.toString());
+
+        /*Actual Inverse Matrix*/
+        double[] row1Output = {-24, 18, 5};
+        double[] row2Output = {20, -15, -4};
+        double[] row3Output = {-5, 4, 1};
+        Matrix3d accurateInverseMatrix = new Matrix3d(row1Output, row2Output, row3Output);
+
+        assertTrue(inverseMatrix.equals(accurateInverseMatrix));
     }
 }

@@ -17,6 +17,18 @@ public class Matrix3d extends Matrix
         setRow(row3, 2);
     }
 
+    public Matrix3d calculateInverseMatrix()
+    {
+        if(!determineIfInvertable())
+        {
+            throw new RuntimeException("Matrix is not invertable");
+        }
+
+        double determinant = calculateDeterminant();
+        Matrix3d adjugateMatrix = calculateMatrixOfCofactors().matrixTranspose();
+        return adjugateMatrix.scalerMultiplication(1/determinant);
+    }
+
     public Matrix3d calculateMatrixOfCofactors()
     {
         Matrix3d cofactorMatrix = new Matrix3d();
@@ -94,7 +106,7 @@ public class Matrix3d extends Matrix
         {
             return 1;
         }
-        else if(selectedRow % 2 == 1 && selectedColumn % 1 == 0)
+        else if(selectedRow % 2 == 1 && selectedColumn % 2 == 1)
         {
             return 1;
         }
@@ -116,5 +128,19 @@ public class Matrix3d extends Matrix
             }
         }
         return transposeMatrix;
+    }
+
+    public Matrix3d scalerMultiplication(double scaler)
+    {
+        Matrix3d resultantMatrix = new Matrix3d();
+
+        for(int i = 0; i < matrixDimension; i++)
+        {
+            for(int j = 0; j < matrixDimension; j++)
+            {
+                resultantMatrix.set(i, j, (get(i, j) * scaler));
+            }
+        }
+        return resultantMatrix;
     }
 }

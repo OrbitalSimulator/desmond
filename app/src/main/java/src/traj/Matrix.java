@@ -41,6 +41,11 @@ public abstract class Matrix
         matrixDimension = dimension;
     }
 
+    public int getDimension()
+    {
+        return matrixDimension;
+    }
+
     public boolean equals(Matrix comparison)
     {
         for(int i = 0; i < matrixDimension; i++)
