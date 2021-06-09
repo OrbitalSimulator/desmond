@@ -1,4 +1,4 @@
-package src.solv;
+package src.test;
 
 public abstract class Error
 {
