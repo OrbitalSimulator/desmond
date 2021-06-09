@@ -7,7 +7,7 @@ import java.util.ArrayList;
 
 import org.junit.jupiter.api.Test;
 
-import log.TestLogger;
+import log.Logger;
 import src.conf.SettingsFileManager;
 import src.conf.SimulationSettings;
 import src.solv.*;
@@ -133,11 +133,11 @@ class TestSolvers
 		
 	private void logStates(String fileName,String solver, double stepSize, double noOfSteps, State[] states)
 	{
-		TestLogger.log(fileName, "**********,**********,**********,**********,**********,");
-		TestLogger.log(fileName, solver + ",  STEP SIZE," + stepSize + ",  STEPS," + noOfSteps);
+		Logger.logCSV(fileName, "**********,**********,**********,**********,**********,");
+		Logger.logCSV(fileName, solver + ",  STEP SIZE," + stepSize + ",  STEPS," + noOfSteps);
 		for(int i = 0; i < states.length; i++)
 		{
-			TestLogger.log(fileName, states[i].position.get(3).toCSV());
+			Logger.logCSV(fileName, states[i].position.get(3).toCSV());
 		}
 	}
 	
