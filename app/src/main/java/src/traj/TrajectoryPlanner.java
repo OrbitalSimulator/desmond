@@ -16,7 +16,13 @@ public abstract class TrajectoryPlanner
 		LaunchController lc = new LaunchController(universe, 0, settings);
 		return lc.getTrajectory();
 	}
-	
+
+	public static Vector3d[] newtonRaphsonPlot(Universe universe, int origin, int target, SimulationSettings settings)
+	{
+		NewtonRaphson nr = new NewtonRaphson(universe, origin, target, settings);
+		return nr.getTrajectory();
+	}
+
 	public static Vector3d[] plotRoute(Universe universe, SimulationSettings settings)
 	{							
 		int earth = 3;
