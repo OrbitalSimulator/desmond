@@ -48,13 +48,7 @@ public class Canvas extends JPanel
 	private int endTime;
 	private boolean follow = false;
 	private int following = -1;
-	
-	private Stack<Vector3d[]> tempStack = new Stack<Vector3d[]>();
-	private Stack<Vector3d[]> permStack = new Stack<Vector3d[]>();
-	private ArrayList<Vector3d[]> tempTrajs = new ArrayList<Vector3d[]>();
-	private ArrayList<Vector3d[]> permTrajs = new ArrayList<Vector3d[]>();
-	private boolean purgeTempTrajs = false;
-	
+		
 	public Canvas(Universe universe, Dimension screen)
 	{
 		this.universe = universe;
@@ -151,23 +145,12 @@ public class Canvas extends JPanel
 	
 	private void paintTempTrajs(Graphics2D g)
 	{
-		while(!tempStack.isEmpty())
-		{
-			tempTrajs.add(tempStack.pop());
-		}
 		
-		if(purgeTempTrajs)
-		{
-			tempStack.removeAllElements();
-			tempTrajs.clear();
-			purgeTempTrajs = false;
-		}
-		
-		if(tempTrajs.isEmpty())
+		if(universe.getTempTrajectories().isEmpty())
 			return;
 		
 		g.setColor(Color.RED);
-		for(Vector3d[] each: tempTrajs)		
+		for(Vector3d[] each: universe.getTempTrajectories())		
 		{
 			for(int i = 0; i < each.length; i+= TRAJ_PAINT_RATE)
 			{
@@ -186,16 +169,11 @@ public class Canvas extends JPanel
 	
 	private void paintPermTrajs(Graphics2D g)
 	{
-		while(!permStack.isEmpty())
-		{
-			permTrajs.add(permStack.pop());
-		}
-		
-		if(permTrajs.isEmpty())
+		if(universe.getPermTrajectories().isEmpty())
 			return;
 		
 		g.setColor(Color.YELLOW);
-		for(Vector3d[] each: permTrajs)		
+		for(Vector3d[] each: universe.getPermTrajectories())		
 		{
 			for(int i = 0; i < each.length; i++)
 			{
@@ -211,25 +189,7 @@ public class Canvas extends JPanel
 			}
 		}
 	}
-	
-	public void addPermTraj(Vector3d[] trajectory)
-	{
-		permStack.add(trajectory);
-		repaint();
-	}
-	
-	public void addTempTraj(Vector3d[] trajectory)
-	{
-		tempStack.add(trajectory);
-		repaint();
-	}
-	
-	public void clearTempTraj()
-	{
-		purgeTempTrajs = true;
-		repaint();
-	}
-	
+		
 	public void incrementTime(int interval)
 	{
 		if((time+interval < endTime) && (time+interval >= 0))

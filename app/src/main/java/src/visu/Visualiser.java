@@ -66,22 +66,12 @@ public class Visualiser extends JFrame implements MouseMotionListener, ActionLis
 			instance = new Visualiser();
 		return instance;
 	}
+	
+	public void update()
+	{
+		canvas.repaint();
+	}
 		
-	public void addTempTrajectory(Vector3d[] trajectory)
-	{
-		canvas.addTempTraj(trajectory);
-	}
-	
-	public void addPermTrajectory(Vector3d[] trajectory)
-	{
-		canvas.addPermTraj(trajectory);
-	}
-	
-	public void clearTempTrajectories()
-	{
-		canvas.clearTempTraj();
-	}
-	
 	public void addUniverse(Universe universe)
 	{
 		System.out.print("Starting visualisation ...");
