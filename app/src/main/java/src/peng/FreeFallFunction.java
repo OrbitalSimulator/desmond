@@ -94,4 +94,18 @@ public class FreeFallFunction implements ODEFunctionInterface {
         /*Output*/
         return changeInVelocity;
     }
+    
+    /**
+     * newtonGravity method calculates Celestial Body acceleration as a result of gravitational relations between all Celestial bodies
+     * @param y The state of the current system.
+     * @param masses Array containing all masses of the Celestial Bodies in the system
+     * @return An array containing resultant acceleration of all Celestial bodies in the system
+    */
+    public ArrayList<Vector2d> drag(ArrayList<Vector2d> velo, ArrayList<Vector2d> posi, double planetMass, LanderSettings setting)
+    {
+    	
+    	
+    }
+    
+    
 }
