@@ -56,7 +56,7 @@ public class RouteController extends GuidanceController
 			generations++;
 			System.out.println(generations + " " + settings.probeStartVelocity.toString() 
 				+ " Speed: " + (settings.probeStartVelocity.norm()-initialSpeed));
-			Visualiser.getInstance().clearTempTrajectories();
+			universe.clearTempTrajectories();
 		}
 		return planRoute(settings);
 	}
@@ -105,8 +105,8 @@ public class RouteController extends GuidanceController
 			currentVelocity = getProbeVelocity(nextState);
 			trajectory[currentStep++] = currentPosition;
 		}
-		Visualiser.getInstance().clearTempTrajectories();
-		Visualiser.getInstance().addPermTrajectory(trajectory);
+		universe.clearTempTrajectories();
+		universe.addPermTrajectory(trajectory);
 		
 		finalSettings = settings.copy();
 		finalSettings.probeStartPosition = currentPosition;
@@ -141,7 +141,7 @@ public class RouteController extends GuidanceController
 			currentVelocity = getProbeVelocity(nextState);
 			trajectory[currentStep++] = currentPosition;
 		}
-		Visualiser.getInstance().addTempTrajectory(trajectory);
+		universe.addTempTrajectory(trajectory);
 		return trajectory[trajectory.length-1];
 	}
 	

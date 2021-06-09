@@ -43,7 +43,7 @@ public class LaunchController extends GuidanceController
 			currentVelocity = getProbeVelocity(nextState);
 			trajectory[currentStep++] = currentPosition;
 		}
-		Visualiser.getInstance().addTempTrajectory(trajectory);
+		universe.addTempTrajectory(trajectory);
 		return trajectory;
 	}
 
