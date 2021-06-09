@@ -15,6 +15,8 @@ public class LandingModule {
 	private Vector2d initialPos;
 	private Vector2d initialVelo;
 	private CelestialBody body;
+	private ArrayList<Vector2d> positions;
+	private ArrayList<Vector2d> velocities;
 	
 	public LandingModule(double width, double length, double fuel, LanderSettings setting) {
 		this.fuel = fuel;
@@ -22,6 +24,8 @@ public class LandingModule {
 		this.width = width;
 		this.initialPos = setting.probeStartPosition;
 		this.initialVelo = setting.probeStartVelocity; 
+		this.positions.add(setting.probeStartPosition);
+		this.velocities.add(setting.probeStartVelocity);
 	}
 	
 	public ArrayList<Vector2d> landerFreeFall() {
