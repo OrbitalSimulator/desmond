@@ -18,23 +18,24 @@ public class App
 		try 
 		{
 			settings = SettingsFileManager.load();
-			SetupMenu setupMenu = new SetupMenu(settings);
-			while(!setupMenu.inputComplete())
-			{
-				Thread.sleep(1000);
-			}
+			//SetupMenu setupMenu = new SetupMenu(settings);
+			//while(!setupMenu.inputComplete())
+			//{
+			//	Thread.sleep(1000);
+			//}
 			//settings = setupMenu.getSettings();
 			Universe universe = new Universe(settings);
-			Visualiser.getInstance().addUniverse(universe.universe);
+			Visualiser.getInstance().addUniverse(universe);
 			TrajectoryPlanner.simplePlot(universe, settings);
 			TrajectoryPlanner.plotRoute(universe, settings);
 
 		}
 		catch(IOException e){
 			e.printStackTrace();
-		} catch (InterruptedException e){
-			e.printStackTrace();
-		}
+		} 
+		//catch (InterruptedException e){
+		//	e.printStackTrace();
+		//}
     }
 
 
