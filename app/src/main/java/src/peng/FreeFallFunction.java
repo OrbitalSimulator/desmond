@@ -22,7 +22,7 @@ public class FreeFallFunction implements ODEFunctionInterface {
      */
 	public RateInterface call(double t, StateInterface y)
     {
-        State stateInfo = (State)y;                                      //Cast y into State object to access information
+        State2d stateInfo = (State2d)y;                                      //Cast y into State object to access information
 
         /*1.Calculate resultant sum acceleration by gravity*/
         ArrayList<Vector2d> cvG = newtonGravity(y, settings.celestialBody.mass);
@@ -45,7 +45,7 @@ public class FreeFallFunction implements ODEFunctionInterface {
         }
         
         /* 5.Return rateInterface object reflecting these changes*/
-        return new Rate(cvT, cpT);
+        return new Rate2d(cvT, cpT);
     }
 	
 	/**
