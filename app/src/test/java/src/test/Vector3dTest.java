@@ -102,4 +102,17 @@ class Vector3dTest {
         assertEquals(stringV, v.toString());
     }
 
+    @Test void testGetFunction()
+    {
+        Vector3d v = new Vector3d(-1.1, 2.1, -3.1);
+        assertEquals(v.get(1), 2.1);
+    }
+
+    @Test void testSetFunction()
+    {
+        Vector3d v = new Vector3d(-1.1, 2.1, -3.1);
+        v.set(1, 2.0);
+
+        assertTrue(v.equals(new Vector3d(-1.1, 2.0, -3.1)));
+    }
 }

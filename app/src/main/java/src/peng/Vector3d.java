@@ -171,4 +171,36 @@ public class Vector3d implements Vector3dInterface
     public void setX(double x) {this.x = x;}
     public void setY(double y) {this.y = y;}
     public void setZ(double z) {this.z = z;}
+    public double get(int index)
+    {
+        switch (index)
+        {
+            case 0:
+                return getX();
+            case 1:
+                return getY();
+            case 2:
+                return getZ();
+            default:
+                throw new RuntimeException("Vector index not found");
+        }
+    }
+
+    public void set(int index, double value)
+    {
+        switch (index)
+        {
+            case 0:
+                setX(value);
+                break;
+            case 1:
+                setY(value);
+                break;
+            case 2:
+                setZ(value);
+                break;
+            default:
+                throw new RuntimeException("Vector index not found");
+        }
+    }
 }

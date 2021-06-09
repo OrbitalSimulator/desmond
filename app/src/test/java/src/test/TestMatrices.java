@@ -3,6 +3,8 @@ package src.test;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import src.peng.Vector3d;
 import src.traj.Matrix;
 import src.traj.Matrix2d;
 import src.traj.Matrix3d;
@@ -183,5 +185,26 @@ public class TestMatrices
         Matrix3d accurateInverseMatrix = new Matrix3d(row1Output, row2Output, row3Output);
 
         assertTrue(inverseMatrix.equals(accurateInverseMatrix));
+    }
+
+    @Test
+    void testMatricVectorMultiplication()
+    {
+        double[] row1 = {4, 5, 6};
+        double[] row2 = {7, 8, 9};
+        double[] row3 = {10, 11, 12};
+        Matrix3d matrix = new Matrix3d(row1, row2, row3);
+        System.out.println("Matrix: \n" + matrix.toString());
+
+        Vector3d vector = new Vector3d(1, 2, 3);
+        System.out.println("Vector: \n" + vector.toString());
+
+        Vector3d result = matrix.vectorMultiplication(vector);
+        System.out.println("Result: \n" + result.toString());
+
+        /*Correct vector output*/
+        Vector3d accurateResultVector = new Vector3d(32, 50, 68);
+
+        assertTrue(result.equals(accurateResultVector));
     }
 }

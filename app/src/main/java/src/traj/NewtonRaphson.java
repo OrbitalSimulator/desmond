@@ -17,37 +17,72 @@ public class NewtonRaphson extends GuidanceController
     private int target;
     private Vector3d launchPoint;
     private Vector3d targetPoint;
+    private double launchTime;
+    private double targetTime;
+    private double delta = 0.001;
 
-    public NewtonRaphson(Universe universe, int origin, int target, SimulationSettings settings)
+    public NewtonRaphson(Universe universe, int origin, int target, SimulationSettings settings, double launchTime, double targetTime)
     {
         super(universe, target);
         this.settings = settings;
         this.universe = universe;
         this.origin = origin;
         this.target = target;
+        this.launchTime = launchTime;
+        this.targetTime = targetTime;
 
         //Calculate V0 using NewtonRaphson
         //Plan final route using V0
     }
 
-    public Vector3d calculateClosestPoint(Vector3d[] trajectory)
+    public Matrix3d calculateJacobian(Vector3d initVelocity, Vector3d closestPoint)
     {
-        Vector3d closestPoint = trajectory[0];
-        double distanceMeasure = closestPoint.dist(targetPoint);
+        Matrix3d jacobian = new Matrix3d();
 
-        for(Vector3d point: trajectory)
+        for(int i = 0; i< jacobian.getDimension(); i++)
         {
-            if(point.dist(targetPoint) < distanceMeasure)
+            for(int j = 0; j < jacobian.getDimension(); j++)
             {
-                closestPoint = point;
+                calculatePartialDerivative(i, j, initVelocity, closestPoint);
             }
         }
-        System.out.println("Closest distance to titan: " + closestPoint.dist(targetPoint));
-        return closestPoint;
+        return jacobian;
     }
 
+    public double calculatePartialDerivative(int row, int column, Vector3d initVelocity, Vector3d closestPoint)
+    {
+        /*Generate delta velocity*/
+        double deltaValue = initVelocity.get(column) + delta;
+        Vector3d velocityDelta = initVelocity.copyOf();
+        velocityDelta.set(column, deltaValue);
+
+        /*Determine distance in x,y,z components*/
+        double individualComponentResult = individualComponentResult(closestPoint, row);
+
+        /*Generate new trajectory from deltaValue and subsequent closest point*/
+        Vector3d[] derivativeTrajectory = planRoute(velocityDelta);
+        Vector3d nextClosestPoint = calculateClosestPoint(derivativeTrajectory);
+        double derivativeIndividualComponentResult = individualComponentResult(nextClosestPoint, row);
+
+        /*derivative calculation*/
+        double derivative = (derivativeIndividualComponentResult - individualComponentResult) / delta;
+        return derivative;
+    }
+
+    public double individualComponentResult(Vector3d closestPoint, int row)
+    {
+        Vector3d componentDistanceMeasure = componentDistanceMeasure(closestPoint);
+        return componentDistanceMeasure.get(row);
+    }
+
+    public Vector3d componentDistanceMeasure(Vector3d closestPoint)
+    {
+        return targetPoint.sub(closestPoint);
+    }
+
+
     //TODO refactor into methods takeStep and planRoute
-    public Vector3d[] planRoute(double launchTime, double targetTime, Vector3d initVelocity)
+    public Vector3d[] planRoute(Vector3d initVelocity)
     {
         //TODO make time dynamic
         calculateLaunchAndTargetCoordinates(0,  4.73e7);
@@ -75,6 +110,22 @@ public class NewtonRaphson extends GuidanceController
             trajectory[currentStep] = currentPosition;
         }
         return trajectory;
+    }
+
+    public Vector3d calculateClosestPoint(Vector3d[] trajectory)
+    {
+        Vector3d closestPoint = trajectory[0];
+        double distanceMeasure = closestPoint.dist(targetPoint);
+
+        for(Vector3d point: trajectory)
+        {
+            if(point.dist(targetPoint) < distanceMeasure)
+            {
+                closestPoint = point;
+            }
+        }
+        System.out.println("Closest distance to titan: " + closestPoint.dist(targetPoint));
+        return closestPoint;
     }
 
     private void calculateLaunchAndTargetCoordinates(double launchTime, double targetTime)

@@ -24,8 +24,8 @@ public class NewtonRaphsonTest
             SimulationSettings settings = SettingsFileManager.load();
             SetupMenu setupMenu = new SetupMenu(settings);
             Universe universe = new Universe(settings);
-            NewtonRaphson nr = new NewtonRaphson(universe, 3, 0, settings);
-            Vector3d[] trajectory = nr.planRoute(0,  4.73e7, new Vector3d(0, -100000, 0));
+            NewtonRaphson nr = new NewtonRaphson(universe, 3, 0, settings, 0,  4.73e7);
+            Vector3d[] trajectory = nr.planRoute(new Vector3d(0, -100000, 0));
             Vector3d closestPoint = nr.calculateClosestPoint(trajectory);
             System.out.println("Closest Point :" + closestPoint.toString());
 
