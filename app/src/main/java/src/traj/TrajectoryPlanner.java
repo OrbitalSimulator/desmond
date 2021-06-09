@@ -20,7 +20,8 @@ public abstract class TrajectoryPlanner
 	public static Vector3d[] newtonRaphsonPlot(Universe universe, int origin, int target, SimulationSettings settings)
 	{
 		NewtonRaphson nr = new NewtonRaphson(universe, origin, target, settings);
-		return nr.getTrajectory();
+		Vector3d[] trajectory = nr.planRoute(0, 4.73e7, new Vector3d(0, -10000, 0));
+		return trajectory;
 	}
 
 	public static Vector3d[] plotRoute(Universe universe, SimulationSettings settings)

@@ -30,10 +30,27 @@ public class NewtonRaphson extends GuidanceController
         //Plan final route using V0
     }
 
+    public Vector3d calculateClosestPoint(Vector3d[] trajectory)
+    {
+        Vector3d closestPoint = trajectory[0];
+        double distanceMeasure = closestPoint.dist(targetPoint);
+
+        for(Vector3d point: trajectory)
+        {
+            if(point.dist(targetPoint) < distanceMeasure)
+            {
+                closestPoint = point;
+            }
+        }
+        System.out.println("Closest distance to titan: " + closestPoint.dist(targetPoint));
+        return closestPoint;
+    }
+
+    //TODO refactor into methods takeStep and planRoute
     public Vector3d[] planRoute(double launchTime, double targetTime, Vector3d initVelocity)
     {
         //TODO make time dynamic
-        calculateLaunchAndTargetCoordinates(0, 1000);
+        calculateLaunchAndTargetCoordinates(0,  4.73e7);
 
         double[] masses = addMassToEnd(universe.masses, 700);
         ODEFunctionInterface funct = new NewtonGravityFunction(masses);
@@ -69,5 +86,10 @@ public class NewtonRaphson extends GuidanceController
         int launchPointIndex = (int) (launchTime / settings.stepSize);
         CelestialBody launchPlanet = universe.universe[origin][launchPointIndex];
         launchPoint = launchPlanet.closestLaunchPoint(targetPoint);
+    }
+
+    public Vector3d getLaunchPoint()
+    {
+        return launchPoint;
     }
 }

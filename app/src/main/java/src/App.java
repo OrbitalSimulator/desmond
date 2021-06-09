@@ -4,8 +4,10 @@ import java.io.IOException;
 
 import src.conf.SettingsFileManager;
 import src.conf.SimulationSettings;
+import src.traj.NewtonRaphson;
 import src.traj.TrajectoryPlanner;
 import src.univ.Universe;
+import src.peng.Vector3d;
 import src.visu.SetupMenu;
 import src.visu.Visualiser;
 
@@ -26,9 +28,8 @@ public class App
 			//settings = setupMenu.getSettings();
 			Universe universe = new Universe(settings);
 			Visualiser.getInstance().addUniverse(universe.universe);
-			TrajectoryPlanner.simplePlot(universe, settings);
-			TrajectoryPlanner.plotRoute(universe, settings);
-
+			Vector3d[] trajectory = TrajectoryPlanner.newtonRaphsonPlot(universe, 3, 8, settings);
+			Visualiser.getInstance().addPermTrajectory(trajectory);
 		}
 		catch(IOException e){
 			e.printStackTrace();
