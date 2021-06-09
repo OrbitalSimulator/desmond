@@ -30,6 +30,7 @@ import javax.swing.event.ChangeListener;
 import src.misc.ResourceLoader;
 import src.peng.Vector3d;
 import src.univ.CelestialBody;
+import src.univ.Universe;
 
 /**
  * @author L.Debnath
@@ -81,7 +82,7 @@ public class Visualiser extends JFrame implements MouseMotionListener, ActionLis
 		canvas.clearTempTraj();
 	}
 	
-	public void addUniverse(CelestialBody[][] U)
+	public void addUniverse(Universe universe)
 	{
 		System.out.print("Starting visualisation ...");
 		setTitle("Desmond");
@@ -98,10 +99,10 @@ public class Visualiser extends JFrame implements MouseMotionListener, ActionLis
 		rLayout.setVgap(5);
 		rPanel.setLayout(rLayout);
 		rPanel.setBackground(Color.BLACK);
-		planetBtn = new PlanetButton[U.length];
+		planetBtn = new PlanetButton[universe.universe.length];
 		for(int i = 0; i < 11; i++)
 		{
-			Icon btnIcon = ResourceLoader.getIcon(U[i][0].icon);
+			Icon btnIcon = ResourceLoader.getIcon(universe.universe[i][0].icon);
 			planetBtn[i] = new PlanetButton(btnIcon, i);
 			planetBtn[i].addActionListener(this);
 			rPanel.add(planetBtn[i]);
@@ -119,7 +120,7 @@ public class Visualiser extends JFrame implements MouseMotionListener, ActionLis
 		revBtn.addActionListener(e -> playRev());
 
 		// Create time slider
-		timeSlider = new JSlider(0, U[0].length);
+		timeSlider = new JSlider(0, universe.universe[0].length);
 		timeSlider.setBorder(BorderFactory.createEmptyBorder());
 		timeSlider.setBackground(Color.BLACK);
 		timeSlider.setValue(0);
@@ -139,7 +140,7 @@ public class Visualiser extends JFrame implements MouseMotionListener, ActionLis
 		// Add the canvas and listeners
 		int canvasX = (int) screen.getWidth();
 		int canvasY = (int) screen.getHeight();
-		canvas = new Canvas(U, new Dimension(canvasX, canvasY));
+		canvas = new Canvas(universe, new Dimension(canvasX, canvasY));
 		canvas.addMouseListener(this);
 		canvas.addMouseWheelListener(e -> mouseWheelMoved(e));
 		canvas.addMouseMotionListener(this);

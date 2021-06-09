@@ -7,14 +7,9 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.FileSystem;
-import java.nio.file.FileSystems;
 import java.util.ArrayList;
 import java.util.Stack;
 
-import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
 import src.misc.ResourceLoader;
@@ -46,6 +41,7 @@ public class Canvas extends JPanel
 	private double zoom_rate = 1E-10;
 	
 	private Dimension screen;
+	private Universe universe;
 	private CelestialBody[][] U;
 
 	private int time;						// Current time
@@ -59,9 +55,10 @@ public class Canvas extends JPanel
 	private ArrayList<Vector3d[]> permTrajs = new ArrayList<Vector3d[]>();
 	private boolean purgeTempTrajs = false;
 	
-	public Canvas(CelestialBody[][] U, Dimension screen)
+	public Canvas(Universe universe, Dimension screen)
 	{
-		this.U = U;
+		this.universe = universe;
+		this.U = universe.universe;
 		this.screen = screen;
 		setSize(screen);
 		time = 0;
