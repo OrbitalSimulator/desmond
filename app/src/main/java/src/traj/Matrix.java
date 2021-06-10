@@ -76,4 +76,3 @@ public abstract class Matrix
         return matrix;
     }
 }
-

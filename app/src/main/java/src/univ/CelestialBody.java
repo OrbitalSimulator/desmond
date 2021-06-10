@@ -13,7 +13,7 @@ import java.lang.Math;
  * @author L.Debnath
  * @date 14 Mar 21
  */
-public class CelestialBody 
+public class CelestialBody
 {
 	public double mass;
 	public double radius;
@@ -24,7 +24,7 @@ public class CelestialBody
 	public Vector3d location;
 	public LocalDateTime time = null;
 
-	public double orbitalHeight = 9.999999997607184E10;
+	public double orbitalHeight = 250e3;
 	public double orbitalError = 0.01e3;
 
 	public CelestialBody(Vector3d location, Vector3d velocity, double mass, double radius, String name, String image, String icon, LocalDateTime time)
@@ -39,7 +39,7 @@ public class CelestialBody
 		this.time = time;
 		time.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
 	}
-	
+
 	/**
 	 * Returns true if the coordinate is within the location of the Celestial Body
 	 * @param coordinate
@@ -47,7 +47,7 @@ public class CelestialBody
 	 */
 	public boolean collision(Vector3d object)
 	{
-		// Calculate distance from origin ( (a1-a2)^2 + (b1-b2)^2 + (c1-c2)^2)^1/2 
+		// Calculate distance from origin ( (a1-a2)^2 + (b1-b2)^2 + (c1-c2)^2)^1/2
 		double deltaA = Math.pow((location.getX() - object.getX()), 2);
 		double deltaB = Math.pow((location.getY() - object.getY()), 2);
 		double deltaC = Math.pow((location.getZ() - object.getZ()), 2);
@@ -57,7 +57,7 @@ public class CelestialBody
 			return true;
 		return false;
 	}
-	
+
 	/**
 	 * Returns the closest point on the surface of {@code this} CelesialBody to the target.
 	 * @param target
@@ -70,7 +70,7 @@ public class CelestialBody
 		double dX = P1.getX() - P2.getX();
 		double dY = P1.getY() - P2.getY();
 		double dZ = P1.getZ() - P2.getZ();
-		
+
 		Vector3d vector = new Vector3d(dX, dY, dZ);
 		vector = vector.unitVector();
 		vector = vector.mul(radius);
@@ -102,7 +102,7 @@ public class CelestialBody
 	 * @param a The semi-major axis of the orbit/ the distance to the orbiting planet.
 	 * @param mSmaller Mass of the smaller orbiting planet.
 	 * @param mGreater Mass of the larger planet, of which is being orbited.
-	 * @return A distance in meters, representing the sphere of influence from the planet's centre. 
+	 * @return A distance in meters, representing the sphere of influence from the planet's centre.
 	 * Ex. Venus SOI orbiting the sun is 0.616e6 km
 	 * Note: Will throw RunTimeException if mGreater < mSmaller
 	 */
@@ -147,7 +147,7 @@ public class CelestialBody
 		double G = 6.67408e-11;									//Universal gravitational constant
 		double r = radius+r2; 							//Represents total height from the centre of the planet
 		return Math.sqrt((G*mass)/r);
-		
+
 	}
 	/**
 	 * Calculates the gravitational acceleration of a planet
@@ -155,7 +155,7 @@ public class CelestialBody
 	 */
 	public double planetaryGravitationalAcceleration()
 	{
-		double G = 6.67408e-11;	
+		double G = 6.67408e-11;
 		return (G*mass)/(radius*radius);
 	}
 	/**
@@ -173,7 +173,7 @@ public class CelestialBody
 	{
 		this.image = image;
 	}
-	
+
 	public void setIcon(String icon)
 	{
 		this.icon = icon;
@@ -183,7 +183,7 @@ public class CelestialBody
 	{
 		return new CelestialBody(position, velocity, mass, radius, name, image, icon, time);
 	}
-	
+
 	public double timeInMs()
 	{
 		double t = 0;
@@ -193,4 +193,3 @@ public class CelestialBody
 		return t;
 	}
 }
-
