@@ -7,6 +7,7 @@ public class State2d implements StateInterface
     public ArrayList<Vector2d> velocity = new ArrayList<Vector2d>();
     public ArrayList<Vector2d> position = new ArrayList<Vector2d>();
     public double time;
+    public double direction;
 
     /**
      * State constructor (No time parameter)
@@ -18,6 +19,7 @@ public class State2d implements StateInterface
         this.velocity = velocity;
         this.position = position;
         this.time = 0;
+        this.direction = 0;
     }
 
     /**
@@ -31,6 +33,20 @@ public class State2d implements StateInterface
         this.velocity = velocity;
         this.position = position;
         this.time = time;
+    }
+    
+    /**
+     * State constructor (Time parameter)
+     * @param vel The velocity vector
+     * @param pos The position vector
+     * @param t The time quantity of the current state
+     */
+    public State2d(ArrayList<Vector2d> velocity, ArrayList<Vector2d> position, double time, double direction)
+    {
+        this.velocity = velocity;
+        this.position = position;
+        this.time = time;
+        this.direction = direction;
     }
 
     /**
