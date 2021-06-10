@@ -26,8 +26,7 @@ public class App
 			//settings = setupMenu.getSettings();
 			Universe universe = new Universe(settings);
 			Visualiser.getInstance().addUniverse(universe);
-			TrajectoryPlanner.simplePlot(universe, settings);
-			TrajectoryPlanner.plotRoute(universe, settings);
+			TrajectoryPlanner.newtonRaphsonPlot(universe, 3, 8, settings, 0, 6.307e7);
 
 		}
 		catch(IOException e){

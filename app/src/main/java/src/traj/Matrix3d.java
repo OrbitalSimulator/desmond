@@ -1,6 +1,7 @@
 package src.traj;
 
 import java.util.ArrayList;
+import src.peng.Vector3d;
 
 public class Matrix3d extends Matrix
 {
@@ -128,6 +129,22 @@ public class Matrix3d extends Matrix
             }
         }
         return transposeMatrix;
+    }
+
+    public Vector3d vectorMultiplication(Vector3d vector)
+    {
+        Vector3d result = new Vector3d();
+
+        for(int i = 0; i < matrixDimension; i++)
+        {
+            double sum = 0;
+            for(int j = 0; j < matrixDimension; j ++)
+            {
+                sum += get(i, j) *  vector.get(j);
+            }
+            result.set(i, sum);
+        }
+        return result;
     }
 
     public Matrix3d scalerMultiplication(double scaler)

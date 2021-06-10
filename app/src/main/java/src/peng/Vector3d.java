@@ -8,7 +8,7 @@ public class Vector3d implements Vector3dInterface
 {
     protected double x;
     protected double y;
-    protected double z; 
+    protected double z;
 
     public Vector3d()
     {
@@ -16,7 +16,7 @@ public class Vector3d implements Vector3dInterface
         this.y = 0;
         this.z = 0;
     }
-    
+
     public Vector3d(double x, double y, double z)
     {
         this.x = x;
@@ -24,15 +24,15 @@ public class Vector3d implements Vector3dInterface
         this.z = z;
     }
 
-    
+
     /**
      * Scalar x vector multiplication, followed by an addition
-     * 
-    * @param scalar the double used in the multiplication step
-    * @param other  the vector used in the multiplication step
-    * @return the result of the multiplication step added to this vector,
-    * Should yield a+ h*b
-    */
+     *
+     * @param scalar the double used in the multiplication step
+     * @param other  the vector used in the multiplication step
+     * @return the result of the multiplication step added to this vector,
+     * Should yield a+ h*b
+     */
     public Vector3d addMul(double scaler, Vector3dInterface other)
     {
         return (this.add(other.mul(scaler)));
@@ -74,7 +74,7 @@ public class Vector3d implements Vector3dInterface
     {
         return new Vector3d(this.x, this.y, this.z);
     }
-    
+
     /**
      * Vector addition
      * @param other vector to add
@@ -126,44 +126,44 @@ public class Vector3d implements Vector3dInterface
     public boolean equals(Object o)
     {
         Vector3d v = (Vector3d) o;
-    	if((v.getX() == x) && (v.getY() == y) && (v.getZ() == z))
+        if((v.getX() == x) && (v.getY() == y) && (v.getZ() == z))
         {
             return true;
         }
         return false;
     }
-    
-    private static double round(double value, int places) 
+
+    private static double round(double value, int places)
     {
-        if (places < 0) 
-        	throw new IllegalArgumentException();
+        if (places < 0)
+            throw new IllegalArgumentException();
         BigDecimal bd = new BigDecimal(Double.toString(value));
         bd = bd.setScale(places, RoundingMode.HALF_UP);
         return bd.doubleValue();
     }
-    
+
     /**
      * Represent the vector in String format
      * @return String representing the vector.
      */
-    public String toString() 
+    public String toString()
     {
         return "("+ this.x + ","+this.y + ","+this.z+")";
     }
-    
+
     /**
      * Represent the vector in String format
      * @return String representing the vector.
      */
-    public String toCSV() 
+    public String toCSV()
     {
         return this.x + "," + this.y + ","+ this.z + ",";
     }
-    
+
     public double getRoundedX(int digit) {return round(x,digit);}
     public double getRoundedY(int digit) {return round(y,digit);}
     public double getRoundedZ(int digit) {return round(z,digit);}
-    
+
     public double getX() {return x;}
     public double getY() {return y;}
     public double getZ() {return z;}
@@ -171,4 +171,36 @@ public class Vector3d implements Vector3dInterface
     public void setX(double x) {this.x = x;}
     public void setY(double y) {this.y = y;}
     public void setZ(double z) {this.z = z;}
+    public double get(int index)
+    {
+        switch (index)
+        {
+            case 0:
+                return getX();
+            case 1:
+                return getY();
+            case 2:
+                return getZ();
+            default:
+                throw new RuntimeException("Vector index not found");
+        }
+    }
+
+    public void set(int index, double value)
+    {
+        switch (index)
+        {
+            case 0:
+                setX(value);
+                break;
+            case 1:
+                setY(value);
+                break;
+            case 2:
+                setZ(value);
+                break;
+            default:
+                throw new RuntimeException("Vector index not found");
+        }
+    }
 }
