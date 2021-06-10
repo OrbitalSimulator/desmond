@@ -8,6 +8,7 @@ import src.peng.Vector3d;
 import src.solv.Verlet;
 import src.univ.CelestialBody;
 import src.univ.Universe;
+import src.visu.Visualiser;
 
 public class NewtonRaphson extends GuidanceController
 {
@@ -19,7 +20,8 @@ public class NewtonRaphson extends GuidanceController
     private Vector3d targetPoint;
     private double launchTime;
     private double targetTime;
-    private double delta = 0.001;
+    private double delta = 0.00001;
+    private Vector3d startingVelocity = new Vector3d(3001.39, -39066.37, 9377.95);
 
     public NewtonRaphson(Universe universe, int origin, int target, SimulationSettings settings, double launchTime, double targetTime)
     {
@@ -31,8 +33,40 @@ public class NewtonRaphson extends GuidanceController
         this.launchTime = launchTime;
         this.targetTime = targetTime;
 
-        //Calculate V0 using NewtonRaphson
-        //Plan final route using V0
+        calculateLaunchAndTargetCoordinates();
+
+        Vector3d optimalVelocity = newtonRaphsonIterativeMethod(startingVelocity);
+        trajectory = planRoute(optimalVelocity);
+    }
+
+    public Vector3d newtonRaphsonIterativeMethod(Vector3d initVelocity)
+    {
+        Vector3d[] trajectory = planRoute(initVelocity);
+        Vector3d closestPoint = calculateClosestPoint(trajectory);
+        double distance = closestPointDistanceToTarget(closestPoint);
+
+        while(distance > 0.001)
+        {
+            Vector3d nextVelocity = newtonRaphsonStep(initVelocity, closestPoint);
+
+            initVelocity = nextVelocity;
+            trajectory = planRoute(nextVelocity);
+            Visualiser.getInstance().addTempTrajectory(trajectory);
+            closestPoint = calculateClosestPoint(trajectory);
+            distance = closestPointDistanceToTarget(closestPoint);
+        }
+        return initVelocity;
+    }
+
+    public Vector3d newtonRaphsonStep(Vector3d initVelocity, Vector3d closestPoint)
+    {
+        Matrix3d jacobian = calculateJacobian(initVelocity, closestPoint);
+        Matrix3d inverseJacobian = jacobian.calculateInverseMatrix();
+        Vector3d componentDistanceMeasure = componentDistanceMeasure(closestPoint);
+        Vector3d inverseJacobianAndDistanceCalculation = inverseJacobian.vectorMultiplication(componentDistanceMeasure);
+
+        Vector3d nextVelocity = initVelocity.sub(inverseJacobianAndDistanceCalculation);
+        return nextVelocity;
     }
 
     public Matrix3d calculateJacobian(Vector3d initVelocity, Vector3d closestPoint)
@@ -43,7 +77,7 @@ public class NewtonRaphson extends GuidanceController
         {
             for(int j = 0; j < jacobian.getDimension(); j++)
             {
-                calculatePartialDerivative(i, j, initVelocity, closestPoint);
+                jacobian.set(i, j, calculatePartialDerivative(i, j, initVelocity, closestPoint));
             }
         }
         return jacobian;
@@ -80,13 +114,14 @@ public class NewtonRaphson extends GuidanceController
         return targetPoint.sub(closestPoint);
     }
 
+    public double closestPointDistanceToTarget(Vector3d closestPoint)
+    {
+        return closestPoint.dist(targetPoint);
+    }
 
     //TODO refactor into methods takeStep and planRoute
     public Vector3d[] planRoute(Vector3d initVelocity)
     {
-        //TODO make time dynamic
-        calculateLaunchAndTargetCoordinates(0,  4.73e7);
-
         double[] masses = addMassToEnd(universe.masses, 700);
         ODEFunctionInterface funct = new NewtonGravityFunction(masses);
 
@@ -119,16 +154,18 @@ public class NewtonRaphson extends GuidanceController
 
         for(Vector3d point: trajectory)
         {
-            if(point.dist(targetPoint) < distanceMeasure)
+            double nextDistanceMeasure = point.dist(targetPoint);
+            if(nextDistanceMeasure < distanceMeasure)
             {
                 closestPoint = point;
+                distanceMeasure = nextDistanceMeasure;
             }
         }
         System.out.println("Closest distance to titan: " + closestPoint.dist(targetPoint));
         return closestPoint;
     }
 
-    private void calculateLaunchAndTargetCoordinates(double launchTime, double targetTime)
+    private void calculateLaunchAndTargetCoordinates()
     {
         int targetPointIndex = (int) (targetTime / settings.stepSize);
         CelestialBody targetPlanet = universe.universe[target][targetPointIndex];

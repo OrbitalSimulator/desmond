@@ -17,11 +17,10 @@ public abstract class TrajectoryPlanner
 		return lc.getTrajectory();
 	}
 
-	public static Vector3d[] newtonRaphsonPlot(Universe universe, int origin, int target, SimulationSettings settings)
+	public static Vector3d[] newtonRaphsonPlot(Universe universe, int origin, int target, SimulationSettings settings, double launchTime, double targetTime)
 	{
-		NewtonRaphson nr = new NewtonRaphson(universe, origin, target, settings, 0, 4.73e7);
-		Vector3d[] trajectory = nr.planRoute(new Vector3d(0, -10000, 0));
-		return trajectory;
+		NewtonRaphson nr = new NewtonRaphson(universe, origin, target, settings, launchTime, targetTime);
+		return nr.getTrajectory();
 	}
 
 	public static Vector3d[] plotRoute(Universe universe, SimulationSettings settings)
