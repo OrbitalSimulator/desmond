@@ -55,6 +55,7 @@ public class NewtonRaphson extends GuidanceController
             Vector3d nextVelocity = newtonRaphsonIterativeMethod(currentVelocity, currentPosition, currentStep);
 
             Vector3d closestPoint = calculateClosestPoint(tempTrajectory);
+            //TODO alter distance to represent nextDistance.dist(target) Only after updating targetPos
             distance = closestPointDistanceToTarget(closestPoint);
 
             currentPosition = nextPosition;
