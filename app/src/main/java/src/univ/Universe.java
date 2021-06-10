@@ -7,7 +7,6 @@ import src.conf.SimulationSettings;
 import src.peng.NewtonGravityFunction;
 import src.peng.ODEFunctionInterface;
 import src.peng.State;
-import src.solv.RungeKutta4th;
 import src.solv.Verlet;
 import src.visu.Visualiser;
 
@@ -159,7 +158,7 @@ public class Universe
     	this.permTrajectories.addAll(other.getPermTrajectories());
     	this.tempTrajectories.addAll(other.getTempTrajectories());
     	universe = resizeUniverse(other.noOfSteps);
-    	
+    	importUniverse(other.universe);
     }
         
     private CelestialBody[][] resizeUniverse(int extraStepsNeeded)
@@ -181,7 +180,15 @@ public class Universe
     
     private void importUniverse(CelestialBody[][] other)
     {
-    	
+    	int offset = noOfSteps;
+    	noOfSteps = this.noOfSteps + other[0].length;
+    	for(int i = 0; i < universe.length; i++)
+    	{
+    		for(int j = offset; j < noOfSteps; j++)
+    		{
+    			universe[i][j] = other[i][j];
+    		}
+    	}
     }
      
     // ----- Trajectory Handling -----
@@ -241,4 +248,5 @@ public class Universe
     {
     	SAVE_TO_FILE = b;
     }
+    
 }
