@@ -22,7 +22,7 @@ public class NewtonRaphson extends GuidanceController
     private double targetTime;
     private double delta = 0.000001;
     private Vector3d startingVelocity = new Vector3d(200, -300, 100);
-    private double epsilon = 0.00001;
+    private double epsilon = 0.005;
 
     public NewtonRaphson(Universe universe, int origin, int target, SimulationSettings settings, double launchTime, double targetTime)
     {
@@ -153,20 +153,11 @@ public class NewtonRaphson extends GuidanceController
 
     public Vector3d calculateClosestPoint(Vector3d[] trajectory)
     {
-        Vector3d closestPoint = trajectory[0];
-        double distanceMeasure = closestPoint.dist(targetPoint);
-
-        for(Vector3d point: trajectory)
-        {
-            double nextDistanceMeasure = point.dist(targetPoint);
-            if(nextDistanceMeasure < distanceMeasure)
-            {
-                closestPoint = point;
-                distanceMeasure = nextDistanceMeasure;
-            }
-        }
-        return closestPoint;
+        int finalIndex = trajectory.length - 1;
+        return trajectory[finalIndex];
     }
+
+
 
     private void calculateLaunchAndTargetCoordinates()
     {
