@@ -16,56 +16,82 @@ public class NewtonRaphson extends GuidanceController
     private Universe universe;
     private int origin;
     private int target;
-    private Vector3d launchPoint;
     private Vector3d targetPoint;
-    private double launchTime;
-    private double targetTime;
     private double delta = 0.000001;
     private Vector3d startingVelocity = new Vector3d(200, -300, 100);
     private double epsilon = 0.005;
 
-    public NewtonRaphson(Universe universe, int origin, int target, SimulationSettings settings, double launchTime, double targetTime)
+    public NewtonRaphson(Universe universe, int origin, int target, SimulationSettings settings)
     {
         super(universe, target);
         this.settings = settings;
         this.universe = universe;
         this.origin = origin;
         this.target = target;
-        this.launchTime = launchTime;
-        this.targetTime = targetTime;
 
-        calculateLaunchAndTargetCoordinates();
-
-        Vector3d optimalVelocity = newtonRaphsonIterativeMethod(startingVelocity);
-        trajectory = planRoute(optimalVelocity);
+        trajectory = newtonRaphsonSteps(universe);
+        universe.addPermTrajectory(trajectory);
     }
 
-    public Vector3d newtonRaphsonIterativeMethod(Vector3d initVelocity)
+    public Vector3d[] newtonRaphsonSteps(Universe universe)
     {
-        Vector3d[] trajectory = planRoute(initVelocity);
+        Vector3d[] trajectory = new Vector3d[settings.noOfSteps+1];
+        int currentStep = 0;
+
+        targetPoint = universe.universe[target][currentStep].location;
+        Vector3d currentPosition = universe.universe[origin][0].closestLaunchPoint(targetPoint);
+        Vector3d currentVelocity = newtonRaphsonIterativeMethod(startingVelocity, currentPosition, currentStep);
+
+        double distance = currentPosition.dist(targetPoint);
+
+        trajectory[currentStep] = currentPosition;
+        universe.clearTempTrajectories();
+
+        while(distance > epsilon)
+        {
+            System.out.println("STEP: " + currentStep);
+            Vector3d[] tempTrajectory = planRoute(currentVelocity, currentPosition, currentStep);
+            Vector3d nextPosition = trajectory[1];
+            Vector3d nextVelocity = newtonRaphsonIterativeMethod(currentVelocity, currentPosition, currentStep);
+
+            Vector3d closestPoint = calculateClosestPoint(tempTrajectory);
+            distance = closestPointDistanceToTarget(closestPoint);
+
+            currentPosition = nextPosition;
+            currentVelocity = nextVelocity;
+            trajectory[currentStep++] = currentPosition;
+            targetPoint = universe.universe[target][currentStep].location;
+            universe.clearTempTrajectories();
+        }
+        return trajectory;
+    }
+
+    public Vector3d newtonRaphsonIterativeMethod(Vector3d initVelocity, Vector3d startPosition, int step)
+    {
+        Vector3d[] trajectory = planRoute(initVelocity, startPosition, step);
         Vector3d closestPoint = calculateClosestPoint(trajectory);
         double distance = closestPointDistanceToTarget(closestPoint);
 
         while(distance > epsilon)
         {
-            Vector3d nextVelocity = newtonRaphsonStep(initVelocity, closestPoint);
+            Vector3d nextVelocity = newtonRaphsonSingleStep(initVelocity, closestPoint, startPosition, step);
 
             initVelocity = nextVelocity;
-            trajectory = planRoute(nextVelocity);
+            trajectory = planRoute(nextVelocity, startPosition, step);
             universe.addTempTrajectory(trajectory);
+
             closestPoint = calculateClosestPoint(trajectory);
             distance = closestPointDistanceToTarget(closestPoint);
             System.out.println("Velocity: " + initVelocity.toString());
             System.out.println("Distance: " + distance);
             System.out.println("------");
         }
-        universe.addPermTrajectory(trajectory);
         return initVelocity;
     }
 
-    public Vector3d newtonRaphsonStep(Vector3d initVelocity, Vector3d closestPoint)
+    public Vector3d newtonRaphsonSingleStep(Vector3d initVelocity, Vector3d closestPoint, Vector3d startPosition, int step)
     {
-        Matrix3d jacobian = calculateJacobian(initVelocity, closestPoint);
+        Matrix3d jacobian = calculateJacobian(initVelocity, closestPoint, startPosition, step);
         Matrix3d inverseJacobian = jacobian.calculateInverseMatrix();
         Vector3d componentDistanceMeasure = componentDistanceMeasure(closestPoint);
         Vector3d inverseJacobianAndDistanceCalculation = inverseJacobian.vectorMultiplication(componentDistanceMeasure);
@@ -74,7 +100,7 @@ public class NewtonRaphson extends GuidanceController
         return nextVelocity;
     }
 
-    public Matrix3d calculateJacobian(Vector3d initVelocity, Vector3d closestPoint)
+    public Matrix3d calculateJacobian(Vector3d initVelocity, Vector3d closestPoint, Vector3d startPosition, int step)
     {
         Matrix3d jacobian = new Matrix3d();
 
@@ -82,13 +108,13 @@ public class NewtonRaphson extends GuidanceController
         {
             for(int j = 0; j < jacobian.getDimension(); j++)
             {
-                jacobian.set(i, j, calculatePartialDerivative(i, j, initVelocity, closestPoint));
+                jacobian.set(i, j, calculatePartialDerivative(i, j, initVelocity, closestPoint, startPosition, step));
             }
         }
         return jacobian;
     }
 
-    public double calculatePartialDerivative(int row, int column, Vector3d initVelocity, Vector3d closestPoint)
+    public double calculatePartialDerivative(int row, int column, Vector3d initVelocity, Vector3d closestPoint, Vector3d startPosition, int step)
     {
         /*Generate delta velocity*/
         double deltaValue = initVelocity.get(column) + delta;
@@ -99,7 +125,7 @@ public class NewtonRaphson extends GuidanceController
         double individualComponentResult = individualComponentResult(closestPoint, row);
 
         /*Generate new trajectory from deltaValue and subsequent closest point*/
-        Vector3d[] derivativeTrajectory = planRoute(velocityDelta);
+        Vector3d[] derivativeTrajectory = planRoute(velocityDelta, startPosition, step);
         Vector3d nextClosestPoint = calculateClosestPoint(derivativeTrajectory);
         double derivativeIndividualComponentResult = individualComponentResult(nextClosestPoint, row);
 
@@ -125,29 +151,29 @@ public class NewtonRaphson extends GuidanceController
     }
 
     //TODO refactor into methods takeStep and planRoute
-    public Vector3d[] planRoute(Vector3d initVelocity)
+    public Vector3d[] planRoute(Vector3d initVelocity, Vector3d startPosition, int step)
     {
         double[] masses = addMassToEnd(universe.masses, 700);
         ODEFunctionInterface funct = new NewtonGravityFunction(masses);
 
         Verlet solver = new Verlet();
-        int currentStep = settings.stepOffset;
-        Vector3d[] trajectory = new Vector3d[settings.noOfSteps+1 - currentStep];
+        int index = 0;
+        Vector3d[] trajectory = new Vector3d[settings.noOfSteps+1 - step];
 
-        Vector3d currentPosition = launchPoint;
+        Vector3d currentPosition = startPosition;
         Vector3d currentVelocity = initVelocity;
-        trajectory[0] = currentPosition;
+        trajectory[index] = currentPosition;
 
-        while(currentStep < settings.noOfSteps)
+        while(index < trajectory.length - 1)
         {
-            double currentTime = currentStep * settings.stepSize;
-            State currentState = addProbe(universe.getStateAt(currentStep), currentPosition, currentVelocity);
+            double currentTime = index * settings.stepSize;
+            State currentState = addProbe(universe.getStateAt(index + step), currentPosition, currentVelocity);
             State nextState = solver.step(funct, currentTime, currentState, settings.stepSize);
 
             currentPosition = getProbePosition(nextState);
             currentVelocity = getProbeVelocity(nextState);
-            currentStep++;
-            trajectory[currentStep] = currentPosition;
+            index++;
+            trajectory[index] = currentPosition;
         }
         return trajectory;
     }
@@ -156,23 +182,5 @@ public class NewtonRaphson extends GuidanceController
     {
         int finalIndex = trajectory.length - 1;
         return trajectory[finalIndex];
-    }
-
-
-
-    private void calculateLaunchAndTargetCoordinates()
-    {
-        int targetPointIndex = (int) (targetTime / settings.stepSize);
-        CelestialBody targetPlanet = universe.universe[target][targetPointIndex];
-        targetPoint = targetPlanet.calculateTargetPoint();
-
-        int launchPointIndex = (int) (launchTime / settings.stepSize);
-        CelestialBody launchPlanet = universe.universe[origin][launchPointIndex];
-        launchPoint = launchPlanet.closestLaunchPoint(targetPoint);
-    }
-
-    public Vector3d getLaunchPoint()
-    {
-        return launchPoint;
     }
 }

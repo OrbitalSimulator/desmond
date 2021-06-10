@@ -32,7 +32,6 @@ public class OrbitController extends GuidanceController
 		Verlet solver = new Verlet();
 		Vector3d[] trajectory = new Vector3d[settings.noOfSteps+1];
 
-
 		int currentStep = settings.stepOffset;
 		//TODO Make such that temp is the last state of the CelestialBody
 		CelestialBody temp = universe.universe[target][0];
