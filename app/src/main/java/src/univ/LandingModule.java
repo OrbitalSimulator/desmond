@@ -17,11 +17,24 @@ public class LandingModule {
 	private CelestialBody body;
 	private ArrayList<Vector2d> positions;
 	private ArrayList<Vector2d> velocities;
+	private double direction;
+	
+	public LandingModule(double width, double length, double fuel, LanderSettings setting, double direction) {
+		this.fuel = fuel;
+		this.length = length;
+		this.width = width;
+		this.direction = direction;
+		this.initialPos = setting.probeStartPosition;
+		this.initialVelo = setting.probeStartVelocity; 
+		this.positions.add(setting.probeStartPosition);
+		this.velocities.add(setting.probeStartVelocity);
+	}
 	
 	public LandingModule(double width, double length, double fuel, LanderSettings setting) {
 		this.fuel = fuel;
 		this.length = length;
 		this.width = width;
+		this.direction = 0;
 		this.initialPos = setting.probeStartPosition;
 		this.initialVelo = setting.probeStartVelocity; 
 		this.positions.add(setting.probeStartPosition);
