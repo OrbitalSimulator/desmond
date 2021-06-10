@@ -20,8 +20,9 @@ public class NewtonRaphson extends GuidanceController
     private Vector3d targetPoint;
     private double launchTime;
     private double targetTime;
-    private double delta = 0.00001;
-    private Vector3d startingVelocity = new Vector3d(3001.39, -39066.37, 9377.95);
+    private double delta = 0.000001;
+    private Vector3d startingVelocity = new Vector3d(200, -300, 100);
+    private double epsilon = 0.00001;
 
     public NewtonRaphson(Universe universe, int origin, int target, SimulationSettings settings, double launchTime, double targetTime)
     {
@@ -45,7 +46,7 @@ public class NewtonRaphson extends GuidanceController
         Vector3d closestPoint = calculateClosestPoint(trajectory);
         double distance = closestPointDistanceToTarget(closestPoint);
 
-        while(distance > 0.001)
+        while(distance > epsilon)
         {
             Vector3d nextVelocity = newtonRaphsonStep(initVelocity, closestPoint);
 
@@ -54,6 +55,9 @@ public class NewtonRaphson extends GuidanceController
             Visualiser.getInstance().addTempTrajectory(trajectory);
             closestPoint = calculateClosestPoint(trajectory);
             distance = closestPointDistanceToTarget(closestPoint);
+            System.out.println("Velocity: " + initVelocity.toString());
+            System.out.println("Distance: " + distance);
+            System.out.println("------");
         }
         return initVelocity;
     }
@@ -161,7 +165,6 @@ public class NewtonRaphson extends GuidanceController
                 distanceMeasure = nextDistanceMeasure;
             }
         }
-        System.out.println("Closest distance to titan: " + closestPoint.dist(targetPoint));
         return closestPoint;
     }
 
