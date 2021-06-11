@@ -2,9 +2,9 @@ package src.peng;
 
 import java.util.ArrayList;
 
-import src.conf.LanderSettings;
+import src.land.LanderSettings;
 
-public class FreeFallFunction implements ODEFunctionInterface {
+public class NewtonGravity2d implements ODEFunctionInterface {
 	
 	private LanderSettings settings;
 	public static final double GRAVITY = 6.67430e-11;
@@ -12,7 +12,7 @@ public class FreeFallFunction implements ODEFunctionInterface {
 	private double dragCoeff = 0.55;
 	private double area = settings.module.length * settings.module.width;
 
-	public FreeFallFunction(LanderSettings settings) {
+	public NewtonGravity2d(LanderSettings settings) {
 		this.settings = settings;
 	}
 
