@@ -9,46 +9,30 @@ import src.peng.Vector2d;
 
 public class LandingModule {
 	
-	private double width;
-	private double length;
-	private double fuel;
-	private Vector2d initialPos;
-	private Vector2d initialVelo;
-	private CelestialBody body;
-	private ArrayList<Vector2d> positions;
-	private ArrayList<Vector2d> velocities;
-	private double direction;
+	public double width;
+	public double length;
+	public double fuel;
+	public Vector2d initialPos;
+	public Vector2d initialVelo;
+	public CelestialBody body;
+	public double direction;
 	
-	public LandingModule(double width, double length, double fuel, LanderSettings setting, double direction) {
+	public LandingModule(double width, double length, double fuel, Vector2d initialPos, Vector2d initialVelo, double direction) {
 		this.fuel = fuel;
 		this.length = length;
 		this.width = width;
 		this.direction = direction;
-		this.initialPos = setting.probeStartPosition;
-		this.initialVelo = setting.probeStartVelocity; 
-		this.positions.add(setting.probeStartPosition);
-		this.velocities.add(setting.probeStartVelocity);
+		this.initialPos = initialPos;
+		this.initialVelo = initialVelo; 
 	}
 	
-	public LandingModule(double width, double length, double fuel, LanderSettings setting) {
+	public LandingModule(double width, double length, double fuel, Vector2d initialPos, Vector2d initialVelo) {
 		this.fuel = fuel;
 		this.length = length;
 		this.width = width;
 		this.direction = 0;
-		this.initialPos = setting.probeStartPosition;
-		this.initialVelo = setting.probeStartVelocity; 
-		this.positions.add(setting.probeStartPosition);
-		this.velocities.add(setting.probeStartVelocity);
-	}
-	
-	public ArrayList<Vector2d> landerFreeFall() {
-		
-		return null;
-	}
-	
-	public ArrayList<Vector2d> dragInfluence() {
-		
-		return null;
+		this.initialPos = initialPos;
+		this.initialVelo = initialVelo; 
 	}
 	
 	public boolean fuelEmpty() {
@@ -58,5 +42,21 @@ public class LandingModule {
 		else {
 			return false;
 		}
+	}
+	
+	public void setInitialPosition(Vector2d initialPos) {
+		this.initialPos = initialPos;
+	}
+	
+	public void setInitialVelocity(Vector2d initialVelo) {
+		this.initialVelo = initialVelo;
+	}
+	
+	public double getDirection() {
+		return this.direction;
+	}
+	
+	public double getFuel() {
+		return this.fuel;
 	}
 }

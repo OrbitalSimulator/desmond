@@ -3,13 +3,12 @@ package src.conf;
 import java.time.LocalDateTime;
 import src.peng.Vector2d;
 import src.univ.CelestialBody;
+import src.univ.LandingModule;
 
 public class LanderSettings 
 {
-	public CelestialBody celestialBody;	//only one body which we need to compare to, rest is negligible
 	public Vector2d cbLocation;
-	public Vector2d probeStartPosition;
-	public Vector2d probeStartVelocity;
+	public LandingModule module;
 	public LocalDateTime startTime;
 	public LocalDateTime endTime;
 	public int noOfSteps;
@@ -17,20 +16,16 @@ public class LanderSettings
 	public String[] waypoints;
 	public int stepOffset = 0;
 
-	public LanderSettings(CelestialBody celestialBody,
-							  Vector2d cbLocation,
-			                  Vector2d probeStartPosition,
-							  Vector2d probeStartVelocity,
-							  LocalDateTime startTime,
+	public LanderSettings(	  Vector2d cbLocation,
+							  LandingModule module,
+			               	  LocalDateTime startTime,
 							  LocalDateTime endTime,
 							  int noOfSteps,
 							  double stepSize,
 							  String[] waypoints)
 	{
-		this.celestialBody = celestialBody;
 		this.cbLocation = cbLocation;
-		this.probeStartPosition = probeStartPosition;
-		this.probeStartVelocity = probeStartVelocity;
+		this.module = module;
 		this.startTime = startTime;
 		this.endTime = endTime;
 		this.noOfSteps = noOfSteps;
@@ -40,14 +35,13 @@ public class LanderSettings
 
 	public void setStartVelocity(double velocityX)
 	{
-		probeStartVelocity = new Vector2d(velocityX, 0);
+		module.initialVelo = new Vector2d(velocityX, 0);
 	}
 	
 	public LanderSettings copy()
 	{
-		return new LanderSettings(celestialBody, cbLocation,
-                	probeStartPosition,
-				    probeStartVelocity,
+		return new LanderSettings(cbLocation,
+				    module,
 				    startTime,
 				    endTime,
 				    noOfSteps,
