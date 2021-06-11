@@ -2,7 +2,7 @@ package src.peng;
 
 import java.util.ArrayList;
 
-import src.conf.LanderSettings;
+import src.land.LanderSettings;
 
 public class FreeFallFunction implements ODEFunctionInterface {
 	
