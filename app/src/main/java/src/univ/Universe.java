@@ -7,7 +7,6 @@ import src.conf.SimulationSettings;
 import src.peng.NewtonGravityFunction;
 import src.peng.ODEFunctionInterface;
 import src.peng.State;
-import src.solv.RungeKutta4th;
 import src.solv.Verlet;
 import src.visu.Visualiser;
 
@@ -25,16 +24,16 @@ public class Universe
     private Verlet solver = new Verlet();
     private CelestialBody[] startVariables; 
 	private LocalDateTime startTime;
-	private LocalDateTime endTime;
 	private int noOfSteps;
 	private double stepSize;
-	private String[] wayPoints;
 	
     private ArrayList<Vector3d[]> permTrajectories = new ArrayList<Vector3d[]>();
     private ArrayList<Vector3d[]> tempTrajectories = new ArrayList<Vector3d[]>();
 	private Stack<Vector3d[]> tempStack = new Stack<Vector3d[]>();
 	private Stack<Vector3d[]> permStack = new Stack<Vector3d[]>();
 	private boolean purgeTempTrajs = false;
+	
+	// ----- Universe Construction -----
 	
     public Universe(SimulationSettings settings)
     {
@@ -46,12 +45,10 @@ public class Universe
     	SAVE_TO_FILE = save;
     	constructor(settings);
     }
-    
-    
+        
     private void constructor(SimulationSettings settings)
     {
     	startTime = settings.startTime;
-    	endTime = settings.endTime;
     	noOfSteps = settings.noOfSteps;
     	startVariables = settings.celestialBodies;
     	stepSize = settings.stepSize;
@@ -77,8 +74,7 @@ public class Universe
 				saveToFile();
      	}
     }
-    
-     
+         
     private CelestialBody[][] generateNewUniverse()
     {
     	System.out.print("Creating new universe ...");
@@ -88,7 +84,8 @@ public class Universe
 		System.out.println(" Done");
 		return convertToCelestialBody(states);														
     }
-    
+       
+    // ----- State and CelestialBody conversions -----
     
     public State convertToState(CelestialBody[] bodies)
     {
@@ -103,7 +100,6 @@ public class Universe
         return new State(velocity, position);
     }
     
-        
     public CelestialBody[][] convertToCelestialBody(StateInterface[] stateInterfaces)
     {  	
     	State[] states = (State[]) stateInterfaces;
@@ -122,7 +118,6 @@ public class Universe
     	return bodies;
     }
     
-    
     public CelestialBody[] convertToCelestialBody(StateInterface stateInterfaces)
     {  	
     	State states = (State) stateInterfaces;
@@ -138,7 +133,6 @@ public class Universe
     	return bodies;
     }
     
-    
     public State getStateAt(int timeStep)
     {
         ArrayList<Vector3d> velocity = new ArrayList<Vector3d>();
@@ -152,19 +146,58 @@ public class Universe
         return new State(velocity, position);
     }
     
-    
     public void setStateAt(int timeStep, StateInterface state)
     {
     	universe[timeStep] = convertToCelestialBody(state);
     }
     
+    // ----- Merging Universes -----
     
+    public void append(Universe other)
+    {
+    	this.permTrajectories.addAll(other.getPermTrajectories());
+    	this.tempTrajectories.addAll(other.getTempTrajectories());
+    	universe = resizeUniverse(other.noOfSteps);
+    	importUniverse(other.universe);
+    }
+        
+    private CelestialBody[][] resizeUniverse(int extraStepsNeeded)
+    {
+    	int newLength = universe[0].length + extraStepsNeeded;
+    	int noOfPlanets = universe.length;
+    	CelestialBody[][] resizedUniverse = new CelestialBody[noOfPlanets][newLength];
+    	
+    	for(int i = 0; i < universe.length; i++)
+    	{
+    		for(int j = 0; j < universe[i].length; j++)
+    		{
+    			resizedUniverse[i][j] = universe[i][j];
+    		}
+    	}
+    	
+    	return resizedUniverse;
+    }
+    
+    private void importUniverse(CelestialBody[][] other)
+    {
+    	int offset = noOfSteps;
+    	noOfSteps = this.noOfSteps + other[0].length;
+    	for(int i = 0; i < universe.length; i++)
+    	{
+    		for(int j = offset; j < noOfSteps; j++)
+    		{
+    			universe[i][j] = other[i][j];
+    		}
+    	}
+    }
+     
+    // ----- Trajectory Handling -----
+        
     public void addTempTrajectory(Vector3d[] trajectory)
     {
     	tempStack.add(trajectory);
     	Visualiser.getInstance().update();
     }
-    
     
     public ArrayList<Vector3d[]> getTempTrajectories()
     {
@@ -182,19 +215,16 @@ public class Universe
     	return tempTrajectories;
     }
     
-    
     public void clearTempTrajectories()
     {
     	purgeTempTrajs = true;
     }
-    
     
     public void addPermTrajectory(Vector3d[] trajectory)
     {
     	permStack.add(trajectory);
     	Visualiser.getInstance().update();
     }
-    
     
     public ArrayList<Vector3d[]> getPermTrajectories()
     {
@@ -204,8 +234,9 @@ public class Universe
     	}
     	return permTrajectories;
     }
-        
     
+    // ----- Saving -----
+        
     public void saveToFile()
     {
     	System.out.print("Saving to file ...");
@@ -213,9 +244,9 @@ public class Universe
 		System.out.println(" Done");
     }
     
-    
     public void setSaveToFile(boolean b)
     {
     	SAVE_TO_FILE = b;
     }
+    
 }
