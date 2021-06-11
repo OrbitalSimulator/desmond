@@ -25,7 +25,7 @@ public class FreeFallFunction implements ODEFunctionInterface {
         State2d stateInfo = (State2d)y;                                      //Cast y into State object to access information
 
         /*1.Calculate resultant sum acceleration by gravity*/
-        ArrayList<Vector2d> cvG = newtonGravity(y, settings.celestialBody.mass);
+        ArrayList<Vector2d> cvG = newtonGravity(stateInfo, settings.module.body.mass);
         
         /*2. Calculate the resultant change in position by gravity*/
         ArrayList<Vector2d> cp = new ArrayList<Vector2d>();
@@ -35,7 +35,7 @@ public class FreeFallFunction implements ODEFunctionInterface {
         }
         
         /*3. Calculate the total resultant acceleration by drag and gravity*/
-        ArrayList<Vector2d> cvT = drag(y, settings.celestialBody.mass);
+        ArrayList<Vector2d> cvT = drag(stateInfo, settings.module.body.mass);
 
         /*4. Calculate the total resultant change in position by gravity and drag*/
         ArrayList<Vector2d> cpT = new ArrayList<Vector2d>();
@@ -54,21 +54,21 @@ public class FreeFallFunction implements ODEFunctionInterface {
      * @param masses Array containing all masses of the Celestial Bodies in the system
      * @return An array containing resultant acceleration of all Celestial bodies in the system
     */
-    public ArrayList<Vector2d> newtonGravity(ArrayList<Vector2d> velo, ArrayList<Vector2d> posi, double planetMass, LanderSettings setting)
+    public ArrayList<Vector2d> newtonGravity(State2d state, double planetMass)
     {
         /*Initial*/
-    																			//Cast into State object to access information                   
+    	State2d stateInfo = (State2d) state;													//Cast into State object to access information                   
         ArrayList<Vector2d> changeInVelocity = new ArrayList<Vector2d>();                               //Initialize array to return. Same quanait of CB
 
         /* Calculations*/
-        Vector2d currentPos = posi.get(0);
+        Vector2d currentPos = stateInfo.position.get(0);
         Vector2d accelerationSum = new Vector2d(0,0);                                             //Initialize sum vector for acceleration
 
-        for(int j=0; j< velo.size(); j++)                                                  //Iterate through all other planets                         
+        for(int j=0; j< stateInfo.velocity.size(); j++)                                                  //Iterate through all other planets                         
         {
                
              double otherMass = planetMass;                                                       //Other CB info, that is exerting force on current planet
-             Vector2d otherPos = setting.celestialBody.location.positionConvert2d(); //******************IMPORTANT
+             Vector2d otherPos = stateInfo.position.get(j); 					//******************IMPORTANT
 
              /*Distance calc*/
              double r = otherPos.dist(currentPos);                                               //Calculate the distance between the two planets
@@ -101,9 +101,37 @@ public class FreeFallFunction implements ODEFunctionInterface {
      * @param masses Array containing all masses of the Celestial Bodies in the system
      * @return An array containing resultant acceleration of all Celestial bodies in the system
     */
-    public ArrayList<Vector2d> drag(ArrayList<Vector2d> velo, ArrayList<Vector2d> posi, double planetMass, LanderSettings setting)
+    public ArrayList<Vector2d> drag(State2d state, double planetMass)
     {
     	
+    	State2d stateInfo = (State2d) state;													//Cast into State object to access information                   
+        ArrayList<Vector2d> changeInVelocity = new ArrayList<Vector2d>();
+        
+        Vector2d currentPos = stateInfo.position.get(0);
+        Vector2d accelerationSum = new Vector2d(0,0);   
+        
+        double r = 147000;
+		double dragCoeff = 0.55;
+		double area = settings.module.length * settings.module.width;
+        
+    	for (int i = 0; i < stateInfo.velocity.size(); i++) {
+    		
+    		Vector2d modulePos = stateInfo.position.get(i);
+    		
+    		Vector2d unitVec = (modulePos.sub(settings.cbLocation)).unitVector();
+    		
+    		//drag coeff*area*air density* 0.5
+    		double dScale = r*dragCoeff*area*0.5;
+    		Vector2d dForce = unitVec.mul(dScale);
+    		
+    		//resultant acceleration due to force
+    		Vector2d dAccel = dForce.mul(1/settings.module.body.mass);
+    		
+    		accelerationSum.add(dAccel);
+    	}
+    	changeInVelocity.add(accelerationSum);
+    	
+    	return changeInVelocity;
     	
     }
     
