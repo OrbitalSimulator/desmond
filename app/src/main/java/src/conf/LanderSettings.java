@@ -7,6 +7,7 @@ import src.univ.CelestialBody;
 public class LanderSettings 
 {
 	public CelestialBody celestialBody;	//only one body which we need to compare to, rest is negligible
+	public Vector2d cbLocation;
 	public Vector2d probeStartPosition;
 	public Vector2d probeStartVelocity;
 	public LocalDateTime startTime;
@@ -17,6 +18,7 @@ public class LanderSettings
 	public int stepOffset = 0;
 
 	public LanderSettings(CelestialBody celestialBody,
+							  Vector2d cbLocation,
 			                  Vector2d probeStartPosition,
 							  Vector2d probeStartVelocity,
 							  LocalDateTime startTime,
@@ -26,6 +28,7 @@ public class LanderSettings
 							  String[] waypoints)
 	{
 		this.celestialBody = celestialBody;
+		this.cbLocation = cbLocation;
 		this.probeStartPosition = probeStartPosition;
 		this.probeStartVelocity = probeStartVelocity;
 		this.startTime = startTime;
@@ -42,7 +45,7 @@ public class LanderSettings
 	
 	public LanderSettings copy()
 	{
-		return new LanderSettings(celestialBody,
+		return new LanderSettings(celestialBody, cbLocation,
                 	probeStartPosition,
 				    probeStartVelocity,
 				    startTime,
