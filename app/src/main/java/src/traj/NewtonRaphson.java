@@ -17,9 +17,9 @@ public class NewtonRaphson extends GuidanceController
     private int origin;
     private int target;
     private Vector3d targetPoint;
-    private double delta = 0.000001;
+    private double delta = 0.00001;
     private Vector3d startingVelocity = new Vector3d(200, -300, 100);
-    private double epsilon = 0.005;
+    private double epsilon = 0.1;
 
     public NewtonRaphson(Universe universe, int origin, int target, SimulationSettings settings)
     {
@@ -51,12 +51,11 @@ public class NewtonRaphson extends GuidanceController
         {
             System.out.println("STEP: " + currentStep);
             Vector3d[] tempTrajectory = planRoute(currentVelocity, currentPosition, currentStep);
-            Vector3d nextPosition = trajectory[1];
+            Vector3d nextPosition = tempTrajectory[1];
             Vector3d nextVelocity = newtonRaphsonIterativeMethod(currentVelocity, currentPosition, currentStep);
 
-            Vector3d closestPoint = calculateClosestPoint(tempTrajectory);
             //TODO alter distance to represent nextDistance.dist(target) Only after updating targetPos
-            distance = closestPointDistanceToTarget(closestPoint);
+            distance = closestPointDistanceToTarget(nextPosition);
 
             currentPosition = nextPosition;
             currentVelocity = nextVelocity;
