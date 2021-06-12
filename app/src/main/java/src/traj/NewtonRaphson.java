@@ -163,11 +163,11 @@ public class NewtonRaphson extends GuidanceController
     private void calculateLaunchAndTargetCoordinates()
     {
         int targetPointIndex = (int) (targetTime / settings.stepSize);
-        CelestialBody targetPlanet = universe.universe[target][targetPointIndex];
+        CelestialBody targetPlanet = universe.U[target][targetPointIndex];
         targetPoint = targetPlanet.calculateTargetPoint();
 
         int launchPointIndex = (int) (launchTime / settings.stepSize);
-        CelestialBody launchPlanet = universe.universe[origin][launchPointIndex];
+        CelestialBody launchPlanet = universe.U[origin][launchPointIndex];
         launchPoint = launchPlanet.closestLaunchPoint(targetPoint);
     }
 

@@ -37,7 +37,7 @@ public class GuidanceController
 	}
 	
 	/*
-	 * Create a new deep copy state with the probe added (avoiding side effects on universe) 
+	 * Create a new deep copy state with the probe added (avoiding side effects on U) 
 	 */
 	protected static State addProbe(State state, Vector3d position, Vector3d velocity)
 	{

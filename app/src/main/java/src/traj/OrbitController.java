@@ -35,7 +35,7 @@ public class OrbitController extends GuidanceController
 
 		int currentStep = settings.stepOffset;
 		//TODO Make such that temp is the last state of the CelestialBody
-		CelestialBody temp = universe.universe[target][0];
+		CelestialBody temp = universe.U[target][0];
 		Vector3d currentPosition = temp.calculateTargetPoint();
 		trajectory[0] = currentPosition;
 		//Vector3d currentPosition = (Vector3d) settings.probeStartPosition;
@@ -47,7 +47,7 @@ public class OrbitController extends GuidanceController
 			State currentState = addProbe(universe.getStateAt(currentStep), currentPosition, currentVelocity);
 			State nextState = solver.step(funct, currentTime, currentState, settings.stepSize);
 
-			CelestialBody targetPlanet = universe.universe[target][currentStep];
+			CelestialBody targetPlanet = universe.U[target][currentStep];
 			Vector3d impulse = calculateImpulsionToRemainInOrbit(nextState, targetPlanet);
 
 			currentPosition = getProbePosition(nextState);
@@ -178,13 +178,13 @@ public class OrbitController extends GuidanceController
 
 		for(int i = 0; i< trajectory.length; i++)
 		{
-			distanceMeasure[i] = trajectory[i].dist(universe.universe[target][i].location);
+			distanceMeasure[i] = trajectory[i].dist(universe.U[target][i].location);
 		}
 		return distanceMeasure;
 	}
 
 	public double getOrbitalHeight(Universe universe, int target)
 	{
-		return universe.universe[target][0].orbitalHeight;
+		return universe.U[target][0].orbitalHeight;
 	}
 }
