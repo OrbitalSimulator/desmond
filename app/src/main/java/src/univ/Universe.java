@@ -18,7 +18,7 @@ public class Universe
 {
     private boolean SAVE_TO_FILE = false;
 	
-	public CelestialBody[][] universe;
+	public CelestialBody[][] U;
 	public double[] masses;
     
     private Verlet solver = new Verlet();
@@ -58,17 +58,17 @@ public class Universe
     		masses[i] = startVariables[i].mass;
     	}
     	
-    	universe = new CelestialBody[startVariables.length][noOfSteps+1];
+    	U = new CelestialBody[startVariables.length][noOfSteps+1];
     	try
 		{
     		System.out.print("Loading from file ...");
-    		universe = DataFileManager.load(settings);
+    		U = DataFileManager.load(settings);
     		System.out.println(" Done");
 		}
 		catch (Exception e)
 		{
 			System.out.println("Unable to load config file");
-			universe = generateNewUniverse();
+			U = generateNewUniverse();
 				
 			if(SAVE_TO_FILE)	
 				saveToFile();
@@ -77,7 +77,7 @@ public class Universe
          
     private CelestialBody[][] generateNewUniverse()
     {
-    	System.out.print("Creating new universe ...");
+    	System.out.print("Creating new U ...");
     	StateInterface initialState = convertToState(startVariables);
 		ODEFunctionInterface function = new NewtonGravityFunction(masses);
 		StateInterface[] states = solver.solve(function, initialState, stepSize*noOfSteps, stepSize);		
@@ -103,7 +103,7 @@ public class Universe
     public CelestialBody[][] convertToCelestialBody(StateInterface[] stateInterfaces)
     {  	
     	State[] states = (State[]) stateInterfaces;
-    	CelestialBody[][] bodies = new CelestialBody[universe.length][universe[0].length];
+    	CelestialBody[][] bodies = new CelestialBody[U.length][U[0].length];
     	LocalDateTime dateTime = startTime;
     	for(int i = 0; i < states.length; i++)
         {            
@@ -138,17 +138,17 @@ public class Universe
         ArrayList<Vector3d> velocity = new ArrayList<Vector3d>();
         ArrayList<Vector3d> position = new ArrayList<Vector3d>();
 
-        for(int i = 0; i < universe.length; i++)
+        for(int i = 0; i < U.length; i++)
         {
-            velocity.add(universe[i][timeStep].velocity);
-            position.add(universe[i][timeStep].location);
+            velocity.add(U[i][timeStep].velocity);
+            position.add(U[i][timeStep].location);
         }
         return new State(velocity, position);
     }
     
     public void setStateAt(int timeStep, StateInterface state)
     {
-    	universe[timeStep] = convertToCelestialBody(state);
+    	U[timeStep] = convertToCelestialBody(state);
     }
     
     // ----- Merging Universes -----
@@ -157,21 +157,22 @@ public class Universe
     {
     	this.permTrajectories.addAll(other.getPermTrajectories());
     	this.tempTrajectories.addAll(other.getTempTrajectories());
-    	universe = resizeUniverse(other.noOfSteps);
-    	importUniverse(other.universe);
+    	U = resizeUniverse(other.noOfSteps);
+    	importUniverse(other.U);
+    	System.out.println("Breakpoint for leon!");
     }
         
     private CelestialBody[][] resizeUniverse(int extraStepsNeeded)
     {
-    	int newLength = universe[0].length + extraStepsNeeded;
-    	int noOfPlanets = universe.length;
+    	int newLength = U.length + extraStepsNeeded;
+    	int noOfPlanets = U.length;
     	CelestialBody[][] resizedUniverse = new CelestialBody[noOfPlanets][newLength];
     	
-    	for(int i = 0; i < universe.length; i++)
+    	for(int i = 0; i < U.length; i++)
     	{
-    		for(int j = 0; j < universe[i].length; j++)
+    		for(int j = 0; j < U[i].length; j++)
     		{
-    			resizedUniverse[i][j] = universe[i][j];
+    			resizedUniverse[j][i] = U[j][i];
     		}
     	}
     	
@@ -180,13 +181,13 @@ public class Universe
     
     private void importUniverse(CelestialBody[][] other)
     {
-    	int offset = noOfSteps;
+    	int offset = noOfSteps + 1;
     	noOfSteps = this.noOfSteps + other[0].length;
-    	for(int i = 0; i < universe.length; i++)
+    	for(int i = 0; i < U.length; i++)
     	{
-    		for(int j = offset; j < noOfSteps; j++)
+    		for(int j = offset; j < U[i].length; j++)
     		{
-    			universe[i][j] = other[i][j];
+    			U[i][j] = other[i][j - offset];
     		}
     	}
     }
@@ -240,7 +241,7 @@ public class Universe
     public void saveToFile()
     {
     	System.out.print("Saving to file ...");
-    	DataFileManager.overwrite(universe);
+    	DataFileManager.overwrite(U);
 		System.out.println(" Done");
     }
     
