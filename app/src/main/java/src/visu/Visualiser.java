@@ -89,10 +89,10 @@ public class Visualiser extends JFrame implements MouseMotionListener, ActionLis
 		rLayout.setVgap(5);
 		rPanel.setLayout(rLayout);
 		rPanel.setBackground(Color.BLACK);
-		planetBtn = new PlanetButton[universe.universe.length];
+		planetBtn = new PlanetButton[universe.U.length];
 		for(int i = 0; i < 11; i++)
 		{
-			Icon btnIcon = ResourceLoader.getIcon(universe.universe[i][0].icon);
+			Icon btnIcon = ResourceLoader.getIcon(universe.U[i][0].icon);
 			planetBtn[i] = new PlanetButton(btnIcon, i);
 			planetBtn[i].addActionListener(this);
 			rPanel.add(planetBtn[i]);
@@ -110,7 +110,7 @@ public class Visualiser extends JFrame implements MouseMotionListener, ActionLis
 		revBtn.addActionListener(e -> playRev());
 
 		// Create time slider
-		timeSlider = new JSlider(0, universe.universe[0].length);
+		timeSlider = new JSlider(0, universe.U[0].length);
 		timeSlider.setBorder(BorderFactory.createEmptyBorder());
 		timeSlider.setBackground(Color.BLACK);
 		timeSlider.setValue(0);

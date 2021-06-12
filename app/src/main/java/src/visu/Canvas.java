@@ -52,7 +52,7 @@ public class Canvas extends JPanel
 	public Canvas(Universe universe, Dimension screen)
 	{
 		this.universe = universe;
-		this.U = universe.universe;
+		this.U = universe.U;
 		this.screen = screen;
 		setSize(screen);
 		time = 0;

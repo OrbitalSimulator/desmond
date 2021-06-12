@@ -26,7 +26,7 @@ public class RouteController extends GuidanceController
 		super(universe, target);
 		mutationRate = 10000;
 		initialSpeed = settings.probeStartVelocity.norm();
-		Vector3d targetVector = universe.universe[target][settings.getEndStep()].location;
+		Vector3d targetVector = universe.U[target][settings.getEndStep()].location;
 		trajectory = hillClimbAlogrithm(targetVector, settings);
 	}
 	
