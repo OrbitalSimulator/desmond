@@ -42,7 +42,7 @@ class TestSettingsFileManager
 	void testLoadSteps() 
 	{
 		SimulationSettings settings = loadSettings();
-		assertEquals(1171, settings.noOfSteps);
+		assertEquals(1111, settings.noOfSteps);
 	}
 
 	
@@ -50,19 +50,19 @@ class TestSettingsFileManager
 	void testLoadStepSize() 
 	{
 		SimulationSettings settings = loadSettings();
-		assertEquals(8100, settings.stepSize);
+		assertEquals(2222, settings.stepSize);
 	}
 
 	@Test
 	void loadProbePosition(){
                 SimulationSettings settings = loadSettings();
-                assertEquals(new Vector3d(-1.471922101663588e+11,-2.861632917e10,8.278183193596080e+06), settings.probeStartPosition);
+                assertEquals(new Vector3d(1,2,3), settings.probeStartPosition);
 	}
 
 	@Test
 	void loadProbeVelocity(){
                 SimulationSettings settings = loadSettings();
-                assertEquals(new Vector3d(5.427193405797901e+03,-2.931056622265021e+04, 6.575428158157592e-01), settings.probeStartVelocity);
+                assertEquals(new Vector3d(4,5,6), settings.probeStartVelocity);
 	}
 
 	@Test
