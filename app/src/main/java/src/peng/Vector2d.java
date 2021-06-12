@@ -80,10 +80,9 @@ public class Vector2d
         return new Vector2d(this.x + other.getX(), this.y + other.getY());
     }
 
-    public Vector2d returnOrthogonal(double xApproximate)
+    public Vector2d returnOrthogonal()
     {
-        double yCalculated = (-this.x * xApproximate)/ this.y;
-        return new Vector2d(xApproximate, yCalculated);
+        return new Vector2d(this.y, -this.x);
     }
 
     /**
