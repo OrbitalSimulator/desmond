@@ -35,7 +35,7 @@ public abstract class DataFileManager extends FileManager
 		}
 		catch (IOException e)
 		{
-			System.out.println("Unable to save universe data");
+			System.out.println("Unable to save U data");
 			e.printStackTrace();	
 		}
 	}
