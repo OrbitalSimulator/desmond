@@ -8,6 +8,7 @@ import src.traj.TrajectoryPlanner;
 import src.univ.Universe;
 import src.visu.SetupMenu;
 import src.visu.Visualiser;
+import src.peng.Vector3d;
 
 public class App 
 {
@@ -26,8 +27,8 @@ public class App
 			//settings = setupMenu.getSettings();
 			Universe universe = new Universe(settings);
 			Visualiser.getInstance().addUniverse(universe);
-			TrajectoryPlanner.newtonRaphsonPlot(universe, 3, 8, settings, 0, 6.307e7);
-
+			Vector3d startingVelocity = new Vector3d(0,0,0);
+			TrajectoryPlanner.newtonRaphsonPlot(universe, 3, 8, settings, 0, 3.154e7, startingVelocity);
 		}
 		catch(IOException e){
 			e.printStackTrace();

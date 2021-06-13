@@ -20,11 +20,17 @@ public class NewtonRaphson extends GuidanceController
     private Vector3d targetPoint;
     private double launchTime;
     private double targetTime;
-    private double delta = 0.000001;
-    private Vector3d startingVelocity = new Vector3d(200, -300, 100);
-    private double epsilon = 0.005;
+    private double delta = 0.001;
+    private Vector3d startingVelocity;
+    private double epsilon = 0.1;
+    private int iterationLimit = 50;
+    private int iteration = 0;
 
-    public NewtonRaphson(Universe universe, int origin, int target, SimulationSettings settings, double launchTime, double targetTime)
+    private static final boolean DEBUG = true;
+    private static boolean logActive = false;
+    private static String fileName;
+
+    public NewtonRaphson(Universe universe, int origin, int target, SimulationSettings settings, double launchTime, double targetTime, Vector3d startingVelocity)
     {
         super(universe, target);
         this.settings = settings;
@@ -33,34 +39,45 @@ public class NewtonRaphson extends GuidanceController
         this.target = target;
         this.launchTime = launchTime;
         this.targetTime = targetTime;
+        this.startingVelocity = startingVelocity;
 
         calculateLaunchAndTargetCoordinates();
-
-        Vector3d optimalVelocity = newtonRaphsonIterativeMethod(startingVelocity);
-        trajectory = planRoute(optimalVelocity);
     }
 
-    public Vector3d newtonRaphsonIterativeMethod(Vector3d initVelocity)
+    public Vector3d newtonRaphsonIterativeMethod()
     {
-        Vector3d[] trajectory = planRoute(initVelocity);
+        Vector3d[] trajectory = planRoute(startingVelocity);
         Vector3d closestPoint = calculateClosestPoint(trajectory);
         double distance = closestPointDistanceToTarget(closestPoint);
+        iteration++;
 
         while(distance > epsilon)
         {
-            Vector3d nextVelocity = newtonRaphsonStep(initVelocity, closestPoint);
+            Vector3d nextVelocity = newtonRaphsonStep(startingVelocity, closestPoint);
 
-            initVelocity = nextVelocity;
+            startingVelocity = nextVelocity;
             trajectory = planRoute(nextVelocity);
             universe.addTempTrajectory(trajectory);
             closestPoint = calculateClosestPoint(trajectory);
             distance = closestPointDistanceToTarget(closestPoint);
-            System.out.println("Velocity: " + initVelocity.toString());
-            System.out.println("Distance: " + distance);
-            System.out.println("------");
+
+            if(DEBUG)
+            {
+                System.out.println("Iteration: " + iteration);
+                System.out.println("Velocity: " + startingVelocity.toString());
+                System.out.println("Distance: " + distance);
+                System.out.println("------");
+            }
+
+            if(iteration > iterationLimit)
+            {
+                throw new RuntimeException("Newton Raphson did not converge");
+            }
+
+            iteration++;
         }
         universe.addPermTrajectory(trajectory);
-        return initVelocity;
+        return startingVelocity;
     }
 
     public Vector3d newtonRaphsonStep(Vector3d initVelocity, Vector3d closestPoint)
@@ -174,5 +191,10 @@ public class NewtonRaphson extends GuidanceController
     public Vector3d getLaunchPoint()
     {
         return launchPoint;
+    }
+
+    public int getIteration()
+    {
+        return iteration;
     }
 }
