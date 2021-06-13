@@ -58,6 +58,7 @@ public class TestNewtonRaphson
             try
             {
                 NewtonRaphson nr = new NewtonRaphson(universe, 3, 8, settings, 0, timeFrame, startingVelocity);
+                nr.visualizerOff();
                 Vector3d optimalVelocity = nr.newtonRaphsonIterativeMethod();
 
                 int iterations = nr.getIteration();

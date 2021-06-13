@@ -23,12 +23,12 @@ public class NewtonRaphson extends GuidanceController
     private double delta = 0.001;
     private Vector3d startingVelocity;
     private double epsilon = 0.1;
-    private int iterationLimit = 20;
+    private int iterationLimit = 30;
     private int iteration = 0;
     private Vector3d velocityAtTarget;
 
-    private static final boolean DEBUG = false;
-    private static final boolean VISUALIZE = false;
+    private static final boolean DEBUG = true;
+    private static boolean visualize = true;
 
     public NewtonRaphson(Universe universe, int origin, int target, SimulationSettings settings, double launchTime, double targetTime, Vector3d startingVelocity)
     {
@@ -60,7 +60,7 @@ public class NewtonRaphson extends GuidanceController
             closestPoint = calculateClosestPoint(trajectory);
             distance = closestPointDistanceToTarget(closestPoint);
 
-            if(VISUALIZE)
+            if(visualize)
             {
                 universe.addTempTrajectory(trajectory);
             }
@@ -80,7 +80,8 @@ public class NewtonRaphson extends GuidanceController
 
             iteration++;
         }
-        if(VISUALIZE)
+
+        if(visualize)
         {
             universe.addPermTrajectory(trajectory);
         }
@@ -184,7 +185,13 @@ public class NewtonRaphson extends GuidanceController
         return trajectory[finalIndex];
     }
 
-
+    //TODO Method interferes with NR method, therefore will not be used. Possibly to determine probe velcotiy seperate from origin?
+    public void calculateRelativeStartingVelocity(Vector3d startingVelocity)
+    {
+        Vector3d originVelocity = universe.universe[origin][0].velocity;
+        this.startingVelocity =  originVelocity.add(startingVelocity);
+        System.out.println("Starting velocity: " + this.startingVelocity.toString());
+    }
 
     private void calculateLaunchAndTargetCoordinates()
     {
@@ -220,5 +227,10 @@ public class NewtonRaphson extends GuidanceController
     public Vector3d getVelocityAtTarget()
     {
         return velocityAtTarget;
+    }
+
+    public void visualizerOff()
+    {
+        visualize = false;
     }
 }
