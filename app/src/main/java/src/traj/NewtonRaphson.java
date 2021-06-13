@@ -27,7 +27,7 @@ public class NewtonRaphson extends GuidanceController
     private int iteration = 0;
     private Vector3d velocityAtTarget;
 
-    private static final boolean DEBUG = true;
+    private static final boolean DEBUG = false;
     private static final boolean VISUALIZE = false;
 
     public NewtonRaphson(Universe universe, int origin, int target, SimulationSettings settings, double launchTime, double targetTime, Vector3d startingVelocity)

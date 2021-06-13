@@ -6,7 +6,6 @@ import src.conf.SimulationSettings;
 import src.traj.NewtonRaphson;
 import src.peng.Vector3d;
 import src.univ.Universe;
-import src.visu.Visualiser;
 import log.Logger;
 
 import java.io.IOException;
@@ -21,9 +20,12 @@ public class TestNewtonRaphson
     void executeAllLogging()
     {
         String fileName = "exp_";
+        String loggingDataHeadings = "Initial Velocity, Iterations, Optimal Velocity, Timeframe, Delta, Velocity at Target";
+
         for(Vector3d velocity: velocities)
         {
             fileName += velocity.toString();
+            Logger.logCSV(fileName, loggingDataHeadings);
 
             for(double time: timeFrames)
             {
@@ -39,7 +41,9 @@ public class TestNewtonRaphson
         double time = 3.154e7;
         Vector3d initialVelocity = new Vector3d(15000,-15000,0);
         String fileName = "exp_" + initialVelocity.toString();
+        String loggingDataHeadings = "Initial Velocity, Iterations, Optimal Velocity, Timeframe, Delta, Velocity at Target";
 
+        Logger.logCSV(fileName, loggingDataHeadings);
         logIterationData(fileName, initialVelocity, time);
     }
 
@@ -55,11 +59,11 @@ public class TestNewtonRaphson
             {
                 NewtonRaphson nr = new NewtonRaphson(universe, 3, 8, settings, 0, timeFrame, startingVelocity);
                 Vector3d optimalVelocity = nr.newtonRaphsonIterativeMethod();
-                Vector3d[] trajectory = nr.planRoute(optimalVelocity);
+
                 int iterations = nr.getIteration();
                 double delta = nr.getDelta();
                 Vector3d velocityAtTarget = nr.getVelocityAtTarget();
-                loggingData += ("InitialVelocity: " + startingVelocity.toString() +" Iterations: " + String.valueOf(iterations) + " Optimal Velocity: " + optimalVelocity.toString() + " TimeFrame: " + String.valueOf(timeFrame) + " Delta: " + delta + " Velocity at Target: " + velocityAtTarget.toString());
+                loggingData += (startingVelocity.toString() +", " + String.valueOf(iterations) + ", " + optimalVelocity.toString() + ", " + String.valueOf(timeFrame) + ", " + delta + ", " + velocityAtTarget.toString());
             }
             catch(RuntimeException e)
             {
