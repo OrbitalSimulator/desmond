@@ -61,7 +61,7 @@ public class NewtonGravity2d implements ODEFunctionInterface {
         {
                
              double otherMass = planetMass;                                                       //Other CB info, that is exerting force on current planet
-             Vector2d otherPos = stateInfo.position.get(j); 					//******************IMPORTANT
+             Vector2d otherPos = stateInfo.position.get(j); 					
 
              /*Distance calc*/
              double r = otherPos.dist(currentPos);                                               //Calculate the distance between the two planets
@@ -104,5 +104,4 @@ public class NewtonGravity2d implements ODEFunctionInterface {
         return changeInVelocity;
     }
     
-
 }
