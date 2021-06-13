@@ -23,12 +23,12 @@ public class NewtonRaphson extends GuidanceController
     private double delta = 0.001;
     private Vector3d startingVelocity;
     private double epsilon = 0.1;
-    private int iterationLimit = 50;
+    private int iterationLimit = 20;
     private int iteration = 0;
+    private Vector3d velocityAtTarget;
 
     private static final boolean DEBUG = true;
-    private static boolean logActive = false;
-    private static String fileName;
+    private static final boolean VISUALIZE = false;
 
     public NewtonRaphson(Universe universe, int origin, int target, SimulationSettings settings, double launchTime, double targetTime, Vector3d startingVelocity)
     {
@@ -57,9 +57,13 @@ public class NewtonRaphson extends GuidanceController
 
             startingVelocity = nextVelocity;
             trajectory = planRoute(nextVelocity);
-            universe.addTempTrajectory(trajectory);
             closestPoint = calculateClosestPoint(trajectory);
             distance = closestPointDistanceToTarget(closestPoint);
+
+            if(VISUALIZE)
+            {
+                universe.addTempTrajectory(trajectory);
+            }
 
             if(DEBUG)
             {
@@ -76,7 +80,11 @@ public class NewtonRaphson extends GuidanceController
 
             iteration++;
         }
-        universe.addPermTrajectory(trajectory);
+        if(VISUALIZE)
+        {
+            universe.addPermTrajectory(trajectory);
+        }
+
         return startingVelocity;
     }
 
@@ -166,6 +174,7 @@ public class NewtonRaphson extends GuidanceController
             currentStep++;
             trajectory[currentStep] = currentPosition;
         }
+        setVelocityAtTarget(currentVelocity);
         return trajectory;
     }
 
@@ -196,5 +205,20 @@ public class NewtonRaphson extends GuidanceController
     public int getIteration()
     {
         return iteration;
+    }
+
+    public double getDelta()
+    {
+        return delta;
+    }
+
+    public void setVelocityAtTarget(Vector3d velocity)
+    {
+        velocityAtTarget = velocity;
+    }
+
+    public Vector3d getVelocityAtTarget()
+    {
+        return velocityAtTarget;
     }
 }
