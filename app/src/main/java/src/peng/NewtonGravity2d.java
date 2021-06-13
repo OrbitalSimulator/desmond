@@ -8,7 +8,7 @@ public class NewtonGravity2d implements ODEFunctionInterface {
 	
 	private LanderSettings settings;
 	public static final double GRAVITY = 6.67430e-11;
-	private double r = 147000;
+	private double r = 1.5;								//1.5 bar, 147000 Pa
 	private double dragCoeff = 0.55;
 	private double area = settings.module.length * settings.module.width;
 
@@ -92,7 +92,7 @@ public class NewtonGravity2d implements ODEFunctionInterface {
      		Vector2d resForce = gravitationalForce.sub(dragForce);
      		
      		//resultant acceleration due to force
-    		Vector2d resAccel = dragForce.mul(1/settings.module.body.mass);				//a = F/mass
+    		Vector2d resAccel = resForce.mul(1/settings.module.body.mass);				//a = (W-D)/mass
      		
              /*Summation*/
              accelerationSum  = accelerationSum.add(resAccel);

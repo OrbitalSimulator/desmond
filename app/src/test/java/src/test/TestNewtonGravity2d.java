@@ -33,7 +33,7 @@ public class TestNewtonGravity2d {
 		LocalDateTime end = LocalDateTime.of(2019, Month.JANUARY, 28, 14, 33, 48);
 		String[] way = null;
 		
-		LandingModule lander = new LandingModule(2,2,20,initialPos,initialVelo);
+		LandingModule lander = new LandingModule(2,2,20,10,initialPos,initialVelo);
 		LanderSettings settings = new LanderSettings(bodyLoc,lander,start,end,100,1,way);
 		
 		NewtonGravity2d grav = new NewtonGravity2d(settings);
