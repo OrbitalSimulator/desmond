@@ -130,7 +130,7 @@ public abstract class TrajectoryPlanner
 	{
 		SimulationSettings orbitSettings = baseSettings.copy();
 		orbitSettings.celestialBodies = previousState;
-		orbitSettings.noOfSteps = 100000;
+		orbitSettings.noOfSteps = 80000;
 		orbitSettings.stepSize = 50; //50 best so far
 		return orbitSettings;
 	}
