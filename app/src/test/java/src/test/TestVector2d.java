@@ -112,11 +112,10 @@ class TestVector2d {
 	@Test
 	void testRound() {
 		Vector2d v = new Vector2d(3.9, -1.2);
-		Vector2d roundedReal = new Vector2d(4.0,-1);
-		Vector2d rounded = new Vector2d(v.getRoundedX(1),v.getRoundedY(1));
+		Vector2d rounded = new Vector2d(v.getRoundedX(0),v.getRoundedY(0));
         System.out.println(v.getRoundedX(1)+v.getRoundedY(1));
 //		assertEquals(0, result);
-        assert(roundedReal.equals(rounded));
+        assertEquals(new Vector2d(4.0, -1.0), rounded);
 	}
 	
 	@Test

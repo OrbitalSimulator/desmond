@@ -128,7 +128,7 @@ public class Vector2d
         return false;
     }
     
-    private static double round(double value, int places) 
+    private double round(double value, int places) 
     {
         if (places < 0) 
         	throw new IllegalArgumentException();
@@ -155,8 +155,8 @@ public class Vector2d
         return this.x + "," + this.y + ",";
     }
     
-    public double getRoundedX(int digit) {return round(x,digit);}
-    public double getRoundedY(int digit) {return round(y,digit);}
+    public double getRoundedX(int digit) {return round(this.x,digit);}
+    public double getRoundedY(int digit) {return round(this.y,digit);}
     
     public double getX() {return x;}
     public double getY() {return y;}
