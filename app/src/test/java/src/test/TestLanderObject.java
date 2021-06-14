@@ -38,7 +38,7 @@ public class TestLanderObject {
 		double direction = 180;
 		LanderObject lander = new LanderObject(posi,time,direction);
 		
-		assertEquals(lander.position,new Vector2d(10,10));
+		assert(lander.position.equals(new Vector2d(10,10)));
 	}
 	
 	@Test
