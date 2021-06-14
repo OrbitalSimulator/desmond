@@ -20,7 +20,7 @@ public class TestNewtonRaphson
     void executeAllLogging()
     {
         String fileName = "exp_";
-        String loggingDataHeadings = "Initial Velocity, Iterations, Optimal Velocity, Timeframe, Delta, Velocity at Target";
+        String loggingDataHeadings = "Initial Velocity_x, Initial Velocity_y, Initial Velocity_z, Iterations, Optimal Velocity_x, Optimal Velocity_y, Optimal Velocity_z, Timeframe, Delta, Magnitude of Velocity at Target";
 
         for(Vector3d velocity: velocities)
         {
@@ -41,7 +41,7 @@ public class TestNewtonRaphson
         double time = 3.154e7;
         Vector3d initialVelocity = new Vector3d(15000,-15000,0);
         String fileName = "exp_" + initialVelocity.toString();
-        String loggingDataHeadings = "Initial Velocity, Iterations, Optimal Velocity, Timeframe, Delta, Velocity at Target";
+        String loggingDataHeadings = "Initial Velocity_x, Initial Velocity_y, Initial Velocity_z, Iterations, Optimal Velocity_x, Optimal Velocity_y, Optimal Velocity_z, Timeframe, Delta, Magnitude of Velocity at Target";
 
         Logger.logCSV(fileName, loggingDataHeadings);
         logIterationData(fileName, initialVelocity, time);
@@ -64,7 +64,11 @@ public class TestNewtonRaphson
                 int iterations = nr.getIteration();
                 double delta = nr.getDelta();
                 Vector3d velocityAtTarget = nr.getVelocityAtTarget();
-                loggingData += (startingVelocity.toString() +", " + String.valueOf(iterations) + ", " + optimalVelocity.toString() + ", " + String.valueOf(timeFrame) + ", " + delta + ", " + velocityAtTarget.toString());
+                double velocityMagnitudeAtTarget = velocityAtTarget.norm();
+                String startingVelocityBreakdown = String.valueOf(startingVelocity.getX()) + ", " + String.valueOf(startingVelocity.getY()) + ", " + String.valueOf(startingVelocity.getZ());
+                String optimalVelocityBreakdown = String.valueOf(optimalVelocity.getX()) + ", " + String.valueOf(optimalVelocity.getY()) + ", " + String.valueOf(optimalVelocity.getZ());
+
+                loggingData += (startingVelocityBreakdown +", " + String.valueOf(iterations) + ", " + optimalVelocityBreakdown + ", " + String.valueOf(timeFrame) + ", " + delta + ", " + String.valueOf(velocityMagnitudeAtTarget));
             }
             catch(RuntimeException e)
             {
