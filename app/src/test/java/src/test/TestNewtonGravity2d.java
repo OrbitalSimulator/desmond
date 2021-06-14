@@ -1,5 +1,7 @@
 package src.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import java.time.LocalDateTime;
 import java.time.Month;
 import java.util.ArrayList;
@@ -14,6 +16,7 @@ import src.peng.RateInterface;
 import src.peng.State2d;
 import src.peng.StateInterface;
 import src.peng.Vector2d;
+import src.univ.CelestialBody;
 
 public class TestNewtonGravity2d {
 
@@ -23,17 +26,17 @@ public class TestNewtonGravity2d {
 		ArrayList<Vector2d> arrVelo = new ArrayList<Vector2d>();
 		ArrayList<Vector2d> arrPos = new ArrayList<Vector2d>();
 
-		Vector2d initialVelo = new Vector2d(0,0);
+		Vector2d initialVelo = new Vector2d(1,0);
 		Vector2d initialPos = new Vector2d(20,0);
 		arrVelo.add(initialVelo);
 		arrPos.add(initialPos);
 		
 		Vector2d bodyLoc = new Vector2d(0,0);
 		LocalDateTime start = LocalDateTime.of(2019, Month.JANUARY, 1, 14, 33, 48);
-		LocalDateTime end = LocalDateTime.of(2019, Month.JANUARY, 28, 14, 33, 48);
+		LocalDateTime end = LocalDateTime.of(2019, Month.JANUARY, 28, 14, 33, 48);		
 		String[] way = null;
 		
-		LandingModule lander = new LandingModule(2,2,20,10,initialPos,initialVelo);
+		LandingModule lander = new LandingModule(2,2,20,10,initialPos,initialVelo,10);
 		LanderSettings settings = new LanderSettings(bodyLoc,lander,start,end,100,1,way);
 		
 		NewtonGravity2d grav = new NewtonGravity2d(settings);
@@ -44,6 +47,8 @@ public class TestNewtonGravity2d {
 		
 		System.out.println(res.toString());
 
-//		assertEquals();
+	    assertEquals(new Vector2d(-1.64999999998,0), res.velocityChange.get(0));
+	    assertEquals(new Vector2d(-1.64999999998,0), res.positionChange.get(0));
+
 	}
 }
