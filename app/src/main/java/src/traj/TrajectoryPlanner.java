@@ -20,9 +20,10 @@ public abstract class TrajectoryPlanner
 		newtonRaphsonPlot(universe, 3, 8, routeToTitanSettings, new Vector3d(0,0,0));
 		//TODO Avoid magic number (Reason for 2 is initial position + plotting same state)
 		int stepOffsetTitan = routeToTitanSettings.stepOffset - 2;
+		CelestialBody[] lastState = universe.getCelestialBodyAt(routeToTitanSettings.noOfSteps);
 
 		/*Titan Orbit*/
-		SimulationSettings orbitSettings = createOrbitalSettings(settings);
+		SimulationSettings orbitSettings = createOrbitalSettings(settings, lastState);
 		Universe subUniverse = new Universe(orbitSettings);
 		Vector3d[] trajectory = plotOrbit(subUniverse, orbitSettings);
 		universe.addPermTrajectory(trajectory);
@@ -125,11 +126,12 @@ public abstract class TrajectoryPlanner
 		return settingsToEarth;
 	}
 
-	public static SimulationSettings createOrbitalSettings(SimulationSettings baseSettings)
+	public static SimulationSettings createOrbitalSettings(SimulationSettings baseSettings, CelestialBody[] previousState)
 	{
 		SimulationSettings orbitSettings = baseSettings.copy();
-		orbitSettings.noOfSteps = 60000;
-		orbitSettings.stepSize = 15;
+		orbitSettings.celestialBodies = previousState;
+		orbitSettings.noOfSteps = 100000;
+		orbitSettings.stepSize = 50; //50 best so far
 		return orbitSettings;
 	}
 

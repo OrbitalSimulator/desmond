@@ -43,6 +43,34 @@ public class TestOrbit
         catch(IOException e){
             e.printStackTrace();
         }
+    }
 
+    void logLinearClimbingAtOrbitalPosition()
+    {
+        SimulationSettings settings;
+        try
+        {
+            settings = SettingsFileManager.load();
+            settings.stepSize = 15;
+            settings.noOfSteps = 60000;
+            Universe universe = new Universe(settings);
+            OrbitController.setLogActive();
+            OrbitController.visualizerOff();
+            OrbitController oc = new OrbitController(universe, target, settings);
+
+            double[] errorLog = oc.getErrorCollection();
+            double[] velocityLog = oc.getVelocityCollection();
+            Logger.logCSV(fileName, loggingHeaders);
+
+            for(int i = 0; i < errorLog.length; i++)
+            {
+                String currentIterationData = String.valueOf(errorLog[i]) + ", " + String.valueOf(velocityLog[i]);
+                Logger.logCSV(fileName, currentIterationData);
+            }
+
+        }
+        catch(IOException e){
+            e.printStackTrace();
+        }
     }
 }
