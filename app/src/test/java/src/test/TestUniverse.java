@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 
 import src.conf.SettingsFileManager;
 import src.conf.SimulationSettings;
+import src.univ.CelestialBody;
 import src.univ.Universe;
 
 /**
@@ -24,6 +25,13 @@ class TestUniverse
 		Universe universe2 = new Universe(generateSettingsForAppendTest());
 		universe1.append(universe2);
 		assertEquals(21, universe1.U[0].length);
+	}
+	
+	@Test void testGetCelestialBodiesAt()
+	{
+		Universe universe = new Universe(generateSettingsForAppendTest());
+		CelestialBody[] bodies = universe.getCelestialBodyAt(5);
+		assertEquals(11, bodies.length);
 	}
 	
 	public SimulationSettings generateSettingsForAppendTest()
