@@ -43,6 +43,7 @@ public class Probe
 		
 	public void burn(Vector3d startVelocity, Vector3d finishVelocity, double stepSize)
 	{		
+		// (mass * (v2 - v1) / t) / (2e4 * t)
 		Vector3d deltaVelocity = finishVelocity.sub(startVelocity);
 		double deltaVelocityNorm = Math.abs(deltaVelocity.norm());
 		double acceleration = deltaVelocityNorm / stepSize;
