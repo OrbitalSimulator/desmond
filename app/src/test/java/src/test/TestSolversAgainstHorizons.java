@@ -19,7 +19,7 @@ class TestSolversAgainstHorizons
 	static final double STEP_MIN = 60;
 	static final double STEP_SEC = 1;
 	
-	static final double EARTH_ONE_DAY_X = -1.467016284491896E11;
+	static final double EARTH_ONE_DAY_X = 1.4670173397502795E11;
 	static final double EARTH_ONE_DAY_Y = -3.113774419524897E10;
 	static final double EARTH_ONE_DAY_Z =  8.336289095385000E06;
 	
