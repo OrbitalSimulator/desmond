@@ -46,8 +46,8 @@ public class Probe
 		Vector3d deltaVelocity = finishVelocity.sub(startVelocity);
 		double deltaVelocityNorm = Math.abs(deltaVelocity.norm());
 		double acceleration = deltaVelocityNorm / stepSize;
-		double massOfFuelUsed = MAX_THRUST / acceleration;
-		System.out.println("Fuel used " + massOfFuelUsed);
+		double massOfFuelUsed = (getMass() * acceleration)/(EXHAUST_VELOCITY * stepSize);
+
 		fuelMass = fuelMass - massOfFuelUsed;	
 	}
 	
