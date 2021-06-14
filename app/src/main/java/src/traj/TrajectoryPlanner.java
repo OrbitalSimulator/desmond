@@ -11,7 +11,6 @@ import src.univ.Universe;
 
 public abstract class TrajectoryPlanner
 {
-	//TODO Use this class for NR -> drop lander -> Orbit -> NR back
 	static ArrayList<Vector3d[]> trajectories = new ArrayList<>();
 
 	public static void integratedPlot(Universe universe, SimulationSettings settings)
@@ -20,7 +19,7 @@ public abstract class TrajectoryPlanner
 		SimulationSettings routeToTitanSettings = createRouteToTitanSettings(settings);
 		newtonRaphsonPlot(universe, 3, 8, routeToTitanSettings, new Vector3d(0,0,0));
 		//TODO Avoid magic number (Reason for 2 is initial position + plotting same state)
-		int stepOffset = routeToTitanSettings.stepOffset - 2 + 2000;
+		int stepOffsetTitan = routeToTitanSettings.stepOffset - 2;
 
 		/*Titan Orbit*/
 		SimulationSettings orbitSettings = createOrbitalSettings(settings);
@@ -29,8 +28,9 @@ public abstract class TrajectoryPlanner
 		universe.addPermTrajectory(trajectory);
 
 		/*RouteToEarth*/
-		double orbitOffset = orbitSettings.stepSize * orbitSettings.noOfSteps / routeToTitanSettings.stepSize;
-		SimulationSettings routeToEarthSettings = createRouteToEarthSettings(settings, stepOffset, 0);
+		int orbitOffset = (int) (orbitSettings.stepSize * orbitSettings.noOfSteps / routeToTitanSettings.stepSize);
+		System.out.println("Orbit offset: " + orbitOffset);
+		SimulationSettings routeToEarthSettings = createRouteToEarthSettings(settings, stepOffsetTitan, orbitOffset);
 		newtonRaphsonPlot(universe, 8, 3, routeToEarthSettings, new Vector3d(-8000,8000,0));
 	}
 	public static Vector3d[] simplePlot(Universe universe, SimulationSettings settings)

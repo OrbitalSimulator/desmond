@@ -22,6 +22,8 @@ public class TestOrbit
         try
         {
             settings = SettingsFileManager.load();
+            settings.stepSize = 15;
+            settings.noOfSteps = 60000;
             Universe universe = new Universe(settings);
             OrbitController.setLogActive();
             OrbitController.visualizerOff();

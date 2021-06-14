@@ -171,7 +171,7 @@ public class OrbitController extends GuidanceController
 		double orbitalHeight = getOrbitalHeight(universe, target);
 		double error = Double.MAX_VALUE;
 
-		int temp = 20;
+		int temp = 30;
 
 		if(log)
 		{
@@ -191,17 +191,17 @@ public class OrbitController extends GuidanceController
 			{
 				System.out.println("New best velocity: " + currentVelocity + " Error: " + newError);
 				bestVelocity = currentVelocity;
+				error = newError;
 			}
 
 			if(log)
 			{
-				errorCollection[loggingIndex] = error;
+				errorCollection[loggingIndex] = newError;
 				velocityCollection[loggingIndex] = currentVelocity;
 				loggingIndex++;
 			}
 
 			currentVelocity = currentVelocity + 0.1;
-			error = newError;
 			temp--;
 		}
 		System.out.println("Optimum velocity is: "+ bestVelocity);
