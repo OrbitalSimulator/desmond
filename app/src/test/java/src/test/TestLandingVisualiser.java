@@ -12,12 +12,20 @@ class TestLandingVisualiser {
 
 	@Test
 	void test() {
-//		JFrame testWindow = new JFrame();
-//		LandingVisualiser landingVisualiser = new LandingVisualiser();
-//		testWindow.add(landingVisualiser);
-//		testWindow.setSize(new Dimension(900, 600));
-//		testWindow.setVisible(true);
-//		landingVisualiser.addVector(new Vector2d(10.0, 10.0));
+//		try 
+//		{
+//			JFrame testWindow = new JFrame();
+//			LandingVisualiser landingVisualiser = new LandingVisualiser();
+//			testWindow.add(landingVisualiser);
+//			testWindow.setSize(new Dimension(900, 600));
+//			testWindow.setVisible(true);
+//			landingVisualiser.addVector(new Vector2d(10.0, 10.0));
+//			Thread.sleep(1000);
+//
+//		}
+//		catch (InterruptedException e){
+//			e.printStackTrace();
+//		}
 	}
 
 }
