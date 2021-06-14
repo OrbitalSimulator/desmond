@@ -49,14 +49,15 @@ public class NewtonRaphson extends GuidanceController
         ODEFunctionInterface funct = new NewtonGravityFunction(masses);
 
         Verlet solver = new Verlet();
-        int currentStep = 0;
+        int currentStep = settings.stepOffset;
+        int trajectoryIndex = 0;
         Vector3d[] trajectory = new Vector3d[settings.noOfSteps+1];
 
         Vector3d currentPosition = launchPoint;
         Vector3d currentVelocity = initVelocity;
-        trajectory[currentStep] = currentPosition;
+        trajectory[trajectoryIndex] = currentPosition;
 
-        while(currentStep < settings.noOfSteps)
+        while(trajectoryIndex < settings.noOfSteps)
         {
             double currentTime = currentStep * settings.stepSize;
             State currentState = addProbe(universe.getStateAt(currentStep), currentPosition, currentVelocity);
@@ -65,7 +66,8 @@ public class NewtonRaphson extends GuidanceController
             currentPosition = getProbePosition(nextState);
             currentVelocity = getProbeVelocity(nextState);
             currentStep++;
-            trajectory[currentStep] = currentPosition;
+            trajectoryIndex++;
+            trajectory[trajectoryIndex] = currentPosition;
         }
         setVelocityAtTarget(currentVelocity);
         return trajectory;
@@ -76,6 +78,16 @@ public class NewtonRaphson extends GuidanceController
         Vector3d[] trajectory = planRoute(startingVelocity);
         Vector3d closestPoint = calculateClosestPoint(trajectory);
         double distance = closestPointDistanceToTarget(closestPoint);
+        if(DEBUG)
+        {
+            System.out.println("Iteration 0:");
+            System.out.println(startingVelocity.toString());
+            System.out.println("Distance: "+ distance);
+        }
+        if(visualize)
+        {
+            universe.addTempTrajectory(trajectory);
+        }
         iteration++;
 
         while(distance > epsilon)
@@ -194,11 +206,11 @@ public class NewtonRaphson extends GuidanceController
     private void calculateLaunchAndTargetCoordinates()
     {
         //TODO Check settings.noSteps doesn't give out of bounds error'
-        int targetPointIndex = settings.noOfSteps;
+        int targetPointIndex = settings.stepOffset + settings.noOfSteps;
         CelestialBody targetPlanet = universe.U[target][targetPointIndex];
         targetPoint = targetPlanet.calculateTargetPoint();
 
-        int launchPointIndex = 0;
+        int launchPointIndex = settings.stepOffset;
         CelestialBody launchPlanet = universe.U[origin][launchPointIndex];
         launchPoint = launchPlanet.closestLaunchPoint(targetPoint);
     }

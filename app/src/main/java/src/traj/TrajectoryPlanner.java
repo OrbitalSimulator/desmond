@@ -14,10 +14,19 @@ public abstract class TrajectoryPlanner
 	//TODO Use this class for NR -> drop lander -> Orbit -> NR back
 	static ArrayList<Vector3d[]> trajectories = new ArrayList<>();
 
-	public static Vector3d[] integratedPlot(Universe universe, SimulationSettings settings)
+	public static void integratedPlot(Universe universe, SimulationSettings settings)
 	{
+		/*Route to Titan*/
 		SimulationSettings routeToTitanSettings = createRouteToTitanSettings(settings);
-		 return newtonRaphsonPlot(universe, 3, 8, routeToTitanSettings, new Vector3d(0,0,0));
+		newtonRaphsonPlot(universe, 3, 8, routeToTitanSettings, new Vector3d(0,0,0));
+		//TODO Avoid magic number (Reason for 2 is initial position + plotting same state)
+		int stepOffset = routeToTitanSettings.stepOffset - 2 + 2000;
+
+		/*Titan Orbit*/
+
+		/*RouteToEarth*/
+		SimulationSettings routeToEarthSettings = createRouteToEarthSettings(settings, stepOffset, 0);
+		newtonRaphsonPlot(universe, 8, 3, routeToEarthSettings, new Vector3d(-8000,8000,0));
 	}
 	public static Vector3d[] simplePlot(Universe universe, SimulationSettings settings)
 	{
@@ -25,11 +34,18 @@ public abstract class TrajectoryPlanner
 		return lc.getTrajectory();
 	}
 
+	public static Vector3d[] plotOrbit(Universe universe, SimulationSettings settings)
+	{
+		OrbitController oc = new OrbitController(universe, 8, settings);
+		return oc.getTrajectory();
+	}
+
 	public static Vector3d[] newtonRaphsonPlot(Universe universe, int origin, int target, SimulationSettings settings, Vector3d startingVelocity)
 	{
 		NewtonRaphson nr = new NewtonRaphson(universe, origin, target, settings, startingVelocity);
 		Vector3d optimalVelocity = nr.newtonRaphsonIterativeMethod();
 		Vector3d[] trajectory = nr.planRoute(optimalVelocity);
+		settings.stepOffset = settings.noOfSteps;
 		return trajectory;
 
 	}
@@ -93,6 +109,24 @@ public abstract class TrajectoryPlanner
 		settingsToTitan.noOfSteps = 9461;
 		settingsToTitan.stepSize = 10000;
 		return settingsToTitan;
+	}
+
+	public static SimulationSettings createRouteToEarthSettings(SimulationSettings baseSettings, int stepOffsetTitan, int stepOffsetOrbit)
+	{
+		SimulationSettings settingsToEarth = baseSettings.copy();
+		settingsToEarth.noOfSteps = 9461;
+		settingsToEarth.stepSize = 10000;
+		settingsToEarth.stepOffset = stepOffsetTitan + stepOffsetOrbit;
+		return settingsToEarth;
+	}
+
+	public static SimulationSettings createOrbitalSettings(SimulationSettings baseSettings, int stepOffsetTitan)
+	{
+		SimulationSettings orbitSettings = baseSettings.copy();
+		orbitSettings.noOfSteps = 9461;
+		orbitSettings.stepSize = 10000;
+		orbitSettings.stepOffset = stepOffsetTitan;
+		return orbitSettings;
 	}
 
 }
