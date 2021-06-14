@@ -1,6 +1,8 @@
 package src.test;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+	
 import src.conf.SettingsFileManager;
 import src.conf.SimulationSettings;
 import src.traj.NewtonRaphson;
@@ -16,6 +18,7 @@ public class TestNewtonRaphson
                                     new Vector3d(20000,-20000,0), new Vector3d(30000,-30000,0)};
     private double[] timeFrames = {3.154e7, 6.307e7, 9.461e7, 1.261e8, 1.577e8, 1.892e8};
 
+    @Disabled
     @Test
     void executeAllLogging()
     {
@@ -35,6 +38,7 @@ public class TestNewtonRaphson
         }
     }
 
+    @Disabled
     @Test
     void executeSingleLogging()
     {
