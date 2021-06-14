@@ -10,7 +10,7 @@ public class NewtonGravity2d implements ODEFunctionInterface {
 	public static final double GRAVITY = 6.67430e-11;
 	private double r = 1.5;								//1.5 bar, 147000 Pa
 	private double dragCoeff = 0.55;
-	private double area = settings.module.length * settings.module.width;
+	private double area;
 
 	public NewtonGravity2d(LanderSettings settings) {
 		this.settings = settings;
@@ -55,7 +55,8 @@ public class NewtonGravity2d implements ODEFunctionInterface {
         /* Calculations*/
         Vector2d currentPos = stateInfo.position.get(0);
         Vector2d accelerationSum = new Vector2d(0,0);                                             //Initialize sum vector for acceleration
-
+        
+        area = settings.module.length * settings.module.width;
         for(int j=0; j< stateInfo.velocity.size(); j++)                                                  //Iterate through all other planets                         
         {
                
