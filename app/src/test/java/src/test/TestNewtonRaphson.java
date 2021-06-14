@@ -54,7 +54,6 @@ public class TestNewtonRaphson
         try
         {
             settings = SettingsFileManager.load();
-            settings.endTime =
             Universe universe = new Universe(settings);
             try
             {

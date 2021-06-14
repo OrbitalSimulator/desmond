@@ -42,7 +42,6 @@ public class OrbitController extends GuidanceController
 		ODEFunctionInterface funct = new NewtonGravityFunction(masses);
 
 		Verlet solver = new Verlet();
-		//TODO Adapt to accomodate for settings.offSet
 		Vector3d[] trajectory = new Vector3d[settings.noOfSteps+1];
 
 		int currentStep = settings.stepOffset;
@@ -167,7 +166,7 @@ public class OrbitController extends GuidanceController
 	public double linearClimbing(Universe universe, int target, SimulationSettings settings)
 	{
 		double bestVelocity = 0;
-		double currentVelocity = 8500;
+		double currentVelocity = 8919;
 		Vector3d[] route = new Vector3d[settings.noOfSteps+1];
 		double orbitalHeight = getOrbitalHeight(universe, target);
 		double error = Double.MAX_VALUE;
@@ -201,7 +200,7 @@ public class OrbitController extends GuidanceController
 				loggingIndex++;
 			}
 
-			currentVelocity = currentVelocity + 20;
+			currentVelocity = currentVelocity + 0.1;
 			error = newError;
 			temp--;
 		}

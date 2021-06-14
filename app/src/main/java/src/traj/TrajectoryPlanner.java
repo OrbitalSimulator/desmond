@@ -23,8 +23,13 @@ public abstract class TrajectoryPlanner
 		int stepOffset = routeToTitanSettings.stepOffset - 2 + 2000;
 
 		/*Titan Orbit*/
+		SimulationSettings orbitSettings = createOrbitalSettings(settings);
+		Universe subUniverse = new Universe(orbitSettings);
+		Vector3d[] trajectory = plotOrbit(subUniverse, orbitSettings);
+		universe.addPermTrajectory(trajectory);
 
 		/*RouteToEarth*/
+		double orbitOffset = orbitSettings.stepSize * orbitSettings.noOfSteps / routeToTitanSettings.stepSize;
 		SimulationSettings routeToEarthSettings = createRouteToEarthSettings(settings, stepOffset, 0);
 		newtonRaphsonPlot(universe, 8, 3, routeToEarthSettings, new Vector3d(-8000,8000,0));
 	}
@@ -120,12 +125,11 @@ public abstract class TrajectoryPlanner
 		return settingsToEarth;
 	}
 
-	public static SimulationSettings createOrbitalSettings(SimulationSettings baseSettings, int stepOffsetTitan)
+	public static SimulationSettings createOrbitalSettings(SimulationSettings baseSettings)
 	{
 		SimulationSettings orbitSettings = baseSettings.copy();
-		orbitSettings.noOfSteps = 9461;
-		orbitSettings.stepSize = 10000;
-		orbitSettings.stepOffset = stepOffsetTitan;
+		orbitSettings.noOfSteps = 60000;
+		orbitSettings.stepSize = 15;
 		return orbitSettings;
 	}
 

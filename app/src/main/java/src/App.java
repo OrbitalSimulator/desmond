@@ -27,7 +27,7 @@ public class App
 			//settings = setupMenu.getSettings();
 			Universe universe = new Universe(settings);
 			Visualiser.getInstance().addUniverse(universe);
-			TrajectoryPlanner.integratedPlot(universe,  settings);
+			TrajectoryPlanner.integratedPlot(universe, settings);
 		}
 		catch(IOException e){
 			e.printStackTrace();
