@@ -30,17 +30,19 @@ public class OrbitController extends GuidanceController
 		ODEFunctionInterface funct = new NewtonGravityFunction(masses);
 
 		Verlet solver = new Verlet();
+		//TODO Adapt to accomodate for settings.offSet
 		Vector3d[] trajectory = new Vector3d[settings.noOfSteps+1];
 
-
 		int currentStep = settings.stepOffset;
-		//TODO Make such that temp is the last state of the CelestialBody
+		//TODO Adapt to fit time period wanted
 		CelestialBody temp = universe.U[target][0];
 		Vector3d currentPosition = temp.calculateTargetPoint();
+		//TODO Adapt for first state of time period wanted
 		trajectory[0] = currentPosition;
-		//Vector3d currentPosition = (Vector3d) settings.probeStartPosition;
+		//TODO Adapt for first state velocity
 		Vector3d currentVelocity = (Vector3d) settings.probeStartVelocity;
 
+		//TODO Alter finishing condition of loop
 		while(currentStep < settings.noOfSteps)
 		{
 			double currentTime = currentStep * settings.stepSize;

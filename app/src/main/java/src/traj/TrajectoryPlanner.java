@@ -1,7 +1,9 @@
 package src.traj;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
+import src.conf.SettingsFileManager;
 import src.conf.SimulationSettings;
 import src.peng.Vector3d;
 import src.univ.CelestialBody;
@@ -9,17 +11,23 @@ import src.univ.Universe;
 
 public abstract class TrajectoryPlanner
 {
+	//TODO Use this class for NR -> drop lander -> Orbit -> NR back
 	static ArrayList<Vector3d[]> trajectories = new ArrayList<>();
 
+	public static Vector3d[] integratedPlot(Universe universe, SimulationSettings settings)
+	{
+		SimulationSettings routeToTitanSettings = createRouteToTitanSettings(settings);
+		 return newtonRaphsonPlot(universe, 3, 8, routeToTitanSettings, new Vector3d(0,0,0));
+	}
 	public static Vector3d[] simplePlot(Universe universe, SimulationSettings settings)
 	{
 		LaunchController lc = new LaunchController(universe, 0, settings);
 		return lc.getTrajectory();
 	}
 
-	public static Vector3d[] newtonRaphsonPlot(Universe universe, int origin, int target, SimulationSettings settings, double launchTime, double targetTime, Vector3d startingVelocity)
+	public static Vector3d[] newtonRaphsonPlot(Universe universe, int origin, int target, SimulationSettings settings, Vector3d startingVelocity)
 	{
-		NewtonRaphson nr = new NewtonRaphson(universe, origin, target, settings, launchTime, targetTime, startingVelocity);
+		NewtonRaphson nr = new NewtonRaphson(universe, origin, target, settings, startingVelocity);
 		Vector3d optimalVelocity = nr.newtonRaphsonIterativeMethod();
 		Vector3d[] trajectory = nr.planRoute(optimalVelocity);
 		return trajectory;
@@ -77,4 +85,14 @@ public abstract class TrajectoryPlanner
 		}
 		return array;
 	}
+
+	public static SimulationSettings createRouteToTitanSettings(SimulationSettings baseSettings)
+	{
+		//Settings for 3 years
+		SimulationSettings settingsToTitan = baseSettings.copy();
+		settingsToTitan.noOfSteps = 9461;
+		settingsToTitan.stepSize = 10000;
+		return settingsToTitan;
+	}
+
 }

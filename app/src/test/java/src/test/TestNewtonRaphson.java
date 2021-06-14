@@ -54,10 +54,11 @@ public class TestNewtonRaphson
         try
         {
             settings = SettingsFileManager.load();
+            settings.endTime =
             Universe universe = new Universe(settings);
             try
             {
-                NewtonRaphson nr = new NewtonRaphson(universe, 3, 8, settings, 0, timeFrame, startingVelocity);
+                NewtonRaphson nr = new NewtonRaphson(universe, 3, 8, settings, startingVelocity);
                 nr.visualizerOff();
                 Vector3d optimalVelocity = nr.newtonRaphsonIterativeMethod();
 

@@ -30,18 +30,45 @@ public class NewtonRaphson extends GuidanceController
     private static final boolean DEBUG = true;
     private static boolean visualize = true;
 
-    public NewtonRaphson(Universe universe, int origin, int target, SimulationSettings settings, double launchTime, double targetTime, Vector3d startingVelocity)
+    public NewtonRaphson(Universe universe, int origin, int target, SimulationSettings settings,  Vector3d startingVelocity)
     {
         super(universe, target);
         this.settings = settings;
         this.universe = universe;
         this.origin = origin;
         this.target = target;
-        this.launchTime = launchTime;
-        this.targetTime = targetTime;
         this.startingVelocity = startingVelocity;
 
         calculateLaunchAndTargetCoordinates();
+    }
+
+    //TODO refactor into methods takeStep and planRoute
+    public Vector3d[] planRoute(Vector3d initVelocity)
+    {
+        double[] masses = addMassToEnd(universe.masses, 700);
+        ODEFunctionInterface funct = new NewtonGravityFunction(masses);
+
+        Verlet solver = new Verlet();
+        int currentStep = 0;
+        Vector3d[] trajectory = new Vector3d[settings.noOfSteps+1];
+
+        Vector3d currentPosition = launchPoint;
+        Vector3d currentVelocity = initVelocity;
+        trajectory[currentStep] = currentPosition;
+
+        while(currentStep < settings.noOfSteps)
+        {
+            double currentTime = currentStep * settings.stepSize;
+            State currentState = addProbe(universe.getStateAt(currentStep), currentPosition, currentVelocity);
+            State nextState = solver.step(funct, currentTime, currentState, settings.stepSize);
+
+            currentPosition = getProbePosition(nextState);
+            currentVelocity = getProbeVelocity(nextState);
+            currentStep++;
+            trajectory[currentStep] = currentPosition;
+        }
+        setVelocityAtTarget(currentVelocity);
+        return trajectory;
     }
 
     public Vector3d newtonRaphsonIterativeMethod()
@@ -150,35 +177,6 @@ public class NewtonRaphson extends GuidanceController
         return closestPoint.dist(targetPoint);
     }
 
-    //TODO refactor into methods takeStep and planRoute
-    public Vector3d[] planRoute(Vector3d initVelocity)
-    {
-        double[] masses = addMassToEnd(universe.masses, 700);
-        ODEFunctionInterface funct = new NewtonGravityFunction(masses);
-
-        Verlet solver = new Verlet();
-        int currentStep = settings.stepOffset;
-        Vector3d[] trajectory = new Vector3d[settings.noOfSteps+1 - currentStep];
-
-        Vector3d currentPosition = launchPoint;
-        Vector3d currentVelocity = initVelocity;
-        trajectory[0] = currentPosition;
-
-        while(currentStep < settings.noOfSteps)
-        {
-            double currentTime = currentStep * settings.stepSize;
-            State currentState = addProbe(universe.getStateAt(currentStep), currentPosition, currentVelocity);
-            State nextState = solver.step(funct, currentTime, currentState, settings.stepSize);
-
-            currentPosition = getProbePosition(nextState);
-            currentVelocity = getProbeVelocity(nextState);
-            currentStep++;
-            trajectory[currentStep] = currentPosition;
-        }
-        setVelocityAtTarget(currentVelocity);
-        return trajectory;
-    }
-
     public Vector3d calculateClosestPoint(Vector3d[] trajectory)
     {
         int finalIndex = trajectory.length - 1;
@@ -195,11 +193,12 @@ public class NewtonRaphson extends GuidanceController
 
     private void calculateLaunchAndTargetCoordinates()
     {
-        int targetPointIndex = (int) (targetTime / settings.stepSize);
+        //TODO Check settings.noSteps doesn't give out of bounds error'
+        int targetPointIndex = settings.noOfSteps;
         CelestialBody targetPlanet = universe.U[target][targetPointIndex];
         targetPoint = targetPlanet.calculateTargetPoint();
 
-        int launchPointIndex = (int) (launchTime / settings.stepSize);
+        int launchPointIndex = 0;
         CelestialBody launchPlanet = universe.U[origin][launchPointIndex];
         launchPoint = launchPlanet.closestLaunchPoint(targetPoint);
     }
