@@ -56,5 +56,11 @@ public class Probe
 	{
 		return fuelMass;
 	}
+	
+	public void reset()
+	{
+		fuelMass = 1e5;
+		landerAttached = true;
+	}
 		
 }

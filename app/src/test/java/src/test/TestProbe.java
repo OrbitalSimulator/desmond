@@ -12,6 +12,7 @@ class TestProbe
 
 	@Test void testGetMassWithLander() 
 	{
+		Probe.getInstance().reset();
 		double dryMass = 7.8e4;
 		double landerMass = 6e3;
 		double fuelMass = 1e5;
@@ -21,6 +22,7 @@ class TestProbe
 	
 	@Test void testGetMassWithoutLander()
 	{
+		Probe.getInstance().reset();
 		double dryMass = 7.8e4;
 		double fuelMass = 1e5;
 		double massWithLander = dryMass + fuelMass;
@@ -30,6 +32,7 @@ class TestProbe
 	
 	@Test void testBurn()
 	{
+		Probe.getInstance().reset();
 		Vector3d startVelocity = new Vector3d(0,0,0);
 		Vector3d finishVelocity = new Vector3d(1,0,0);
 		double timeInSeconds = 1;
