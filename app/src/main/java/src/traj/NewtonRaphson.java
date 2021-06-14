@@ -188,7 +188,7 @@ public class NewtonRaphson extends GuidanceController
     //TODO Method interferes with NR method, therefore will not be used. Possibly to determine probe velcotiy seperate from origin?
     public void calculateRelativeStartingVelocity(Vector3d startingVelocity)
     {
-        Vector3d originVelocity = universe.universe[origin][0].velocity;
+        Vector3d originVelocity = universe.U[origin][0].velocity;
         this.startingVelocity =  originVelocity.add(startingVelocity);
         System.out.println("Starting velocity: " + this.startingVelocity.toString());
     }
