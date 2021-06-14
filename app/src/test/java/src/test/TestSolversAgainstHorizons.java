@@ -19,7 +19,7 @@ class TestSolversAgainstHorizons
 	static final double STEP_MIN = 60;
 	static final double STEP_SEC = 1;
 	
-	static final double EARTH_ONE_DAY_X = 1.4670173397502795E11;
+	static final double EARTH_ONE_DAY_X = -1.467016284491896E11;
 	static final double EARTH_ONE_DAY_Y = -3.113774419524897E10;
 	static final double EARTH_ONE_DAY_Z =  8.336289095385000E06;
 	
@@ -27,7 +27,7 @@ class TestSolversAgainstHorizons
 	static final double EARTH_ONE_YEAR_Y = -2.821059740389257E10;
 	static final double EARTH_ONE_YEAR_Z =  2.031783034570143E07;
 	
-    static final double DAY_ACCURACY = 1000; 
+    static final double DAY_ACCURACY = 5e3; 
     static final double YEAR_ACCURACY = 5.733198703E09; 
     
 	
