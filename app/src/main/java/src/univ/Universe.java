@@ -151,6 +151,17 @@ public class Universe
     	U[timeStep] = convertToCelestialBody(state);
     }
     
+    public CelestialBody[] getCelestialBodyAt(int timeStep)
+    {
+        CelestialBody[] letTheBodiesHitTheFloor = new CelestialBody[U.length];
+    	
+    	for(int i = 0; i < U.length; i++)
+        {
+            letTheBodiesHitTheFloor[i] = U[i][timeStep];
+        }
+        return letTheBodiesHitTheFloor;
+    }
+    
     // ----- Merging Universes -----
     
     public void append(Universe other)

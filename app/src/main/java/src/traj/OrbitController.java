@@ -9,19 +9,31 @@ import src.solv.Verlet;
 import src.univ.CelestialBody;
 import src.univ.Universe;
 
+
 //Working under assumption that probe will always approach target at offset 90 degrees to the planet.
 public class OrbitController extends GuidanceController
 {
 	private double scaler = 0;
 	private double dampener = 10000;
 	public static final boolean DEBUG =  false;
+	public static boolean visualize = true;
+
+	public static boolean log = false;
+	private double[] errorCollection;
+	private double[] velocityCollection;
+	private int loggingIndex = 0;
+
 
 	public OrbitController(Universe universe, int target, SimulationSettings settings)
 	{
 		super(universe, target);
-		double optimumVelocity = orbitalHillClimbing(universe, target, settings);
+		double optimumVelocity = linearClimbing(universe, target, settings);
 		settings.setStartVelocity(optimumVelocity);
 		trajectory = planRoute(settings, target, universe);
+		if(visualize)
+		{
+			universe.addPermTrajectory(trajectory);
+		}
 	}
 
 	private Vector3d[] planRoute(SimulationSettings settings, int target, Universe universe)
@@ -32,15 +44,16 @@ public class OrbitController extends GuidanceController
 		Verlet solver = new Verlet();
 		Vector3d[] trajectory = new Vector3d[settings.noOfSteps+1];
 
-
 		int currentStep = settings.stepOffset;
-		//TODO Make such that temp is the last state of the CelestialBody
+		//TODO Adapt to fit time period wanted
 		CelestialBody temp = universe.U[target][0];
 		Vector3d currentPosition = temp.calculateTargetPoint();
+		//TODO Adapt for first state of time period wanted
 		trajectory[0] = currentPosition;
-		//Vector3d currentPosition = (Vector3d) settings.probeStartPosition;
+		//TODO Adapt for first state velocity
 		Vector3d currentVelocity = (Vector3d) settings.probeStartVelocity;
 
+		//TODO Alter finishing condition of loop
 		while(currentStep < settings.noOfSteps)
 		{
 			double currentTime = currentStep * settings.stepSize;
@@ -125,7 +138,6 @@ public class OrbitController extends GuidanceController
 
 		int temp = 20;
 
-		//while(currentError > acceptableError)
 		while(temp>0)
 		{
 			currentError = routeEvaluation(currentVelocity, settings, universe, target, orbitalHeight);
@@ -149,6 +161,52 @@ public class OrbitController extends GuidanceController
 		}
 		System.out.println("Optimum velocity is: "+ currentVelocity);
 		return currentVelocity;
+	}
+
+	public double linearClimbing(Universe universe, int target, SimulationSettings settings)
+	{
+		double bestVelocity = 0;
+		double currentVelocity = 8396;
+		Vector3d[] route = new Vector3d[settings.noOfSteps+1];
+		double orbitalHeight = getOrbitalHeight(universe, target);
+		double error = Double.MAX_VALUE;
+
+		int temp = 20;
+
+		if(log)
+		{
+			errorCollection = new double[temp + 1];
+			velocityCollection = new double[temp + 1];
+
+			errorCollection[loggingIndex] = error;
+			velocityCollection[loggingIndex] = currentVelocity;
+			loggingIndex++;
+		}
+
+		while(temp>0)
+		{
+			double newError = routeEvaluation(currentVelocity, settings, universe, target, orbitalHeight);
+
+			System.out.println("Current velocity " + currentVelocity + " Error: " + newError);
+			if(newError < error)
+			{
+				System.out.println("New best velocity: " + currentVelocity + " Error: " + newError);
+				bestVelocity = currentVelocity;
+				error = newError;
+			}
+
+			if(log)
+			{
+				errorCollection[loggingIndex] = newError;
+				velocityCollection[loggingIndex] = currentVelocity;
+				loggingIndex++;
+			}
+
+			currentVelocity = currentVelocity + 0.05;
+			temp--;
+		}
+		System.out.println("Optimum velocity is: "+ bestVelocity);
+		return bestVelocity;
 	}
 
 	public double routeEvaluation(double velocity, SimulationSettings settings, Universe universe, int target, double orbitalHeight)
@@ -186,5 +244,25 @@ public class OrbitController extends GuidanceController
 	public double getOrbitalHeight(Universe universe, int target)
 	{
 		return universe.U[target][0].orbitalHeight;
+	}
+
+	public static void setLogActive()
+	{
+		log = true;
+	}
+
+	public double[] getErrorCollection()
+	{
+		return errorCollection;
+	}
+
+	public double[] getVelocityCollection()
+	{
+		return  velocityCollection;
+	}
+
+	public static void visualizerOff()
+	{
+		visualize = false;
 	}
 }

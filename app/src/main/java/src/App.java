@@ -27,8 +27,7 @@ public class App
 			//settings = setupMenu.getSettings();
 			Universe universe = new Universe(settings);
 			Visualiser.getInstance().addUniverse(universe);
-			Vector3d startingVelocity = new Vector3d(0,0,0);
-			TrajectoryPlanner.newtonRaphsonPlot(universe, 3, 8, settings, 0, 3.154e7, startingVelocity);
+			TrajectoryPlanner.integratedPlot(universe, settings);
 		}
 		catch(IOException e){
 			e.printStackTrace();
