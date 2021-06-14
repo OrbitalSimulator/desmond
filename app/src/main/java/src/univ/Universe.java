@@ -159,7 +159,6 @@ public class Universe
     	this.tempTrajectories.addAll(other.getTempTrajectories());
     	U = resizeUniverse(other.noOfSteps);
     	importUniverse(other.U);
-    	System.out.println("Breakpoint for leon!");
     }
         
     private CelestialBody[][] resizeUniverse(int extraStepsNeeded)
