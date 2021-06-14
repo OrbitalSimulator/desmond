@@ -4,10 +4,10 @@ import src.peng.Vector3d;
 
 public class Probe 
 {
-	private final double MAX_THRUST = 3e7;
-	private final double EXHAUST_VELOCITY = 2e4;
-	private final double DRY_MASS = 7.8e4;
-	private final double LANDER_MASS = 6e3;
+	private final double MAX_THRUST = 3e7;  		// Newtons
+	private final double EXHAUST_VELOCITY = 2e4;	// m/s
+	private final double DRY_MASS = 7.8e4;			// kg
+	private final double LANDER_MASS = 6e3;			// kg
 	
 	private double fuelMass = 1e5;
 	private boolean landerAttached = true;
@@ -41,15 +41,14 @@ public class Probe
 		landerAttached = false;
 	}
 		
-	public void burn(Vector3d velocity, double stepSize)
+	public void burn(Vector3d startVelocity, Vector3d finishVelocity, double stepSize)
 	{		
-		double deltaVelocity = velocity.norm();
-		double acceleration = deltaVelocity / stepSize;
-		double force = getMass() * acceleration;
-		
-		
-		double mDot = 
-		
+		Vector3d deltaVelocity = finishVelocity.sub(startVelocity);
+		double deltaVelocityNorm = Math.abs(deltaVelocity.norm());
+		double acceleration = deltaVelocityNorm / stepSize;
+		double massOfFuelUsed = MAX_THRUST / acceleration;
+		System.out.println("Fuel used " + massOfFuelUsed);
+		fuelMass = fuelMass - massOfFuelUsed;	
 	}
 	
 	public double getFuelMass()
