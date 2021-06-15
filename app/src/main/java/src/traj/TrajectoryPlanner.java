@@ -59,7 +59,7 @@ public abstract class TrajectoryPlanner
 	{
 		NewtonRaphson nr = new NewtonRaphson(universe, origin, target, settings, startingVelocity);
 		Vector3d optimalVelocity = nr.newtonRaphsonIterativeMethod();
-		Probe.getInstance().burn(startingVelocity, prevVelocity, settings.stepSize);
+		Probe.getInstance().burn((Vector3d)settings.probeStartVelocity, optimalVelocity, 150);
 		System.out.println("Fuel Remaining: " + Probe.getInstance().getFuelMass());
 		Vector3d[] trajectory = nr.planRoute(optimalVelocity);
 		settings.stepOffset = settings.noOfSteps;
