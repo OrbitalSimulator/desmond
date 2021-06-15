@@ -17,22 +17,24 @@ public abstract class TrajectoryPlanner
 	{
 		/*Route to Titan*/
 		SimulationSettings routeToTitanSettings = createRouteToTitanSettings(settings);
-		newtonRaphsonPlot(universe, 3, 8, routeToTitanSettings, new Vector3d(0,0,0));
+		newtonRaphsonPlot(universe, 3, 8, routeToTitanSettings, new Vector3d(0,0,0), new Vector3d(0,,0,0));
 		//TODO Avoid magic number (Reason for 2 is initial position + plotting same state)
 		int stepOffsetTitan = routeToTitanSettings.stepOffset - 2;
 		CelestialBody[] lastState = universe.getCelestialBodyAt(routeToTitanSettings.noOfSteps);
 
 		/*Titan Orbit*/
+		Vector3d previousVelocity_01 = (Vector3d) routeToTitanSettings.probeStartVelocity;
 		SimulationSettings orbitSettings = createOrbitalSettings(settings, lastState);
 		Universe subUniverse = new Universe(orbitSettings);
-		Vector3d[] trajectory = plotOrbit(subUniverse, orbitSettings);
+		Vector3d[] trajectory = plotOrbit(subUniverse, orbitSettings, previousVelocity_01);
 		universe.addPermTrajectory(trajectory);
 
 		/*RouteToEarth*/
+		Vector3d previousVelocity_02 = (Vector3d) orbitSettings.probeStartVelocity;
 		int orbitOffset = (int) (orbitSettings.stepSize * orbitSettings.noOfSteps / routeToTitanSettings.stepSize);
 		System.out.println("Orbit offset: " + orbitOffset);
 		SimulationSettings routeToEarthSettings = createRouteToEarthSettings(settings, stepOffsetTitan, orbitOffset);
-		newtonRaphsonPlot(universe, 8, 3, routeToEarthSettings, new Vector3d(-8000,8000,0));
+		newtonRaphsonPlot(universe, 8, 3, routeToEarthSettings, new Vector3d(-8000,8000,0), previousVelocity_02);
 	}
 	public static Vector3d[] simplePlot(Universe universe, SimulationSettings settings)
 	{
@@ -40,16 +42,22 @@ public abstract class TrajectoryPlanner
 		return lc.getTrajectory();
 	}
 
-	public static Vector3d[] plotOrbit(Universe universe, SimulationSettings settings)
+	public static Vector3d[] plotOrbit(Universe universe, SimulationSettings settings, Vector3d prevVelocity)
 	{
-		OrbitController oc = new OrbitController(universe, 8, settings);
-		return oc.getTrajectory();
+		int target = 8;
+		OrbitController oc = new OrbitController(universe, target, settings);
+		double optimumVelocityScaler = oc.linearClimbing(universe, target, settings);
+		Vector3d optimumVelocity = oc.optimumVelocityScalerToVector(optimumVelocityScaler);
+		//Previous velocity and optimum velocity for fuel calc
+		Vector3d[] trajectory = oc.planRoute(optimumVelocity, target, universe);
+		return trajectory;
 	}
 
-	public static Vector3d[] newtonRaphsonPlot(Universe universe, int origin, int target, SimulationSettings settings, Vector3d startingVelocity)
+	public static Vector3d[] newtonRaphsonPlot(Universe universe, int origin, int target, SimulationSettings settings, Vector3d startingVelocity, Vector3d prevVelocity)
 	{
 		NewtonRaphson nr = new NewtonRaphson(universe, origin, target, settings, startingVelocity);
 		Vector3d optimalVelocity = nr.newtonRaphsonIterativeMethod();
+		//Previous velocity and optimum velocity for fuel calc
 		Vector3d[] trajectory = nr.planRoute(optimalVelocity);
 		settings.stepOffset = settings.noOfSteps;
 		return trajectory;
@@ -110,9 +118,8 @@ public abstract class TrajectoryPlanner
 
 	public static SimulationSettings createRouteToTitanSettings(SimulationSettings baseSettings)
 	{
-		//Settings for 3 years
 		SimulationSettings settingsToTitan = baseSettings.copy();
-		settingsToTitan.noOfSteps = 9461;
+		settingsToTitan.noOfSteps = 3784;
 		settingsToTitan.stepSize = 10000;
 		return settingsToTitan;
 	}
@@ -120,7 +127,7 @@ public abstract class TrajectoryPlanner
 	public static SimulationSettings createRouteToEarthSettings(SimulationSettings baseSettings, int stepOffsetTitan, int stepOffsetOrbit)
 	{
 		SimulationSettings settingsToEarth = baseSettings.copy();
-		settingsToEarth.noOfSteps = 9461;
+		settingsToEarth.noOfSteps = 3784;
 		settingsToEarth.stepSize = 10000;
 		settingsToEarth.stepOffset = stepOffsetTitan + stepOffsetOrbit;
 		return settingsToEarth;
@@ -131,8 +138,7 @@ public abstract class TrajectoryPlanner
 		SimulationSettings orbitSettings = baseSettings.copy();
 		orbitSettings.celestialBodies = previousState;
 		orbitSettings.noOfSteps = 80000;
-		orbitSettings.stepSize = 50; //50 best so far
+		orbitSettings.stepSize = 50;
 		return orbitSettings;
 	}
-
 }
