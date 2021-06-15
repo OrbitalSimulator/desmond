@@ -17,7 +17,7 @@ public abstract class TrajectoryPlanner
 	{
 		/*Route to Titan*/
 		SimulationSettings routeToTitanSettings = createRouteToTitanSettings(settings);
-		newtonRaphsonPlot(universe, 3, 8, routeToTitanSettings, new Vector3d(0,0,0), new Vector3d(0,,0,0));
+		newtonRaphsonPlot(universe, 3, 8, routeToTitanSettings, new Vector3d(0,0,0), new Vector3d(0,0,0));
 		//TODO Avoid magic number (Reason for 2 is initial position + plotting same state)
 		int stepOffsetTitan = routeToTitanSettings.stepOffset - 2;
 		CelestialBody[] lastState = universe.getCelestialBodyAt(routeToTitanSettings.noOfSteps);
