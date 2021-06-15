@@ -46,29 +46,29 @@ public class NewtonGravity2d implements ODEFunctionInterface {
      * @param mass of the Celestial Body in the system
      * @return An array containing resultant acceleration of all Celestial bodies in the system
     */
-    public ArrayList<Vector2d> freeFall(State2d state, double planetMass)
+    public ArrayList<Vector2d> freeFall(StateInterface state, double planetMass)
     {
         /*Initial*/
     	State2d stateInfo = (State2d) state;													//Cast into State object to access information                   
         ArrayList<Vector2d> changeInVelocity = new ArrayList<Vector2d>();                               //Initialize array to return. Same quanait of CB
 
         /* Calculations*/
-        Vector2d currentPos = stateInfo.position.get(0);
+        Vector2d currentPos = settings.cbLocation;
         Vector2d accelerationSum = new Vector2d(0,0);                                             //Initialize sum vector for acceleration
         
         area = settings.module.length * settings.module.width;
         for(int j=0; j< stateInfo.velocity.size(); j++)                                                  //Iterate through all other planets                         
         {
                
-             double otherMass = planetMass;                                                       //Other CB info, that is exerting force on current planet
-             Vector2d otherPos = stateInfo.position.get(j); 					
+             double otherMass = settings.module.mass;                                                       //Other CB info, that is exerting force on current planet
+             Vector2d landerPos = stateInfo.position.get(j); 					
 
              /*Distance calc*/
-             double r = otherPos.dist(currentPos);                                               //Calculate the distance between the two planets
+             double r = landerPos.dist(currentPos);                                               //Calculate the distance between the two planets
 
              /*Unit vector calc*/
-             Vector2d rHat = (otherPos.sub(settings.cbLocation)).unitVector();
-             Vector2d unitVec = (otherPos.sub(settings.cbLocation)).unitVector();
+             Vector2d rHat = (landerPos.sub(currentPos)).unitVector();
+             Vector2d unitVec = (landerPos.sub(currentPos)).unitVector();
              
              /*Scaler quantity calc */
              double quantity = (GRAVITY*planetMass*otherMass)/ Math.pow(r,2);
