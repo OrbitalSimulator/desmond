@@ -161,12 +161,12 @@ public class OrbitController extends GuidanceController
 	public double linearClimbing(Universe universe, int target, SimulationSettings settings)
 	{
 		double bestVelocity = 0;
-		double currentVelocity = 8000;
+		double currentVelocity = 9619;
 		Vector3d[] route = new Vector3d[settings.noOfSteps+1];
 		double orbitalHeight = getOrbitalHeight(universe, target);
 		double error = Double.MAX_VALUE;
 
-		int temp = 40;
+		int temp = 20;
 
 		if(log)
 		{
@@ -197,7 +197,7 @@ public class OrbitController extends GuidanceController
 				loggingIndex++;
 			}
 
-			currentVelocity = currentVelocity + 5;
+			currentVelocity = currentVelocity + 0.1;
 			temp--;
 		}
 		System.out.println("Optimum velocity is: "+ bestVelocity);
