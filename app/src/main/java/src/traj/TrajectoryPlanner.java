@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import src.conf.SettingsFileManager;
 import src.conf.SimulationSettings;
 import src.peng.Vector3d;
+import src.prob.Probe;
 import src.univ.CelestialBody;
 import src.univ.Universe;
 
@@ -48,7 +49,8 @@ public abstract class TrajectoryPlanner
 		OrbitController oc = new OrbitController(universe, target, settings);
 		double optimumVelocityScaler = oc.linearClimbing(universe, target, settings);
 		Vector3d optimumVelocity = oc.optimumVelocityScalerToVector(optimumVelocityScaler);
-		//Previous velocity and optimum velocity for fuel calc
+		Probe.getInstance().burn(prevVelocity, optimumVelocity, settings.stepSize);
+		System.out.println("Fuel Remaining: " + Probe.getInstance().getFuelMass());
 		Vector3d[] trajectory = oc.planRoute(optimumVelocity, target, universe);
 		return trajectory;
 	}
@@ -57,7 +59,8 @@ public abstract class TrajectoryPlanner
 	{
 		NewtonRaphson nr = new NewtonRaphson(universe, origin, target, settings, startingVelocity);
 		Vector3d optimalVelocity = nr.newtonRaphsonIterativeMethod();
-		//Previous velocity and optimum velocity for fuel calc
+		Probe.getInstance().burn(startingVelocity, prevVelocity, settings.stepSize);
+		System.out.println("Fuel Remaining: " + Probe.getInstance().getFuelMass());
 		Vector3d[] trajectory = nr.planRoute(optimalVelocity);
 		settings.stepOffset = settings.noOfSteps;
 		return trajectory;
