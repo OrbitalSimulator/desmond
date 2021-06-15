@@ -21,9 +21,8 @@ import src.univ.CelestialBody;
 
 public class TestNewtonGravity2d {
 
-	public static void main(String[] args) {
-//	@Test 
-//	void testNewtonGravityFunc2d() {
+	@Test 
+	void testNewtonGravityFunc2d() {
 		
 		ArrayList<Vector2d> arrVelo = new ArrayList<Vector2d>();
 		ArrayList<Vector2d> arrPos = new ArrayList<Vector2d>();
@@ -49,8 +48,8 @@ public class TestNewtonGravity2d {
 		
 		System.out.println(res.toString());
 
-//	    assertEquals(new Vector2d(-0.164999999998,0), res.velocityChange.get(0));
-//	    assertEquals(new Vector2d(-0.164999999998,0), res.positionChange.get(0));
+	    assertEquals(new Vector2d(-0.164999999998,0), res.velocityChange.get(0));
+	    assertEquals(new Vector2d(-0.164999999998,0), res.positionChange.get(0));
 
 	}
 }
