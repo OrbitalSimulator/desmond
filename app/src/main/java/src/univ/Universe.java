@@ -77,7 +77,7 @@ public class Universe
          
     private CelestialBody[][] generateNewUniverse()
     {
-    	System.out.print("Creating new U ...");
+    	System.out.print("Creating new Universe ...");
     	StateInterface initialState = convertToState(startVariables);
 		ODEFunctionInterface function = new NewtonGravityFunction(masses);
 		StateInterface[] states = solver.solve(function, initialState, stepSize*noOfSteps, stepSize);		
