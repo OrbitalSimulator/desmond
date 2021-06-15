@@ -12,27 +12,30 @@ public class LandingModule {
 	public double width;
 	public double length;
 	public double fuel;
+	public double mass;
 	public Vector2d initialPos;
 	public Vector2d initialVelo;
-	public CelestialBody body;
+	public double bodyMass;
 	public double direction;
 	
-	public LandingModule(double width, double length, double fuel, Vector2d initialPos, Vector2d initialVelo, double direction) {
+	public LandingModule(double width, double length, double fuel, double mass, Vector2d initialPos, Vector2d initialVelo, double body,  double direction) {
 		this.fuel = fuel;
 		this.length = length;
 		this.width = width;
 		this.direction = direction;
 		this.initialPos = initialPos;
 		this.initialVelo = initialVelo; 
+		this.bodyMass = body;
 	}
 	
-	public LandingModule(double width, double length, double fuel, Vector2d initialPos, Vector2d initialVelo) {
+	public LandingModule(double width, double length, double fuel, double mass, Vector2d initialPos, Vector2d initialVelo, double body) {
 		this.fuel = fuel;
 		this.length = length;
 		this.width = width;
 		this.direction = 0;
 		this.initialPos = initialPos;
 		this.initialVelo = initialVelo; 
+		this.bodyMass = body;
 	}
 	
 	public boolean fuelEmpty() {

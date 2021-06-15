@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
 
 import src.peng.Vector2d;
+import src.peng.Vector3d;
 
 class TestVector2d {
 
@@ -80,6 +81,41 @@ class TestVector2d {
 		Vector2d a = new Vector2d(4.0, 6.0);
 		Vector2d b = new Vector2d(1.0, 2.0);
 		assertEquals(5.0, a.dist(b));
+	}
+	
+	//unit vector
+	@Test
+	void testUnitVector() {
+		Vector2d v = new Vector2d(3.0, 4.0);
+		Vector2d unitVector = v.unitVector();
+		assert(unitVector.equals(new Vector2d(3.0/v.norm(), 4.0/v.norm())));
+	}
+	
+	//copy of
+	@Test
+	void testCopyOf() {
+		Vector2d v = new Vector2d(3.0, 4.0);
+		Vector2d copyVector = v.copyOf();
+		assert(copyVector.equals(new Vector2d(3.0, 4.0)));
+	}
+	
+	//orthogonal
+	@Test
+	void testReturnOrthogonal() {
+		Vector2d v = new Vector2d(3, -1);
+        Vector2d vOrthogonal = v.returnOrthogonal();
+        double result = v.dotProduct(vOrthogonal);
+		assertEquals(0, result);
+	}
+	
+	//round
+	@Test
+	void testRound() {
+		Vector2d v = new Vector2d(3.9, -1.2);
+		Vector2d rounded = new Vector2d(v.getRoundedX(0),v.getRoundedY(0));
+        System.out.println(v.getRoundedX(1)+v.getRoundedY(1));
+//		assertEquals(0, result);
+        assertEquals(new Vector2d(4.0, -1.0), rounded);
 	}
 	
 	@Test

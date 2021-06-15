@@ -8,16 +8,15 @@ public class NewtonGravity2d implements ODEFunctionInterface {
 	
 	private LanderSettings settings;
 	public static final double GRAVITY = 6.67430e-11;
-	private double r = 147000;
+	private double r = 1.5;								//1.5 bar, 147000 Pa
 	private double dragCoeff = 0.55;
-	private double area = settings.module.length * settings.module.width;
+	private double area;
 
 	public NewtonGravity2d(LanderSettings settings) {
 		this.settings = settings;
 	}
 
-	 /** TO BE ADAPTED
-	  * 
+	 /**
      * Method is utilized to calculate yPrime, the derivative of the state y.
      * @param t The time at which to evaluate
      * @param y The current state at which to evaluate
@@ -27,10 +26,10 @@ public class NewtonGravity2d implements ODEFunctionInterface {
     {
         State2d stateInfo = (State2d)y;                                      //Cast y into State object to access information
 
-        /*1.Calculate resultant sum acceleration by gravity*/
-        ArrayList<Vector2d> cv = freeFall(stateInfo, settings.module.body.mass);
+        /*1.Calculate resultant sum acceleration by gravity & drag*/
+        ArrayList<Vector2d> cv = freeFall(stateInfo, settings.module.bodyMass);
         
-        /*2. Calculate the resultant change in position by gravity*/
+        /*2. Calculate the resultant change in position by gravity & drag*/
         ArrayList<Vector2d> cp = new ArrayList<Vector2d>();
         for(int i=0; i< stateInfo.position.size(); i++)
         {
@@ -42,33 +41,34 @@ public class NewtonGravity2d implements ODEFunctionInterface {
     }
 	
 	/**
-     * newtonGravity method calculates Celestial Body acceleration as a result of gravitational relations between all Celestial bodies
+     * freeFall method calculates acceleration as a result of gravitational relations between celestial body, and the air resistance in the atmosphere
      * @param y The state of the current system.
-     * @param masses Array containing all masses of the Celestial Bodies in the system
+     * @param mass of the Celestial Body in the system
      * @return An array containing resultant acceleration of all Celestial bodies in the system
     */
-    public ArrayList<Vector2d> freeFall(State2d state, double planetMass)
+    public ArrayList<Vector2d> freeFall(StateInterface state, double planetMass)
     {
         /*Initial*/
     	State2d stateInfo = (State2d) state;													//Cast into State object to access information                   
         ArrayList<Vector2d> changeInVelocity = new ArrayList<Vector2d>();                               //Initialize array to return. Same quanait of CB
 
         /* Calculations*/
-        Vector2d currentPos = stateInfo.position.get(0);
+        Vector2d currentPos = settings.cbLocation;
         Vector2d accelerationSum = new Vector2d(0,0);                                             //Initialize sum vector for acceleration
-
+        
+        area = settings.module.length * settings.module.width;
         for(int j=0; j< stateInfo.velocity.size(); j++)                                                  //Iterate through all other planets                         
         {
                
-             double otherMass = planetMass;                                                       //Other CB info, that is exerting force on current planet
-             Vector2d otherPos = stateInfo.position.get(j); 					//******************IMPORTANT
+             double otherMass = settings.module.mass;                                                       //Other CB info, that is exerting force on current planet
+             Vector2d landerPos = stateInfo.position.get(j); 					
 
              /*Distance calc*/
-             double r = otherPos.dist(currentPos);                                               //Calculate the distance between the two planets
+             double r = landerPos.dist(currentPos);                                               //Calculate the distance between the two planets
 
              /*Unit vector calc*/
-             Vector2d rHat = (otherPos.sub(settings.cbLocation)).unitVector();
-             Vector2d unitVec = (otherPos.sub(settings.cbLocation)).unitVector();
+             Vector2d rHat = (landerPos.sub(currentPos)).unitVector();
+             Vector2d unitVec = (landerPos.sub(currentPos)).unitVector();
              
              /*Scaler quantity calc */
              double quantity = (GRAVITY*planetMass*otherMass)/ Math.pow(r,2);
@@ -86,13 +86,13 @@ public class NewtonGravity2d implements ODEFunctionInterface {
      		double dragFormula = dScale*vSq;							//follow the NASA given formula to get the mathematical force applied by drag
      		
      		//drag force being applied to landing module
-     		Vector2d dragForce = unitVec.mul(1/dragFormula);			//convert the given drag force into vector form
+     		Vector2d dragForce = unitVec.mul(dragFormula);			//convert the given drag force into vector form
      		
      		//resultant force
      		Vector2d resForce = gravitationalForce.sub(dragForce);
      		
      		//resultant acceleration due to force
-    		Vector2d resAccel = dragForce.mul(1/settings.module.body.mass);				//a = F/mass
+    		Vector2d resAccel = resForce.mul(1/settings.module.bodyMass);				//a = (W-D)/mass
      		
              /*Summation*/
              accelerationSum  = accelerationSum.add(resAccel);
@@ -104,5 +104,4 @@ public class NewtonGravity2d implements ODEFunctionInterface {
         return changeInVelocity;
     }
     
-
 }
