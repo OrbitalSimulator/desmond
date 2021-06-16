@@ -9,28 +9,19 @@ public class LanderSettings
 {
 	public Vector2d cbLocation;
 	public LandingModule module;
-	public LocalDateTime startTime;
-	public LocalDateTime endTime;
 	public int noOfSteps;
 	public double stepSize;
-	public String[] waypoints;
 	public int stepOffset = 0;
 
 	public LanderSettings(	  Vector2d cbLocation,
-							  LandingModule module,
-			               	  LocalDateTime startTime,
-							  LocalDateTime endTime,
+							  LandingModule module, 
 							  int noOfSteps,
-							  double stepSize,
-							  String[] waypoints)
+							  double stepSize)
 	{
 		this.cbLocation = cbLocation;
 		this.module = module;
-		this.startTime = startTime;
-		this.endTime = endTime;
 		this.noOfSteps = noOfSteps;
 		this.stepSize = stepSize;
-		this.waypoints = waypoints;
 	}
 
 	public void setStartVelocity(double velocityX)
@@ -42,11 +33,8 @@ public class LanderSettings
 	{
 		return new LanderSettings(cbLocation,
 				    module,
-				    startTime,
-				    endTime,
 				    noOfSteps,
-				    stepSize,
-				    waypoints);
+				    stepSize);
 	}
 	
 	public int getStartStep()
