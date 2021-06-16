@@ -15,6 +15,7 @@ public class OrbitController extends GuidanceController
 {
 	private double scaler = 0;
 	private double dampener = 10000;
+	private Vector3d velocityAtEndOfOrbit;
 	public static final boolean DEBUG =  false;
 	public static boolean visualize = true;
 
@@ -22,21 +23,16 @@ public class OrbitController extends GuidanceController
 	private double[] errorCollection;
 	private double[] velocityCollection;
 	private int loggingIndex = 0;
+	SimulationSettings settings;
 
 
 	public OrbitController(Universe universe, int target, SimulationSettings settings)
 	{
 		super(universe, target);
-		double optimumVelocity = linearClimbing(universe, target, settings);
-		settings.setStartVelocity(optimumVelocity);
-		trajectory = planRoute(settings, target, universe);
-		if(visualize)
-		{
-			universe.addPermTrajectory(trajectory);
-		}
+		this.settings = settings;
 	}
 
-	private Vector3d[] planRoute(SimulationSettings settings, int target, Universe universe)
+	public Vector3d[] planRoute(Vector3d optimumVelocity, int target, Universe universe)
 	{
 		double[] masses = addMassToEnd(universe.masses, 700);
 		ODEFunctionInterface funct = new NewtonGravityFunction(masses);
@@ -45,13 +41,11 @@ public class OrbitController extends GuidanceController
 		Vector3d[] trajectory = new Vector3d[settings.noOfSteps+1];
 
 		int currentStep = settings.stepOffset;
-		//TODO Adapt to fit time period wanted
 		CelestialBody temp = universe.U[target][0];
 		Vector3d currentPosition = temp.calculateTargetPoint();
-		//TODO Adapt for first state of time period wanted
 		trajectory[0] = currentPosition;
 		//TODO Adapt for first state velocity
-		Vector3d currentVelocity = (Vector3d) settings.probeStartVelocity;
+		Vector3d currentVelocity = optimumVelocity;
 
 		//TODO Alter finishing condition of loop
 		while(currentStep < settings.noOfSteps)
@@ -68,6 +62,7 @@ public class OrbitController extends GuidanceController
 			currentStep++;
 			trajectory[currentStep] = currentPosition;
 		}
+		setVelocityAtEndOfOrbit(currentVelocity);
 		return trajectory;
 	}
 
@@ -166,7 +161,7 @@ public class OrbitController extends GuidanceController
 	public double linearClimbing(Universe universe, int target, SimulationSettings settings)
 	{
 		double bestVelocity = 0;
-		double currentVelocity = 8396;
+		double currentVelocity = 9619;
 		Vector3d[] route = new Vector3d[settings.noOfSteps+1];
 		double orbitalHeight = getOrbitalHeight(universe, target);
 		double error = Double.MAX_VALUE;
@@ -202,7 +197,7 @@ public class OrbitController extends GuidanceController
 				loggingIndex++;
 			}
 
-			currentVelocity = currentVelocity + 0.05;
+			currentVelocity = currentVelocity + 0.1;
 			temp--;
 		}
 		System.out.println("Optimum velocity is: "+ bestVelocity);
@@ -211,8 +206,8 @@ public class OrbitController extends GuidanceController
 
 	public double routeEvaluation(double velocity, SimulationSettings settings, Universe universe, int target, double orbitalHeight)
 	{
-		settings.setStartVelocity(velocity);
-		Vector3d[] route = planRoute(settings, target, universe);
+		Vector3d trialVelocity = optimumVelocityScalerToVector(velocity);
+		Vector3d[] route = planRoute(trialVelocity, target, universe);
 
 		double[] distanceMeasure = trajectoryToDistanceMeasure(route, universe, target);
 		double routeError = trajectoryFitnessCalculation(orbitalHeight, distanceMeasure);
@@ -261,8 +256,24 @@ public class OrbitController extends GuidanceController
 		return  velocityCollection;
 	}
 
+	public void setVelocityAtEndOfOrbit(Vector3d velocity)
+	{
+		velocityAtEndOfOrbit = velocity;
+		settings.probeStartVelocity = velocity;
+	}
+
+	public Vector3d getVelocityAtEndOfOrbit()
+	{
+		return velocityAtEndOfOrbit;
+	}
+
 	public static void visualizerOff()
 	{
 		visualize = false;
+	}
+
+	public Vector3d optimumVelocityScalerToVector(double scaler)
+	{
+		return new Vector3d(scaler, 0, 0);
 	}
 }

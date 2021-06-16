@@ -123,6 +123,7 @@ public class NewtonRaphson extends GuidanceController
         if(visualize)
         {
             universe.addPermTrajectory(trajectory);
+            universe.clearTempTrajectories();
         }
 
         return startingVelocity;
@@ -232,7 +233,9 @@ public class NewtonRaphson extends GuidanceController
 
     public void setVelocityAtTarget(Vector3d velocity)
     {
+
         velocityAtTarget = velocity;
+        settings.probeStartVelocity = velocity;
     }
 
     public Vector3d getVelocityAtTarget()

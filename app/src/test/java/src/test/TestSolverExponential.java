@@ -22,11 +22,11 @@ import java.util.ArrayList;
 public class TestSolverExponential
 {
     private double epsilon = 0.4;
-    private double step = 0.1;
+    private double step = 0.001;
     
-    private int numberOfSteps = 100;
+    private int numberOfSteps = 2;
     
-    private static final boolean DEBUG = false;
+    private static final boolean DEBUG = true;
 
     /*Test utilizes the y-value within the velocity field of a state. To represent the exponential function.
      *The position field can be ignored as within the solver this field is manipulated with by the velocity field
@@ -92,14 +92,19 @@ public class TestSolverExponential
     {
         /*Solver and function setup*/
         ODEFunctionInterface exponentialFunction = new ExponentialFunction();
-        
         State currentState = createStartState();
+
+        Logger.logCSV(fileName, "Time, Value, Actual value, Relative Error");
 
         double time = 0;
         while(time < numberOfSteps)
         {
-        	 Logger.logCSV(fileName, currentState.toCSV());
-        	
+            double currentValue = currentState.velocity.get(0).getY();
+            double actualValue = Math.exp(time + step);
+            double relativeError = Math.abs(currentValue - actualValue) / Math.abs(actualValue);
+
+            Logger.logCSV(fileName, String.valueOf(time) + " ," + String.valueOf(currentValue) + " ," + String.valueOf(actualValue) + " ," + String.valueOf(relativeError));
+
         	State nextState = solver.step(exponentialFunction, time, currentState, step);
             if(DEBUG)
             {
