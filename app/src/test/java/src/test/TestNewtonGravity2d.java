@@ -53,8 +53,8 @@ public class TestNewtonGravity2d {
 		
 		System.out.println(res.toString());
 
-	    assertEquals(new Vector2d(-0.164999999998,0).getX(), res.velocityChange.get(0).getX(),0.0000001);
-	    assertEquals(new Vector2d(-0.164999999998,0).getX(), res.positionChange.get(0).getX(),0.0000001);
+	    assertEquals(new Vector2d(-0.164999999998,0).getX(), res.velocityChange.get(0).getX(),0.000000000001);	//from formula
+	    assertEquals(new Vector2d(1,0).getX(), res.positionChange.get(0).getX());								//cp is (1,0) since velocity was (1,0)
 
 	}
 }
