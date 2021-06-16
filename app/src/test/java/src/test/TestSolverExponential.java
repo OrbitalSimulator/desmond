@@ -22,9 +22,9 @@ import java.util.ArrayList;
 public class TestSolverExponential
 {
     private double epsilon = 0.4;
-    private double step = 0.1;
+    private double step = 0.001;
     
-    private int numberOfSteps = 100;
+    private int numberOfSteps = 2;
     
     private static final boolean DEBUG = true;
 
@@ -94,7 +94,7 @@ public class TestSolverExponential
         ODEFunctionInterface exponentialFunction = new ExponentialFunction();
         State currentState = createStartState();
 
-        Logger.logCSV(fileName, "Value, Actual value, Relative Error");
+        Logger.logCSV(fileName, "Time, Value, Actual value, Relative Error");
 
         double time = 0;
         while(time < numberOfSteps)
@@ -103,10 +103,8 @@ public class TestSolverExponential
             double actualValue = Math.exp(time + step);
             double relativeError = Math.abs(currentValue - actualValue) / Math.abs(actualValue);
 
-            Logger.logCSV(fileName, String.valueOf(currentValue) + " ," + String.valueOf(actualValue) + " ," + String.valueOf(relativeError));
+            Logger.logCSV(fileName, String.valueOf(time) + " ," + String.valueOf(currentValue) + " ," + String.valueOf(actualValue) + " ," + String.valueOf(relativeError));
 
-
-        	
         	State nextState = solver.step(exponentialFunction, time, currentState, step);
             if(DEBUG)
             {
