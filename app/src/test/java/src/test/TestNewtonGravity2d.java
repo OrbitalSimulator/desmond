@@ -2,8 +2,7 @@ package src.test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import java.time.LocalDateTime;
-import java.time.Month;
+
 import java.util.ArrayList;
 
 import org.junit.jupiter.api.Test;
@@ -14,22 +13,20 @@ import src.land.LandingModule;
 import src.peng.NewtonGravity2d;
 import src.peng.NewtonGravityFunction;
 import src.peng.ODEFunctionInterface;
-import src.peng.Rate;
 import src.peng.Rate2d;
 import src.peng.RateInterface;
-import src.peng.State;
 import src.peng.State2d;
 import src.peng.StateInterface;
 import src.peng.Vector2d;
-import src.peng.Vector3d;
 import src.solv.EulerSolver;
-import src.univ.CelestialBody;
+import src.solv.ODESolverInterface;
+import src.solv.Verlet;
+
 
 public class TestNewtonGravity2d {
 
 	private boolean DEBUG = true;
 	
-//	public static void main(String[] args) {
 //	@Test 
 	void testNewtonGravityFunc2d() {
 		
@@ -42,15 +39,7 @@ public class TestNewtonGravity2d {
 		arrPos.add(initialPos);				
 		StateInterface state = new State2d(arrVelo,arrPos);
 
-		Vector2d bodyLoc = new Vector2d(0,0);
-		LocalDateTime start = LocalDateTime.of(2019, Month.JANUARY, 1, 14, 33, 48);
-		LocalDateTime end = LocalDateTime.of(2019, Month.JANUARY, 28, 14, 33, 48);		
-		String[] way = null;
-		
-		LandingModule lander = new LandingModule(2,2,20,10,initialPos,initialVelo,10);
-		LanderSettings settings = new LanderSettings(bodyLoc,lander,1,1);
-		
-		ODEFunctionInterface grav = new NewtonGravity2d(settings);
+		ODEFunctionInterface grav = new NewtonGravity2d(10,2,2,10);
 		
 		RateInterface result = grav.call(1, state);
 		Rate2d res = (Rate2d) result;
@@ -77,22 +66,18 @@ public class TestNewtonGravity2d {
 		arrPos.add(initialPos);				
 		StateInterface state = new State2d(arrVelo,arrPos);
 
-		Vector2d bodyLoc = new Vector2d(0,0);
-	
-		LandingModule lander = new LandingModule(2,2,20,10,initialPos,initialVelo,10);
-		LanderSettings settings = new LanderSettings(bodyLoc,lander,1,0.1);
+		ODEFunctionInterface grav = new NewtonGravity2d(10,2,2,10);
 		
-		ODEFunctionInterface grav = new NewtonGravity2d(settings);
-		
-		EulerSolver solver = new EulerSolver();			//switch to verlet (not implemented for 2d)
+		ODESolverInterface solver = new EulerSolver();			
 		double numberOfSteps = 25;
 		double time = 0;
-		Logger.logCSV("exp_fall4", "Position, , ,Velocity, ,");
+		double stepSize = 0.1;
+		Logger.logCSV("exp_fall5", "Position, , ,Velocity, ,");
 	    while(time < numberOfSteps)
 	        {
-	        	Logger.logCSV("exp_fall4", ((State2d) state).toCSV());
+	        	Logger.logCSV("exp_fall5", ((State2d) state).toCSV());
 	        	
-	        	State2d nextState = (State2d) solver.step(grav, time, state, settings.stepSize);
+	        	State2d nextState = (State2d) solver.step(grav, time, state, stepSize);
 	            if(DEBUG)
 	            {
 //	                System.out.println("Start State" + state.toString());
@@ -101,7 +86,57 @@ public class TestNewtonGravity2d {
 	            }
 	           
 	            state = nextState;
-	            time += settings.stepSize;
+	            time += stepSize;
 	        }
+	}
+	
+	@Test 
+	void testNewtonGravityFunc2dOnestep() {
+		
+		StateInterface state = setupState();
+		ODEFunctionInterface grav = new NewtonGravity2d(10,2,2,10);
+		ODESolverInterface solver = new EulerSolver();	
+		
+		double numberOfSteps = 25;
+		double time = 0;
+	  
+	    State2d nextState = (State2d) solver.step(grav, time, state, 1);
+	    System.out.println(nextState.toString());
+	}
+	
+	@Test 
+	void test10StepsError10() {
+		
+		StateInterface state = setupState();
+		ODEFunctionInterface grav = new NewtonGravity2d(10,2,2,10);
+		ODESolverInterface solver = new EulerSolver();	
+		
+		double numberOfSteps = 10;
+		double time = 0;
+		double error = 0.1; //placeholder
+	  
+		Vector2d actual = null;
+		while (time < numberOfSteps) {
+			
+			State2d nextState = (State2d) solver.step(grav, time, state, 1);  
+			actual = nextState.position.get(0);									//get(0) is a placeholder value
+			System.out.println(nextState.toString());
+		}
+		
+		Vector2d expected = new Vector2d();
+		
+	    assertEquals(expected,actual,error);
+	}
+
+	private StateInterface setupState() {
+		
+		ArrayList<Vector2d> arrVelo = new ArrayList<Vector2d>();
+		ArrayList<Vector2d> arrPos = new ArrayList<Vector2d>();
+
+		Vector2d initialVelo = new Vector2d(1,0);
+		Vector2d initialPos = new Vector2d(0,20);
+		arrVelo.add(initialVelo);
+		arrPos.add(initialPos);				
+		return new State2d(arrVelo,arrPos);
 	}
 }

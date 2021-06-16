@@ -3,6 +3,8 @@ package src.peng;
 import java.util.ArrayList;
 
 import src.land.LanderSettings;
+import src.solv.EulerSolver;
+import src.solv.ODESolver;
 
 public class NewtonGravity2d implements ODEFunctionInterface {
 	
@@ -11,12 +13,19 @@ public class NewtonGravity2d implements ODEFunctionInterface {
 	private double r = 1.5;								//1.5 bar, 147000 Pa
 	private double dragCoeff = 0.55;
 	private double area;
+	public double bodyMass;
+	public double width;
+	public double length;
+	public double mass;
 
-	public NewtonGravity2d(LanderSettings settings) {
-		this.settings = settings;
+	 public NewtonGravity2d(double bodyMass, double width, double length, double mass) {
+		this.bodyMass = bodyMass;
+		this.width = width;
+		this.length = length;
+		this.mass = mass;
 	}
 
-	 /**
+	/**
      * Method is utilized to calculate yPrime, the derivative of the state y.
      * @param t The time at which to evaluate
      * @param y The current state at which to evaluate
@@ -27,7 +36,7 @@ public class NewtonGravity2d implements ODEFunctionInterface {
         State2d stateInfo = (State2d)y;                                      //Cast y into State object to access information
 
         /*1.Calculate resultant sum acceleration by gravity & drag*/
-        ArrayList<Vector2d> cv = freeFall(stateInfo, settings.module.bodyMass);
+        ArrayList<Vector2d> cv = freeFall(stateInfo, this.bodyMass);
         
         /*2. Calculate the resultant change in position by gravity & drag*/
         ArrayList<Vector2d> cp = new ArrayList<Vector2d>();
@@ -53,15 +62,15 @@ public class NewtonGravity2d implements ODEFunctionInterface {
         ArrayList<Vector2d> changeInVelocity = new ArrayList<Vector2d>();                               //Initialize array to return. Same quanait of CB
 
         /* Calculations*/
-        Vector2d bodyPos = settings.cbLocation;
+        Vector2d bodyPos = new Vector2d(0,0);
         Vector2d accelerationSum = new Vector2d(0,0);                                             //Initialize sum vector for acceleration
         
-        area = settings.module.length * settings.module.width;
+        area = length * width;
         
         for(int j=0; j< stateInfo.velocity.size(); j++)                                                  //Iterate through all other planets                         
         {
                
-             double otherMass = settings.module.mass;                                                       //Other CB info, that is exerting force on current planet
+             double otherMass = mass;                                                       //Other CB info, that is exerting force on current planet
              Vector2d landerPos = stateInfo.position.get(j); 					
 
              /*Distance calc*/
@@ -93,7 +102,7 @@ public class NewtonGravity2d implements ODEFunctionInterface {
      		Vector2d resForce = gravitationalForce.sub(dragForce);
      		
      		//resultant acceleration due to force
-    		Vector2d resAccel = resForce.mul(1/settings.module.bodyMass);				//a = (W-D)/mass
+    		Vector2d resAccel = resForce.mul(1/this.bodyMass);				//a = (W-D)/mass
      		
              /*Summation*/
              accelerationSum  = accelerationSum.add(resAccel);

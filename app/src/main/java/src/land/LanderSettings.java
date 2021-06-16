@@ -13,25 +13,16 @@ public class LanderSettings
 	public double stepSize;
 	public int stepOffset = 0;
 
-	public LanderSettings(	  Vector2d cbLocation,
-							  LandingModule module, 
-							  int noOfSteps,
-							  double stepSize)
+	public LanderSettings(LandingModule module, int noOfSteps, double stepSize)
 	{
-		this.cbLocation = cbLocation;
 		this.module = module;
 		this.noOfSteps = noOfSteps;
 		this.stepSize = stepSize;
 	}
 
-	public void setStartVelocity(double velocityX)
-	{
-		module.initialVelo = new Vector2d(velocityX, 0);
-	}
-	
 	public LanderSettings copy()
 	{
-		return new LanderSettings(cbLocation,
+		return new LanderSettings(
 				    module,
 				    noOfSteps,
 				    stepSize);
