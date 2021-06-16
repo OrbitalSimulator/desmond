@@ -84,7 +84,7 @@ public class TestNewtonGravity2d {
 		
 		ODEFunctionInterface grav = new NewtonGravity2d(settings);
 		
-		EulerSolver solver = new EulerSolver();			//switch to verlet
+		EulerSolver solver = new EulerSolver();			//switch to verlet (not implemented for 2d)
 		double numberOfSteps = 25;
 		double time = 0;
 		Logger.logCSV("exp_fall4", "Position, , ,Velocity, ,");
