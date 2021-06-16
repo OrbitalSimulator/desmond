@@ -22,6 +22,7 @@ public class LandingModule {
 		this.fuel = fuel;
 		this.length = length;
 		this.width = width;
+		this.mass = mass;
 		this.direction = direction;
 		this.initialPos = initialPos;
 		this.initialVelo = initialVelo; 
@@ -32,6 +33,7 @@ public class LandingModule {
 		this.fuel = fuel;
 		this.length = length;
 		this.width = width;
+		this.mass = mass;
 		this.direction = 0;
 		this.initialPos = initialPos;
 		this.initialVelo = initialVelo; 

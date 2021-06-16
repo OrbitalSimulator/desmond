@@ -53,10 +53,11 @@ public class NewtonGravity2d implements ODEFunctionInterface {
         ArrayList<Vector2d> changeInVelocity = new ArrayList<Vector2d>();                               //Initialize array to return. Same quanait of CB
 
         /* Calculations*/
-        Vector2d currentPos = settings.cbLocation;
+        Vector2d bodyPos = settings.cbLocation;
         Vector2d accelerationSum = new Vector2d(0,0);                                             //Initialize sum vector for acceleration
         
         area = settings.module.length * settings.module.width;
+        
         for(int j=0; j< stateInfo.velocity.size(); j++)                                                  //Iterate through all other planets                         
         {
                
@@ -64,14 +65,14 @@ public class NewtonGravity2d implements ODEFunctionInterface {
              Vector2d landerPos = stateInfo.position.get(j); 					
 
              /*Distance calc*/
-             double r = landerPos.dist(currentPos);                                               //Calculate the distance between the two planets
+             double dis = landerPos.dist(bodyPos);                                               //Calculate the distance between the two planets
 
              /*Unit vector calc*/
-             Vector2d rHat = (landerPos.sub(currentPos)).unitVector();
-             Vector2d unitVec = (landerPos.sub(currentPos)).unitVector();
+             Vector2d rHat = (landerPos.sub(bodyPos)).unitVector();
+             Vector2d unitVec = (landerPos.sub(bodyPos)).unitVector();
              
              /*Scaler quantity calc */
-             double quantity = (GRAVITY*planetMass*otherMass)/ Math.pow(r,2);
+             double quantity = (GRAVITY*planetMass*otherMass)/ Math.pow(dis,2);
 
              /*Gravitational force calc */
              Vector2d gravitationalForce = rHat.mul(quantity);                                   //Direction vector multiplied by non-vector quantity
