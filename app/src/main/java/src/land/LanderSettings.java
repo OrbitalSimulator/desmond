@@ -7,7 +7,6 @@ import src.univ.CelestialBody;
 
 public class LanderSettings 
 {
-	public Vector2d cbLocation;
 	public LandingModule module;
 	public int noOfSteps;
 	public double stepSize;

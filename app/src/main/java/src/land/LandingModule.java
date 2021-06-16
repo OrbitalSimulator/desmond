@@ -8,11 +8,8 @@ import src.peng.Vector2d;
 import src.univ.CelestialBody;
 
 public class LandingModule {
-	
-	public double width;
-	public double length;
+
 	public double fuel;
-	public double mass;
 	public double direction;
 	
 	public LandingModule(double fuel, double direction) {
