@@ -9,7 +9,7 @@ import src.solv.ODESolver;
 public class NewtonGravity2d implements ODEFunctionInterface {
 	
 	private LanderSettings settings;
-	public static final double GRAVITY = 6.67430e-11;
+	public static final double GRAVITY = 6.67430e-11;	//6.67430e-11, 1.352
 	private double r = 1.5;								//1.5 bar, 147000 Pa
 	private double dragCoeff = 0.55;
 	private double area;
@@ -75,34 +75,33 @@ public class NewtonGravity2d implements ODEFunctionInterface {
 
              /*Distance calc*/
              double dis = landerPos.dist(bodyPos);                                               //Calculate the distance between the two planets
-
+             System.out.println(dis);
+             
              /*Unit vector calc*/
-             Vector2d rHat = (landerPos.sub(bodyPos)).unitVector();
+             Vector2d rHat = (bodyPos.sub(landerPos)).unitVector();
              Vector2d unitVec = (landerPos.sub(bodyPos)).unitVector();
              
              /*Scaler quantity calc */
-             double quantity = (GRAVITY*planetMass*otherMass)/ Math.pow(dis,2);
+             double quantity = (GRAVITY*otherMass*planetMass)/(Math.pow(dis, 2));
 
              /*Gravitational force calc */
              Vector2d gravitationalForce = rHat.mul(quantity);                                   //Direction vector multiplied by non-vector quantity
 
-            //drag coefficient * area * air density * 0.5
-     		double dScale = r*dragCoeff*area*0.5;
-     		
-     		//vector^2
-     		double vSq = stateInfo.velocity.get(j).dotProduct(stateInfo.velocity.get(j)); 		//WRONG, FOLLOW NASA THING MORE CAREFULLY!!!!
-     		
-     		//NASA drag formula
-     		double dragFormula = dScale*vSq;							//follow the NASA given formula to get the mathematical force applied by drag
+             //velo squared
+//             double vSq = stateInfo.velocity.get(j).dotProduct(stateInfo.velocity.get(j));
+             
+            //drag = drag coefficient * area * (air density * 0.5 * velocity^2)					
+     		double dScale = dragCoeff*area*((r*(stateInfo.velocity.get(j).dotProduct(stateInfo.velocity.get(j))))/2);
+     		//follow the NASA given formula to get the mathematical force applied by drag
      		
      		//drag force being applied to landing module
-     		Vector2d dragForce = unitVec.mul(dragFormula);			//convert the given drag force into vector form
+     		Vector2d dragForce = unitVec.mul(dScale);			//convert the given drag force into vector form
      		
      		//resultant force
-     		Vector2d resForce = gravitationalForce.sub(dragForce);
+     		Vector2d resForce = dragForce.add(gravitationalForce);
      		
      		//resultant acceleration due to force
-    		Vector2d resAccel = resForce.mul(1/this.bodyMass);				//a = (W-D)/mass
+    		Vector2d resAccel = resForce.mul(1/otherMass);				//a = (W-D)/mass
      		
              /*Summation*/
              accelerationSum  = accelerationSum.add(resAccel);

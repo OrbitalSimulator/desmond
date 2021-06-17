@@ -60,28 +60,28 @@ public class TestNewtonGravity2d {
 		ArrayList<Vector2d> arrVelo = new ArrayList<Vector2d>();
 		ArrayList<Vector2d> arrPos = new ArrayList<Vector2d>();
 
-		Vector2d initialVelo = new Vector2d(1,0);
-		Vector2d initialPos = new Vector2d(0,20);
+		Vector2d initialVelo = new Vector2d(100,0);
+		Vector2d initialPos = new Vector2d(0,20000);
 		arrVelo.add(initialVelo);
 		arrPos.add(initialPos);				
 		StateInterface state = new State2d(arrVelo,arrPos);
 
-		ODEFunctionInterface grav = new NewtonGravity2d(10,2,2,10);
+		ODEFunctionInterface grav = new NewtonGravity2d(1.34553e23,30,100,5000);
 		
 		ODESolverInterface solver = new EulerSolver();			
 		double numberOfSteps = 25;
 		double time = 0;
-		double stepSize = 0.1;
-		Logger.logCSV("exp_fall5", "Position, , ,Velocity, ,");
+		double stepSize = 0.01;
+		Logger.logCSV("exp_fall11", ",Velocity , ,Position, ,");
 	    while(time < numberOfSteps)
 	        {
-	        	Logger.logCSV("exp_fall5", ((State2d) state).toCSV());
+	        	Logger.logCSV("exp_fall11", ((State2d) state).toCSV());
 	        	
 	        	State2d nextState = (State2d) solver.step(grav, time, state, stepSize);
 	            if(DEBUG)
 	            {
 //	                System.out.println("Start State" + state.toString());
-	                System.out.println("Next State" + nextState.toString());
+//	                System.out.println("Next State" + nextState.toString());
 //	                System.out.println("Actual value: "+ Math.exp(time + settings.stepSize));
 	            }  
 	            state = nextState;
