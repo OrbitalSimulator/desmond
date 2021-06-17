@@ -86,19 +86,16 @@ public class NewtonGravity2d implements ODEFunctionInterface {
 
              /*Gravitational force calc */
              Vector2d gravitationalForce = rHat.mul(quantity);                                   //Direction vector multiplied by non-vector quantity
-
-             //velo squared
-//             double vSq = stateInfo.velocity.get(j).dotProduct(stateInfo.velocity.get(j));
-             
+          
             //drag = drag coefficient * area * (air density * 0.5 * velocity^2)					
      		double dScale = dragCoeff*area*((r*(stateInfo.velocity.get(j).dotProduct(stateInfo.velocity.get(j))))/2);
      		//follow the NASA given formula to get the mathematical force applied by drag
      		
      		//drag force being applied to landing module
-     		Vector2d dragForce = unitVec.mul(dScale);			//convert the given drag force into vector form
+     		Vector2d dragForce = unitVec.mul(dScale);					//convert the given drag force into vector form
      		
      		//resultant force
-     		Vector2d resForce = dragForce.add(gravitationalForce);
+     		Vector2d resForce = gravitationalForce.add(dragForce);
      		
      		//resultant acceleration due to force
     		Vector2d resAccel = resForce.mul(1/otherMass);				//a = (W-D)/mass
