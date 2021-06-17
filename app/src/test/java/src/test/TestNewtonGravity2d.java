@@ -46,11 +46,11 @@ public class TestNewtonGravity2d {
 		
 		System.out.println(res.toString());
 		
-		double absolute = (-0.164999999998 - res.velocityChange.get(0).getX());
+		double absolute = (0.164999999998 - res.velocityChange.get(0).getX());
 		double relative = absolute/res.velocityChange.get(0).getX();
 		System.out.println(absolute + "     " + relative*100 + " %");
 
-	    assertEquals(new Vector2d(-0.164999999998,0).getX(), res.velocityChange.get(0).getX(),0.000000000001);	//from formula
+	    assertEquals(new Vector2d(0.164999999998,0).getX(), res.velocityChange.get(0).getX(),0.00000001);	//from formula
 	    assertEquals(new Vector2d(1,0).getX(), res.positionChange.get(0).getX());								//cp is (1,0) since velocity was (1,0)
 	}
 	
@@ -69,13 +69,13 @@ public class TestNewtonGravity2d {
 		ODEFunctionInterface grav = new NewtonGravity2d(1.34553e23,30,100,5000);
 		
 		ODESolverInterface solver = new EulerSolver();			
-		double numberOfSteps = 25;
+		double numberOfSteps = 50;
 		double time = 0;
 		double stepSize = 0.01;
-		Logger.logCSV("exp_fall11", ",Velocity , ,Position, ,");
+		Logger.logCSV("exp_fall12", ",Velocity , ,Position, ,");
 	    while(time < numberOfSteps)
 	        {
-	        	Logger.logCSV("exp_fall11", ((State2d) state).toCSV());
+	        	Logger.logCSV("exp_fall12", ((State2d) state).toCSV());
 	        	
 	        	State2d nextState = (State2d) solver.step(grav, time, state, stepSize);
 	            if(DEBUG)
