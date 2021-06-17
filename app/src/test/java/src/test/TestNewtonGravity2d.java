@@ -119,10 +119,11 @@ public class TestNewtonGravity2d {
 		while (time < numberOfSteps) {
 			
 			State2d nextState = (State2d) solver.step(grav, time, state, stepSize);  
-			actual = nextState.position.get(0);									//get(0) is a placeholder value
+//			actual = nextState.position.get(0);									//get(0) is a placeholder value
 			System.out.println(nextState.toString());
 			
 			time += stepSize;
+			state = nextState;
 		}
 		
 		Vector2d expected = new Vector2d();
