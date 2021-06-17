@@ -14,7 +14,7 @@ import src.univ.Universe;
 public class OrbitController extends GuidanceController
 {
 	private double scaler = 0;
-	private double dampener = 10000;
+	private double dampener = 100000;
 	private Vector3d velocityAtEndOfOrbit;
 	public static final boolean DEBUG =  false;
 	public static boolean visualize = true;
@@ -161,12 +161,12 @@ public class OrbitController extends GuidanceController
 	public double linearClimbing(Universe universe, int target, SimulationSettings settings)
 	{
 		double bestVelocity = 0;
-		double currentVelocity = 9619;
+		double currentVelocity = 9280.5;
 		Vector3d[] route = new Vector3d[settings.noOfSteps+1];
 		double orbitalHeight = getOrbitalHeight(universe, target);
 		double error = Double.MAX_VALUE;
 
-		int temp = 20;
+		int temp = 1;
 
 		if(log)
 		{
@@ -197,7 +197,7 @@ public class OrbitController extends GuidanceController
 				loggingIndex++;
 			}
 
-			currentVelocity = currentVelocity + 0.1;
+			currentVelocity = currentVelocity + 0.5;
 			temp--;
 		}
 		System.out.println("Optimum velocity is: "+ bestVelocity);
@@ -210,16 +210,25 @@ public class OrbitController extends GuidanceController
 		Vector3d[] route = planRoute(trialVelocity, target, universe);
 
 		double[] distanceMeasure = trajectoryToDistanceMeasure(route, universe, target);
-		double routeError = trajectoryFitnessCalculation(orbitalHeight, distanceMeasure);
+		double routeError = trajectoryFitnessCalculation(orbitalHeight, distanceMeasure, universe, target);
 		return routeError;
 	}
 
-	public double trajectoryFitnessCalculation(double orbitalHeight, double[] distanceMeasure)
+
+	public double trajectoryFitnessCalculation(double orbitalHeight, double[] distanceMeasure, Universe universe, int target)
 	{
+		String loggerHeadings = "step, Error distance, Relative Distance";
+		String fileName = "orbitalDeviance_exp";
+		//Logger.log(fileName, loggerHeadings);
+
+		double accurateHeight = orbitalHeight + universe.U[target][0].radius;
 		double sum = 0;
 		for(int i= 0; i < distanceMeasure.length; i++)
 		{
-			sum += Math.abs(distanceMeasure[i] - orbitalHeight);
+			double errorDistance = Math.abs(distanceMeasure[i] - accurateHeight);
+			double relativeError = errorDistance / accurateHeight;
+			//Logger.log(fileName, String.valueOf(i) + " ," + String.valueOf(errorDistance) + " ," + String.valueOf(relativeError));
+			sum += errorDistance;
 		}
 		return sum / distanceMeasure.length;
 	}

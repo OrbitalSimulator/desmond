@@ -93,7 +93,7 @@ public class CelestialBody
 	//finalStateOfTarget represents CB at final state, thus knowing its final position.
 	public Vector3d calculateTargetPoint()
 	{
-		double updatedYValue = location.getY() - orbitalHeight;
+		double updatedYValue = location.getY() - orbitalHeight - radius;
 		return new Vector3d(location.getX(),updatedYValue, location.getZ());
 	}
 
