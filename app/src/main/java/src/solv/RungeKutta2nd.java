@@ -17,17 +17,23 @@ public class RungeKutta2nd extends ODESolver
      */
     public StateInterface step(ODEFunctionInterface f, double t, StateInterface y, double h)
     {    	
-    	Rate a = (Rate) f.call(0, y);		// f' at left endpoint
-    	Rate b = (Rate) f.call(t, y);		// f' at right endpoint
-    	Rate rate = a.average(b);			// f' average
-    	return y.addMul(h, rate);
+       	Rate k1 = (Rate) f.call(t, y);										// k1 = h * f(t0,w0);
+    	Rate k2 = (Rate) f.call(t + (h * 2/3), y.addMul((h * 2/3),k1));		// k2 = h * f((t0 + (h * 2/3)) , (w0 + (k1 * 2/3))); 
+    	
+    	Rate dydt = k2.scale(3);											// w1 = w0 + 1/4 * ( k1 + (3*k2));
+     	dydt = k1.add(dydt);								 				// This is abbreviated to w0 + h * dydt 
+    	dydt = dydt.scale(1/4);  	    					
+    	return (State) y.addMul(h,dydt);
     }
     
     public State step(ODEFunctionInterface f, double t, State y, double h)
     {    	
-    	Rate a = (Rate) f.call(0, y);		// f' at left endpoint
-    	Rate b = (Rate) f.call(t, y);		// f' at right endpoint
-    	Rate rate = a.average(b);			// f' average
-    	return (State) y.addMul(h, rate);
+       	Rate k1 = (Rate) f.call(t, y);										// k1 = h * f(t0,w0);
+    	Rate k2 = (Rate) f.call(t + (h * 2/3), y.addMul((h * 2/3),k1));		// k2 = h * f((t0 + (h * 2/3)) , (w0 + (k1 * 2/3))); 
+    	
+    	Rate dydt = k2.scale(3);											// w1 = w0 + 1/4 * ( k1 + (3*k2));
+     	dydt = k1.add(dydt);								 				// This is abbreviated to w0 + h * dydt 
+    	dydt = dydt.scale(1/4);  	    					
+    	return (State) y.addMul(h,dydt);
     }
 }
