@@ -26,5 +26,25 @@ class TestLandingController
 		lc.plotTrajectory(landerPos, landerVel, landerMass, titanPos, titanVel, titanMass, titanRadius);
 		
 	}
+	
+	@Test void testImpact()
+	{
+		// TODO priority 1
+	}
+	
+	@Test void testDrag()
+	{
+		// TODO priority 1
+	}
+	
+	@Test void testNormalise()
+	{
+		// TODO priority 2
+	}
+	
+	@Test void testRemoveZDimension()
+	{
+		// TODO priority 3
+	}
 
 }
