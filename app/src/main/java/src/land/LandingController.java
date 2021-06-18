@@ -92,8 +92,7 @@ public class LandingController
 	 * @return the force of drag exerted at the current velocity using the final values declared
 	 * in the class
 	 * 
-	 *Implementing Fd = Cd * rho * V^2 * Area * 1/2 * unitVector
-	 *
+	 * Implementing Fd = Cd * rho * V^2 * Area * 1/2 * unitVector
 	 */
 	protected Vector3d calculateDrag(Vector3d velocity)
 	{
