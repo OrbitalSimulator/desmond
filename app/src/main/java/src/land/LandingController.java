@@ -12,8 +12,9 @@ import src.solv.Verlet;
 
 public class LandingController 
 {
-	private final double LANDER_AREA = 100; // TODO (CAN) get real value for Mars Lander
-	private final double DRAG_COEFICIENT = 1; //TODO (CAN) get value
+	private final double LANDER_AREA = 2.4336; 		// Mars InSight lander was 1.56 meters in diameter
+	private final double DRAG_COEFFICIENT = 2.1;	// page 1187, from https://pdfs.semanticscholar.org/5410/30f5b4c387a3d5d06fbee8549347d6bddf82.pdf
+	private final double AIR_DENSITY = 5.428; 		// https://www.aero.psu.edu/avia/pubs/LanSch17.pdf, page 3
 	
 	public LandingController() 
 	{
@@ -90,10 +91,22 @@ public class LandingController
 	/**
 	 * @return the force of drag exerted at the current velocity using the final values declared
 	 * in the class
+	 * 
+	 *Implementing Fd = Cd * rho * V^2 * Area * 1/2 * unitVector
+	 *
 	 */
 	protected Vector3d calculateDrag(Vector3d velocity)
 	{
+		Vector3d unitVector = velocity.unitVector();
 		
-		return new Vector3d();
+		//drag acts in the opposite direction in relation to the velocity.
+		Vector3d vectorDirection = unitVector.mul(-1);
+		
+		double veloMagnitude = velocity.norm();
+		double constant = DRAG_COEFFICIENT * LANDER_AREA * AIR_DENSITY * veloMagnitude * veloMagnitude * 0.5;
+		
+		Vector3d dragForce = vectorDirection.mul(constant);
+		
+		return dragForce;
 	}
 }
