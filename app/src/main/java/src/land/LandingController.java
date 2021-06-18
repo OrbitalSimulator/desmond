@@ -88,7 +88,8 @@ public class LandingController
 	}
 	
 	/**
-	 * @return the force of 
+	 * @return the force of drag exerted at the current velocity using the final values declared
+	 * in the class
 	 */
 	protected Vector3d calculateDrag(Vector3d velocity)
 	{
