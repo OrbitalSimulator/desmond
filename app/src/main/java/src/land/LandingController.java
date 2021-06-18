@@ -69,7 +69,7 @@ public class LandingController
 	 * Normalise the vectors so that a is given relative to b where b = (0,0,0)
 	 * @return a vector a relative to b
 	 */
-	protected Vector3d normalise(Vector3d a, Vector3d b)
+	public Vector3d normalise(Vector3d a, Vector3d b)
 	{
 		double x = a.getX() - b.getX();
 		double y = a.getY() - b.getY();
@@ -80,7 +80,7 @@ public class LandingController
 	/**
 	 * @return a new Vector3d object with x and y copied and a 0 value for z
 	 */
-	protected Vector3d removeZDimension(Vector3d v)
+	public Vector3d removeZDimension(Vector3d v)
 	{
 		double x = v.getX();
 		double y = v.getY();
