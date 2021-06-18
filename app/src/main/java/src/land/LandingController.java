@@ -99,19 +99,12 @@ public class LandingController
 	protected Vector3d calculateDrag(Vector3d velocity)
 	{
 		Vector3d unitVector = velocity.unitVector();
+		Vector3d vectorDirection = unitVector.mul(-1);						//drag acts in the opposite direction in relation to the velocity.
 		
-		//drag acts in the opposite direction in relation to the velocity.
-		Vector3d vectorDirection = unitVector.mul(-1);
-		
-		//retrieve the magnitude of the velocity
 		double veloMagnitude = velocity.norm();
-		
-		//calculate all the constants of the equation into one variable
 		double constant = DRAG_COEFFICIENT * LANDER_AREA * AIR_DENSITY * veloMagnitude * veloMagnitude * 0.5;
 		
-		//scale the unit vector by the constants we have, to get the actual drag force vector
-		Vector3d dragForce = vectorDirection.mul(constant);
-		
+		Vector3d dragForce = vectorDirection.mul(constant);					//scale the unit vector by the constants we have, to get the actual drag force vector	
 		return dragForce;
 	}
 }
