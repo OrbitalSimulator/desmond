@@ -13,8 +13,8 @@ import src.univ.Universe;
 //Working under assumption that probe will always approach target at offset 90 degrees to the planet.
 public class OrbitController extends GuidanceController
 {
-	private double scaler = 0;
-	private double dampener = 100000;
+	private double scaler = 8000;
+	private double dampener = 10000;
 	private Vector3d velocityAtEndOfOrbit;
 	public static final boolean DEBUG =  false;
 	public static boolean visualize = true;
@@ -161,7 +161,7 @@ public class OrbitController extends GuidanceController
 	public double linearClimbing(Universe universe, int target, SimulationSettings settings)
 	{
 		double bestVelocity = 0;
-		double currentVelocity = 9280.5;
+		double currentVelocity = 4200;
 		Vector3d[] route = new Vector3d[settings.noOfSteps+1];
 		double orbitalHeight = getOrbitalHeight(universe, target);
 		double error = Double.MAX_VALUE;
@@ -219,7 +219,7 @@ public class OrbitController extends GuidanceController
 	{
 		String loggerHeadings = "step, Error distance, Relative Distance";
 		String fileName = "orbitalDeviance_exp";
-		//Logger.log(fileName, loggerHeadings);
+		Logger.log(fileName, loggerHeadings);
 
 		double accurateHeight = orbitalHeight + universe.U[target][0].radius;
 		double sum = 0;
@@ -227,7 +227,7 @@ public class OrbitController extends GuidanceController
 		{
 			double errorDistance = Math.abs(distanceMeasure[i] - accurateHeight);
 			double relativeError = errorDistance / accurateHeight;
-			//Logger.log(fileName, String.valueOf(i) + " ," + String.valueOf(errorDistance) + " ," + String.valueOf(relativeError));
+			Logger.log(fileName, String.valueOf(i) + " ," + String.valueOf(errorDistance) + " ," + String.valueOf(relativeError));
 			sum += errorDistance;
 		}
 		return sum / distanceMeasure.length;

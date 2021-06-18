@@ -24,8 +24,8 @@ public class CelestialBody
 	public Vector3d location;
 	public LocalDateTime time = null;
 
-	public double orbitalHeight = 250e3;
-	public double orbitalError = 0.01e3;
+	public double orbitalHeight = 9.9832e8;
+	public double orbitalError = 50e3;
 
 	public CelestialBody(Vector3d location, Vector3d velocity, double mass, double radius, String name, String image, String icon, LocalDateTime time)
 	{
@@ -122,9 +122,9 @@ public class CelestialBody
 		String status = "Neutral"; 												//Initialize default return status
 		double currentOrbitalHeight = location.dist(probePosition);
 
-		if(Math.abs(orbitalHeight - currentOrbitalHeight) >= orbitalError)
+		if(Math.abs((orbitalHeight + radius) - currentOrbitalHeight) >= orbitalError)
 		{
-			if(currentOrbitalHeight >= orbitalHeight)
+			if(currentOrbitalHeight >= orbitalHeight + radius)
 			{
 				status = "Outer boundary";
 			}
