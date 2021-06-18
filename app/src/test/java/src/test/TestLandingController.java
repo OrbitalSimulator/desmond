@@ -32,10 +32,63 @@ class TestLandingController
 		// TODO (Jerome) 4hrs
 	}
 	
-	@Test void testDrag()
+	/**
+	 * Tests drag for positive velocity
+	 * Expected to return a positive drag
+	 * Values used for calculations:
+	 *  - area = 1.91
+	 *  - drag coefficient = 2.1
+	 *  - density = 5.428
+	 */
+	@Test void testDragPositiveV()
 	{
-		// TODO (Sam) 2hrs
+		LandingController controller = new LandingController();
+		Vector3d velocity = new Vector3d(5,10,0);
+		Vector3d drag = controller.calculateDrag(velocity);
+		Vector3d expectedDrag = new Vector3d(272.15,1088.5854,0);
+		assertEquals(expectedDrag.getX(),drag.getX());
+		assertEquals(expectedDrag.getY(),drag.getY());
+		assertEquals(expectedDrag.getZ(),drag.getZ());
 	}
+	
+	/**
+	 * Tests drag for negative velocity
+	 * Expected to return a positive drag
+	 * Values used for calculations:
+	 *  - area = 1.91
+	 *  - drag coefficient = 2.1
+	 *  - density = 5.428
+	 */
+	@Test void testDragNegativeV()
+	{
+		LandingController controller = new LandingController();
+		Vector3d velocity = new Vector3d(-5,-10,0);
+		Vector3d drag = controller.calculateDrag(velocity);
+		Vector3d expectedDrag = new Vector3d(272.15,1088.5854,0);
+		assertEquals(expectedDrag.getX(),drag.getX());
+		assertEquals(expectedDrag.getY(),drag.getY());
+		assertEquals(expectedDrag.getZ(),drag.getZ());
+	}
+	
+	/**
+	 * Tests drag for zero velocity
+	 * Expected to return a positive drag
+	 * Values used for calculations:
+	 *  - area = 1.91
+	 *  - drag coefficient = 2.1
+	 *  - density = 5.428
+	 */
+	@Test void testDragZeroV()
+	{
+		LandingController controller = new LandingController();
+		Vector3d velocity = new Vector3d(0,0,0);
+		Vector3d drag = controller.calculateDrag(velocity);
+		Vector3d expectedDrag = new Vector3d(0,0,0);
+		assertEquals(expectedDrag.getX(),drag.getX());
+		assertEquals(expectedDrag.getY(),drag.getY());
+		assertEquals(expectedDrag.getZ(),drag.getZ());
+	}
+	
 	
 	@Test void testNormalise()
 	{
