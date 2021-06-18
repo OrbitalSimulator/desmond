@@ -10,18 +10,17 @@ import src.peng.Vector3d;
 import src.solv.ODESolver;
 import src.solv.Verlet;
 
-public class LandingController 
+public class OpenLoopController extends LandingController
 {
-	private final double LANDER_AREA = 100; // TODO (CAN) get real value for Mars Lander
-	private final double DRAG_COEFICIENT = 1; //TODO (CAN) get value
-	
-	public LandingController() 
+
+	public OpenLoopController() 
 	{
+		super();
 		
 	}
-	
+
 	public Vector3d[] plotTrajectory(Vector3d landerLocation, 
-			 						 Vector3d landerVelocity,
+									 Vector3d landerVelocity,
 									 double landerMass,
 									 Vector3d planetLocation,
 									 Vector3d planetVelocity,
@@ -29,7 +28,7 @@ public class LandingController
 									 double planetRadius)
 	{
 		double[] masses = {landerMass, planetMass};
-	
+		
 		ArrayList<Vector3d> positions = new ArrayList<Vector3d>();
 		positions.add(removeZDimension(normalise(landerLocation, planetLocation))); 		
 		positions.add(new Vector3d(0,0,0));											// Planet always starts at 0,0,0
@@ -51,48 +50,7 @@ public class LandingController
 			currentState = solver.step(f, time, currentState, stepSize);
 			time = time + stepSize;
 		}
-		
+	
 		return null;
-	}
-	
-	/**
-	 * @return true if the position is within the radius of (0,0,0)
-	 */
-	protected boolean impact(Vector3d landerPosition, double radius)
-	{
-		double distance = landerPosition.dist(new Vector3d(0,0,0));
-		distance = Math.abs(distance);
-		return distance > radius;
-	}
-	
-	/**
-	 * Normalise the vectors so that a is given relative to b where b = (0,0,0)
-	 * @return a vector a relative to b
-	 */
-	protected Vector3d normalise(Vector3d a, Vector3d b)
-	{
-		double x = a.getX() - b.getX();
-		double y = a.getY() - b.getY();
-		double z = a.getZ() - b.getZ();
-		return new Vector3d(x, y, z);
-	}
-	
-	/**
-	 * @return a new Vector3d object with x and y copied and a 0 value for z
-	 */
-	protected Vector3d removeZDimension(Vector3d v)
-	{
-		double x = v.getX();
-		double y = v.getY();
-		return new Vector3d(x, y, 0);
-	}
-	
-	/**
-	 * @return the force of 
-	 */
-	protected Vector3d calculateDrag(Vector3d velocity)
-	{
-		
-		return new Vector3d();
 	}
 }
