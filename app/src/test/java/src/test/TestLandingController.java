@@ -29,22 +29,39 @@ class TestLandingController
 	
 	@Test void testImpact()
 	{
-		// TODO priority 1
+		// TODO (Jerome) 4hrs
 	}
 	
 	@Test void testDrag()
 	{
-		// TODO priority 1
+		// TODO (Sam) 2hrs
 	}
 	
-	@Test void testNormalise()
+	@Test void testNormaliseOneNegativeOnePosiive()
 	{
-		// TODO priority 2
+		// TODO (Alp) 1hr
+		LandingController control = new LandingController();
+		assertEquals(control.normalise(new Vector3d(4,4,4),new Vector3d(-1,-2,-3)),new Vector3d(5,6,7));
 	}
 	
 	@Test void testRemoveZDimension()
 	{
-		// TODO priority 3
+		// TODO (Alp) 30
+		LandingController control = new LandingController();
+		assertEquals(control.removeZDimension(new Vector3d(4,4,4)), new Vector3d(4,4,0));
+
+	}
+
+	@Test void testNormaliseTwoNegative()
+	{
+		LandingController control = new LandingController();
+		assertEquals(control.normalise(new Vector3d(-40,-91,-43),new Vector3d(-100,-40,-33)),new Vector3d(60,-51,-10));
+	}
+
+	@Test void testNormaliseTwoPositive()
+	{
+		LandingController control = new LandingController();
+		assertEquals(control.normalise(new Vector3d(100,94,45),new Vector3d(213,432,113)),new Vector3d(-113,-338,-68));
 	}
 
 }
