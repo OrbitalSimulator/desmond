@@ -29,22 +29,22 @@ class TestLandingController
 	
 	@Test void testImpact()
 	{
-		// TODO priority 1
+		// TODO (Jerome) 4hrs
 	}
 	
 	@Test void testDrag()
 	{
-		// TODO priority 1
+		// TODO (Sam) 2hrs
 	}
 	
 	@Test void testNormalise()
 	{
-		// TODO priority 2
+		// TODO (Alp) 1hr
 	}
 	
 	@Test void testRemoveZDimension()
 	{
-		// TODO priority 3
+		// TODO (Alp) 30
 	}
 
 }

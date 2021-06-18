@@ -93,7 +93,7 @@ public class LandingController
 	 */
 	protected Vector3d calculateDrag(Vector3d velocity)
 	{
-		
+		// TODO (Can) 2hrs
 		return new Vector3d();
 	}
 }
