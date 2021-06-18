@@ -96,7 +96,7 @@ public class LandingController
 	 * Implementing Fd = Cd * rho * V^2 * Area * 1/2 * unitVector
 	 * Represents (respectively): Force of drag = dragCoefficient * airDensity * magnitudeOfVelocity^2 * 1/2 * unitVector  
 	 */
-	protected Vector3d calculateDrag(Vector3d velocity)
+	public Vector3d calculateDrag(Vector3d velocity)
 	{
 		Vector3d unitVector = velocity.unitVector();
 		Vector3d vectorDirection = unitVector.mul(-1);						//drag acts in the opposite direction in relation to the velocity.
