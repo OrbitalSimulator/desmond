@@ -89,10 +89,12 @@ public class LandingController
 	}
 	
 	/**
+	 * @param a velocity vector which is used to calculate drag from
 	 * @return the force of drag exerted at the current velocity using the final values declared
 	 * in the class
 	 * 
 	 * Implementing Fd = Cd * rho * V^2 * Area * 1/2 * unitVector
+	 * Represents (respectively): Force of drag = dragCoefficient * airDensity * magnitudeOfVelocity^2 * 1/2 * unitVector  
 	 */
 	protected Vector3d calculateDrag(Vector3d velocity)
 	{
@@ -101,9 +103,13 @@ public class LandingController
 		//drag acts in the opposite direction in relation to the velocity.
 		Vector3d vectorDirection = unitVector.mul(-1);
 		
+		//retrieve the magnitude of the velocity
 		double veloMagnitude = velocity.norm();
+		
+		//calculate all the constants of the equation into one variable
 		double constant = DRAG_COEFFICIENT * LANDER_AREA * AIR_DENSITY * veloMagnitude * veloMagnitude * 0.5;
 		
+		//scale the unit vector by the constants we have, to get the actual drag force vector
 		Vector3d dragForce = vectorDirection.mul(constant);
 		
 		return dragForce;
