@@ -59,11 +59,11 @@ public class LandingController
 	/**
 	 * @return true if the position is within the radius of (0,0,0)
 	 */
-	protected boolean impact(Vector3d landerPosition, double radius)
+	public boolean impact(Vector3d landerPosition, double radius)
 	{
 		double distance = landerPosition.dist(new Vector3d(0,0,0));
 		distance = Math.abs(distance);
-		return distance > radius;
+		return distance <= radius;
 	}
 	
 	/**
