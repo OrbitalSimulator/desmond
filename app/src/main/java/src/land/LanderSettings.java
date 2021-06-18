@@ -7,46 +7,24 @@ import src.univ.CelestialBody;
 
 public class LanderSettings 
 {
-	public Vector2d cbLocation;
 	public LandingModule module;
-	public LocalDateTime startTime;
-	public LocalDateTime endTime;
 	public int noOfSteps;
 	public double stepSize;
-	public String[] waypoints;
 	public int stepOffset = 0;
 
-	public LanderSettings(	  Vector2d cbLocation,
-							  LandingModule module,
-			               	  LocalDateTime startTime,
-							  LocalDateTime endTime,
-							  int noOfSteps,
-							  double stepSize,
-							  String[] waypoints)
+	public LanderSettings(LandingModule module, int noOfSteps, double stepSize)
 	{
-		this.cbLocation = cbLocation;
 		this.module = module;
-		this.startTime = startTime;
-		this.endTime = endTime;
 		this.noOfSteps = noOfSteps;
 		this.stepSize = stepSize;
-		this.waypoints = waypoints;
 	}
 
-	public void setStartVelocity(double velocityX)
-	{
-		module.initialVelo = new Vector2d(velocityX, 0);
-	}
-	
 	public LanderSettings copy()
 	{
-		return new LanderSettings(cbLocation,
+		return new LanderSettings(
 				    module,
-				    startTime,
-				    endTime,
 				    noOfSteps,
-				    stepSize,
-				    waypoints);
+				    stepSize);
 	}
 	
 	public int getStartStep()

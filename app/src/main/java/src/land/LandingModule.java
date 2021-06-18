@@ -8,34 +8,18 @@ import src.peng.Vector2d;
 import src.univ.CelestialBody;
 
 public class LandingModule {
-	
-	public double width;
-	public double length;
+
 	public double fuel;
-	public double mass;
-	public Vector2d initialPos;
-	public Vector2d initialVelo;
-	public double bodyMass;
 	public double direction;
 	
-	public LandingModule(double width, double length, double fuel, double mass, Vector2d initialPos, Vector2d initialVelo, double body,  double direction) {
+	public LandingModule(double fuel, double direction) {
 		this.fuel = fuel;
-		this.length = length;
-		this.width = width;
 		this.direction = direction;
-		this.initialPos = initialPos;
-		this.initialVelo = initialVelo; 
-		this.bodyMass = body;
 	}
 	
-	public LandingModule(double width, double length, double fuel, double mass, Vector2d initialPos, Vector2d initialVelo, double body) {
+	public LandingModule(double fuel) {
 		this.fuel = fuel;
-		this.length = length;
-		this.width = width;
 		this.direction = 0;
-		this.initialPos = initialPos;
-		this.initialVelo = initialVelo; 
-		this.bodyMass = body;
 	}
 	
 	public boolean fuelEmpty() {
@@ -45,14 +29,6 @@ public class LandingModule {
 		else {
 			return false;
 		}
-	}
-	
-	public void setInitialPosition(Vector2d initialPos) {
-		this.initialPos = initialPos;
-	}
-	
-	public void setInitialVelocity(Vector2d initialVelo) {
-		this.initialVelo = initialVelo;
 	}
 	
 	public double getDirection() {

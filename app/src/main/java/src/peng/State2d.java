@@ -120,7 +120,7 @@ public class State2d implements StateInterface
         String sum = "";
         for(int i=0; i< velocity.size(); i++)
         {
-            sum += "\nV:,"+ velocity.get(i).toCSV() + ",P:"+ position.get(i).toCSV()+ ",";
+            sum += "\n,"+ velocity.get(i).toCSV() + ","+ position.get(i).toCSV()+ ",";
         }
         return sum;
     }
