@@ -88,6 +88,7 @@ public class TestOpenLoopController {
 	
 	@Test
 	void testHeightsEqual() {
+		
 		OpenLoopController controller = new OpenLoopController();
 		Vector3d point = new Vector3d(0,40000,0);
 		assert(!controller.belowHeight(point));
@@ -95,6 +96,7 @@ public class TestOpenLoopController {
 	
 	@Test
 	void testImpactTrue() {
+		
 		OpenLoopController controller = new OpenLoopController();
 		Vector3d point = new Vector3d(100,100,0);
 		assert(controller.belowHeight(point));
