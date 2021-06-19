@@ -42,12 +42,12 @@ public class OpenLoopController extends LandingController
 		ODESolver solver = new Verlet();
 		ODEFunctionInterface f = new NewtonGravityFunction(masses);
 		
-		Logger.logCSV("landing_controller", "Time,Pos X, Pos Y, Pos Z, Vel X, Vel Y, Vel Z");
+		Logger.logCSV("openloop_controller", "Time,Pos X, Pos Y, Pos Z, Vel X, Vel Y, Vel Z");
 		double time = 0;
 		double stepSize = 0.1;
-		while(!impact(currentState.position.get(0),planetRadius))
+		while(!impact(currentState.position.get(0), currentState.position.get(1), planetRadius))
 		{
-			Logger.logCSV("landing_controller", time + "," + currentState.position.get(0).toCSV() + currentState.velocity.get(0).toCSV());
+			Logger.logCSV("openloop_controller", time + "," + currentState.position.get(0).toCSV() + currentState.velocity.get(0).toCSV());
 			currentState = solver.step(f, time, currentState, stepSize);
 			time = time + stepSize;
 		}
@@ -62,7 +62,7 @@ public class OpenLoopController extends LandingController
 	 * @return boolean answering whether the point is below the certain height
 	 */
 	public boolean belowHeight(Vector3d point) {
-		if (impact(point,1000)) 											//having radius be a random number
+		if (impact(point, new Vector3d(0,0,0), 1000)) 											//having radius be a random number
 			return true;
 		else if (point.dist(new Vector3d()) < height.dist(new Vector3d()))			
 			return true;

@@ -11,11 +11,11 @@ class TestLandingController
 {
 
 	@Test
-	void testOnlyLanderFall() 
+	void logFallFromOrbit() 
 	{
 		LandingController lc = new LandingController();
 		
-		Vector3d landerPos = new Vector3d(1E5,0,100);
+		Vector3d landerPos = new Vector3d(1E7,0,100);
 		Vector3d landerVel = new Vector3d(0,0,0);
 		double landerMass = 6e3;
 		Vector3d titanPos = new Vector3d(0,0,0);
@@ -24,8 +24,8 @@ class TestLandingController
 		double titanRadius = 2575.5e3;
 		
 		lc.plotTrajectory(landerPos, landerVel, landerMass, titanPos, titanVel, titanMass, titanRadius);
-		
 	}
+	
 	/**
 	 * 	Testing Strategy:
 	 *  	|  1 |  2 |  3 |  4 |  5 |  6 |  7 |  8 |  9 | 10 | 11 | 12 | 13 | 14 | 15 | 16 |
