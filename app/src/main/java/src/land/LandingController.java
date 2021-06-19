@@ -118,6 +118,11 @@ public class LandingController
 	 */
 	protected Vector3d[] toArray(ArrayList<Vector3d> input)
 	{
-		return null;
+		Vector3d[] array = new Vector3d[input.size()];
+		for(int i=0;i<input.size();i++)
+		{
+			array[i]= input.get(i);
+		}
+		return array;
 	}
 }
