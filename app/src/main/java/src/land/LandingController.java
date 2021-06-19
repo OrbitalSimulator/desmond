@@ -43,6 +43,8 @@ public class LandingController
 		ODESolver solver = new Verlet();
 		ODEFunctionInterface f = new NewtonGravityFunction(masses);
 		
+		ArrayList<Vector3d> trajectory = new ArrayList<Vector3d>();
+		
 		Logger.logCSV("landing_controller", "Time,Pos X, Pos Y, Pos Z, Vel X, Vel Y, Vel Z");
 		double time = 0;
 		double stepSize = 0.1;
@@ -50,10 +52,11 @@ public class LandingController
 		{
 			Logger.logCSV("landing_controller", time + "," + currentState.position.get(0).toCSV() + currentState.velocity.get(0).toCSV());
 			currentState = solver.step(f, time, currentState, stepSize);
+			trajectory.add(currentState.position.get(0));
 			time = time + stepSize;
 		}
 		
-		return null;
+		return toArray(trajectory);
 	}
 	
 	/**
@@ -109,5 +112,17 @@ public class LandingController
 		
 		Vector3d dragForce = vectorDirection.mul(constant);					//scale the unit vector by the constants we have, to get the actual drag force vector	
 		return dragForce;
+	}
+	
+	/** Converts: Arraylist<Vector3d>  ->  Vector3d[] 
+	 */
+	protected Vector3d[] toArray(ArrayList<Vector3d> input)
+	{
+		Vector3d[] array = new Vector3d[input.size()];
+		for(int i=0;i<input.size();i++)
+		{
+			array[i]= input.get(i);
+		}
+		return array;
 	}
 }

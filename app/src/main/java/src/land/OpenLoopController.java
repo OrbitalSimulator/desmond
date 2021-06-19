@@ -41,7 +41,7 @@ public class OpenLoopController extends LandingController
 		State currentState = new State(velocities, positions);
 		ODESolver solver = new Verlet();
 		ODEFunctionInterface f = new NewtonGravityFunction(masses);
-		
+		ArrayList<Vector3d> trajectory = new ArrayList<Vector3d>();
 		Logger.logCSV("openloop_controller", "Time,Pos X, Pos Y, Pos Z, Vel X, Vel Y, Vel Z");
 		double time = 0;
 		double stepSize = 0.1;
@@ -49,10 +49,11 @@ public class OpenLoopController extends LandingController
 		{
 			Logger.logCSV("openloop_controller", time + "," + currentState.position.get(0).toCSV() + currentState.velocity.get(0).toCSV());
 			currentState = solver.step(f, time, currentState, stepSize);
+			trajectory.add(currentState.position.get(0));
 			time = time + stepSize;
 		}
 	
-		return null;
+		return toArray(trajectory);
 	}
 	
 	/*
@@ -71,4 +72,5 @@ public class OpenLoopController extends LandingController
 		else
 			return false;
 	}
+
 }

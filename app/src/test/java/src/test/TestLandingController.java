@@ -22,8 +22,12 @@ class TestLandingController
 		Vector3d titanVel = new Vector3d(0,0,0);
 		double titanMass = 1.34553e23;
 		double titanRadius = 2575.5e3;
-		
-		lc.plotTrajectory(landerPos, landerVel, landerMass, titanPos, titanVel, titanMass, titanRadius);
+
+		Vector3d[] array = lc.plotTrajectory(landerPos, landerVel, landerMass, titanPos, titanVel, titanMass, titanRadius);
+		for(int i = 0;i<array.length;i++)
+		{
+			System.out.println(array[i]);
+		}
 	}
 	
 	/**
@@ -232,5 +236,7 @@ class TestLandingController
 		LandingController control = new LandingController();
 		assertEquals(control.normalise(new Vector3d(100,94,45),new Vector3d(213,432,113)),new Vector3d(-113,-338,-68));
 	}
+
+
 
 }
