@@ -12,6 +12,7 @@ import src.solv.Verlet;
 
 public class OpenLoopController extends LandingController
 {
+	private Vector3d height = new Vector3d(0,40000,0);
 
 	public OpenLoopController() 
 	{
@@ -52,5 +53,22 @@ public class OpenLoopController extends LandingController
 		}
 	
 		return null;
+	}
+	
+	/*
+	 * Checks whether a given point is below a certain distance, in relation to the radius of the planet
+	 * 
+	 * @param a vector representing a certain point
+	 * @return boolean answering whether the point is below the certain height
+	 */
+	public boolean belowHeight(Vector3d point) {
+		if (impact(point,1000)) 											//having radius be a random number
+			return true;
+		else if (point.dist(new Vector3d()) < height.dist(new Vector3d()))			
+			return true;
+		else if (point.dist(new Vector3d()) < height.dist(new Vector3d()))
+			return true;
+		else
+			return false;
 	}
 }
