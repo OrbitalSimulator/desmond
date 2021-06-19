@@ -132,10 +132,12 @@ class TestSolvers
 	private void logStates(String fileName,String solver, double stepSize, double noOfSteps, State[] states)
 	{
 		Logger.logCSV(fileName, "**********,**********,**********,**********,**********,");
-		Logger.logCSV(fileName, solver + ",  STEP SIZE," + stepSize + ",  STEPS," + noOfSteps);
+		Logger.logCSV(fileName, solver + "\nSTEP SIZE," + stepSize + "\nSTEPS," + noOfSteps);
+		Logger.logCSV(fileName, "x, y, z, norm");
 		for(int i = 0; i < states.length; i++)
 		{
-			Logger.logCSV(fileName, states[i].position.get(3).toCSV());
+			double norm = states[i].position.get(3).norm();
+			Logger.logCSV(fileName, states[i].position.get(3).toCSV() + norm);
 		}
 	}
 	
