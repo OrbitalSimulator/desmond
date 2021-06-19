@@ -161,10 +161,10 @@ class TestLandingController
 		LandingController controller = new LandingController();
 		Vector3d velocity = new Vector3d(5,10,0);
 		Vector3d drag = controller.calculateDrag(velocity);
-		Vector3d expectedDrag = new Vector3d(272.15,1088.5854,0);
-		assertEquals(expectedDrag.getX(),drag.getX());
-		assertEquals(expectedDrag.getY(),drag.getY());
-		assertEquals(expectedDrag.getZ(),drag.getZ());
+		Vector3d expectedDrag = new Vector3d(-608.5377,-1217.0754,-0);
+		assertEquals(expectedDrag.getX(),drag.getX(),0.01);
+		assertEquals(expectedDrag.getY(),drag.getY(),0.01);
+		assertEquals(expectedDrag.getZ(),drag.getZ(),0.01);
 	}
 
 	/**
@@ -180,10 +180,12 @@ class TestLandingController
 		LandingController controller = new LandingController();
 		Vector3d velocity = new Vector3d(-5,-10,0);
 		Vector3d drag = controller.calculateDrag(velocity);
-		Vector3d expectedDrag = new Vector3d(272.15,1088.5854,0);
-		assertEquals(expectedDrag.getX(),drag.getX());
-		assertEquals(expectedDrag.getY(),drag.getY());
-		assertEquals(expectedDrag.getZ(),drag.getZ());
+		Vector3d expectedDrag = new Vector3d(608.5377,1217.0754,0);
+		System.out.println(drag.getX());
+		System.out.println(drag.getY());
+		assertEquals(expectedDrag.getX(),drag.getX(),0.01);
+		assertEquals(expectedDrag.getY(),drag.getY(),0.01);
+		assertEquals(expectedDrag.getZ(),drag.getZ(),0.01);
 	}
 	
 	/**

@@ -98,6 +98,9 @@ public class LandingController
 	 */
 	public Vector3d calculateDrag(Vector3d velocity)
 	{
+		if (velocity.getX() == 0 && velocity.getY() == 0) {
+			return new Vector3d(0,0,0);
+		}
 		Vector3d unitVector = velocity.unitVector();
 		Vector3d vectorDirection = unitVector.mul(-1);						//drag acts in the opposite direction in relation to the velocity.
 		
