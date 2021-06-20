@@ -20,7 +20,7 @@ public class OpenLoopController extends LandingController
 		
 	}
 
-	public Vector3d[] plotTrajectory(Vector3d landerLocation, 
+	public ArrayList<LanderObject> plotTrajectory(Vector3d landerLocation, 
 									 Vector3d landerVelocity,
 									 double landerMass,
 									 Vector3d planetLocation,
@@ -41,7 +41,9 @@ public class OpenLoopController extends LandingController
 		State currentState = new State(velocities, positions);
 		ODESolver solver = new Verlet();
 		ODEFunctionInterface f = new NewtonGravityFunction(masses);
-		ArrayList<Vector3d> trajectory = new ArrayList<Vector3d>();
+		
+		ArrayList<LanderObject> trajectory = new ArrayList<LanderObject>();
+		
 		Logger.logCSV("openloop_controller", "Time,Pos X, Pos Y, Pos Z, Vel X, Vel Y, Vel Z");
 		double time = 0;
 		double stepSize = 0.1;
@@ -49,15 +51,17 @@ public class OpenLoopController extends LandingController
 		{
 			Logger.logCSV("openloop_controller", time + "," + currentState.position.get(0).toCSV() + currentState.velocity.get(0).toCSV());
 			currentState = solver.step(f, time, currentState, stepSize);
-			trajectory.add(currentState.position.get(0));
+			trajectory.add(new LanderObject(currentState.position.get(0), 0));
 			time = time + stepSize;
-			if (testHeight(currentState.position.get(0),planetLocation,height)) {
+			
+			if (testHeight(currentState.position.get(0),planetLocation,height))
+			{
 				Vector3d maxThrust = new Vector3d(0,1000,0);
 				currentState.velocity.get(0).add(maxThrust);
 			}
 		}
 	
-		return toArray(trajectory);
+		return trajectory;
 	}
 	
 
