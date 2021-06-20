@@ -1,12 +1,5 @@
 package src.land;
 
-import java.util.ArrayList;
-
-import src.peng.State;
-import src.peng.StateInterface;
-import src.peng.Vector2d;
-import src.univ.CelestialBody;
-
 public class LandingModule {
 
 	public double fuel;

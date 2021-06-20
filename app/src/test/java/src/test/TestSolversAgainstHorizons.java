@@ -2,6 +2,7 @@ package src.test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import src.conf.SettingsFileManager;
@@ -31,6 +32,7 @@ class TestSolversAgainstHorizons
     static final double YEAR_ACCURACY = 5.733198703E09; 
     
 	
+    @Disabled
 	@Test void testOneDay() 
 	{	
 		State finalState = setupOneDayTest();
@@ -42,6 +44,7 @@ class TestSolversAgainstHorizons
 		assertEquals(EARTH_ONE_DAY_Z, z, DAY_ACCURACY);
 	}
 	
+    @Disabled
 	@Test void testOneYear() 
 	{	
 		State finalState = setupOneYearTest();
