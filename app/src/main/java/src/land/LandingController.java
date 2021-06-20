@@ -48,7 +48,7 @@ public class LandingController
 		Logger.logCSV("landing_controller", "Time,Pos X, Pos Y, Pos Z, Vel X, Vel Y, Vel Z");
 		double time = 0;
 		double stepSize = 0.1;
-		while(!impact(currentState.position.get(0), currentState.position.get(1), planetRadius))
+		while(!testHeight(currentState.position.get(0), currentState.position.get(1), planetRadius))
 		{
 			Logger.logCSV("landing_controller", time + "," + currentState.position.get(0).toCSV() + currentState.velocity.get(0).toCSV());
 			currentState = solver.step(f, time, currentState, stepSize);
@@ -62,7 +62,7 @@ public class LandingController
 	/**
 	 * @return true if the position is within the radius of (0,0,0)
 	 */
-	public boolean impact(Vector3d landerPosition, Vector3d planetPosition, double radius)
+	public boolean testHeight(Vector3d landerPosition, Vector3d planetPosition, double radius)
 	{
 		double distance = landerPosition.dist(planetPosition);
 		distance = Math.abs(distance);

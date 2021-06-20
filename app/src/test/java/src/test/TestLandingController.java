@@ -43,42 +43,42 @@ class TestLandingController
 		Vector3d v = new Vector3d(35.0, 0.0, 0.0);
 		double r = 50.0;
 		LandingController lc = new LandingController();
-		assertEquals(lc.impact(v, new Vector3d(0,0,0), r), true);
+		assertEquals(lc.testHeight(v, new Vector3d(0,0,0), r), true);
 	}
 	@Test void testImpact2()
 	{
 		Vector3d v = new Vector3d(-20, 0.0, 0.0);
 		double r = 20.0;
 		LandingController lc = new LandingController();
-		assertEquals(lc.impact(v, new Vector3d(0,0,0), r), true);
+		assertEquals(lc.testHeight(v, new Vector3d(0,0,0), r), true);
 	}
 	@Test void testImpact3()
 	{
 		Vector3d v = new Vector3d(60.0, 0.0, 0.0);
 		double r = 45.0;
 		LandingController lc = new LandingController();
-		assertEquals(lc.impact(v, new Vector3d(0,0,0), r), false);
+		assertEquals(lc.testHeight(v, new Vector3d(0,0,0), r), false);
 	}
 	@Test void testImpact4()
 	{
 		Vector3d v = new Vector3d(-40.0, 0.0, 0.0);
 		double r = 30.0;
 		LandingController lc = new LandingController();
-		assertEquals(lc.impact(v, new Vector3d(0,0,0), r), false);
+		assertEquals(lc.testHeight(v, new Vector3d(0,0,0), r), false);
 	}
 	@Test void testImpact5()
 	{
 		Vector3d v = new Vector3d(0.0, 60, 0.0);
 		double r = 60.0;
 		LandingController lc = new LandingController();
-		assertEquals(lc.impact(v, new Vector3d(0,0,0), r), true);
+		assertEquals(lc.testHeight(v, new Vector3d(0,0,0), r), true);
 	}
 	@Test void testImpact6()
 	{
 		Vector3d v = new Vector3d(0.0, -20.0, 0.0);
 		double r = 25.0;
 		LandingController lc = new LandingController();
-		assertEquals(lc.impact(v, new Vector3d(0,0,0), r), true);
+		assertEquals(lc.testHeight(v, new Vector3d(0,0,0), r), true);
 	}
 	
 	@Test void testImpact7()
@@ -86,70 +86,70 @@ class TestLandingController
 		Vector3d v = new Vector3d(0.0, 35.0, 0.0);
 		double r = 25.0;
 		LandingController lc = new LandingController();
-		assertEquals(lc.impact(v, new Vector3d(0,0,0), r), false);
+		assertEquals(lc.testHeight(v, new Vector3d(0,0,0), r), false);
 	}
 	@Test void testImpact8()
 	{
 		Vector3d v = new Vector3d(0.0, -40.0, 0.0);
 		double r = 30.0;
 		LandingController lc = new LandingController();
-		assertEquals(lc.impact(v, new Vector3d(0,0,0), r), false);
+		assertEquals(lc.testHeight(v, new Vector3d(0,0,0), r), false);
 	}
 	@Test void testImpact9()
 	{
 		Vector3d v = new Vector3d(50.0, -30.0, 0.0);
 		double r = 58.30951895;
 		LandingController lc = new LandingController();
-		assertEquals(lc.impact(v, new Vector3d(0,0,0), r), true);
+		assertEquals(lc.testHeight(v, new Vector3d(0,0,0), r), true);
 	}
 	@Test void testImpact10()
 	{
 		Vector3d v = new Vector3d(15.0, 20.0, 0.0);
 		double r = 25.0;
 		LandingController lc = new LandingController();
-		assertEquals(lc.impact(v, new Vector3d(0,0,0), r), true);
+		assertEquals(lc.testHeight(v, new Vector3d(0,0,0), r), true);
 	}
 	@Test void testImpact11()
 	{
 		Vector3d v = new Vector3d(30.0, -15.0, 0.0);
 		double r = 30.0;
 		LandingController lc = new LandingController();
-		assertEquals(lc.impact(v, new Vector3d(0,0,0), r), false);
+		assertEquals(lc.testHeight(v, new Vector3d(0,0,0), r), false);
 	}
 	@Test void testImpact12()
 	{
 		Vector3d v = new Vector3d(31.0, 46.0, 0.0);
 		double r = 40.0;
 		LandingController lc = new LandingController();
-		assertEquals(lc.impact(v, new Vector3d(0,0,0), r), false);
+		assertEquals(lc.testHeight(v, new Vector3d(0,0,0), r), false);
 	}
 	@Test void testImpact13()
 	{
 		Vector3d v = new Vector3d(-20.0, -15.0, 0.0);
 		double r = 25.0;
 		LandingController lc = new LandingController();
-		assertEquals(lc.impact(v, new Vector3d(0,0,0), r), true);
+		assertEquals(lc.testHeight(v, new Vector3d(0,0,0), r), true);
 	}
 	@Test void testImpact14()
 	{
 		Vector3d v = new Vector3d(-30.0, 20.0, 0.0);
 		double r = 37;
 		LandingController lc = new LandingController();
-		assertEquals(lc.impact(v, new Vector3d(0,0,0), r), true);
+		assertEquals(lc.testHeight(v, new Vector3d(0,0,0), r), true);
 	}
 	@Test void testImpact15()
 	{
 		Vector3d v = new Vector3d(-40.0, -30.0, 0.0);
 		double r = 30;
 		LandingController lc = new LandingController();
-		assertEquals(lc.impact(v, new Vector3d(0,0,0), r), false);
+		assertEquals(lc.testHeight(v, new Vector3d(0,0,0), r), false);
 	}
 	@Test void testImpact16()
 	{
 		Vector3d v = new Vector3d(-20.0, 60.0, 0.0);
 		double r = 60;
 		LandingController lc = new LandingController();
-		assertEquals(lc.impact(v, new Vector3d(0,0,0), r), false);
+		assertEquals(lc.testHeight(v, new Vector3d(0,0,0), r), false);
 	}
 	
 	/**
