@@ -54,6 +54,10 @@ public class LandingController
 		while(!impact(currentState.position.get(0), currentState.position.get(1), planetRadius))
 		{
 			Logger.logCSV("landing_controller", time + "," + currentState.position.get(0).toCSV() + currentState.velocity.get(0).toCSV());
+			
+			Vector3d drag = calculateDrag(currentState.velocity.get(0));
+			currentState.velocity.set(0, currentState.velocity.get(0).add(drag));
+			
 			currentState = solver.step(f, time, currentState, stepSize);
 			trajectory.add(currentState.position.get(0));
 			time = time + stepSize;
