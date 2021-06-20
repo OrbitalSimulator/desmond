@@ -51,6 +51,10 @@ public class OpenLoopController extends LandingController
 			currentState = solver.step(f, time, currentState, stepSize);
 			trajectory.add(currentState.position.get(0));
 			time = time + stepSize;
+			if (belowHeight(currentState.position.get(0))) {
+				Vector3d maxThrust = new Vector3d(0,1000,0);
+				currentState.velocity.get(0).add(maxThrust);
+			}
 		}
 	
 		return toArray(trajectory);
