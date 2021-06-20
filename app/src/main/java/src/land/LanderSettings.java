@@ -1,9 +1,5 @@
 package src.land;
 
-import java.time.LocalDateTime;
-
-import src.peng.Vector2d;
-import src.univ.CelestialBody;
 
 public class LanderSettings 
 {

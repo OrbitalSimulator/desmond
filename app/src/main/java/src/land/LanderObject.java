@@ -1,35 +1,33 @@
 package src.land;
 
-import src.peng.Vector2d;
+import src.peng.Vector3d;
 
-public class LanderObject {
+public class LanderObject 
+{
 
-	public double direction;
-	public Vector2d position;
-	public double time;
+	private double angle;
+	private Vector3d position;
 	
-	public LanderObject(Vector2d position, double direction, double time) {
+	public LanderObject(Vector3d position, double angle) 
+	{
 		this.position = position;
-		this.direction = direction;
-		this.time = time;
+		this.angle = angle;
 	}
 	
-	public Vector2d getPosition() {
+	public Vector3d getPosition() 
+	{
 		return this.position;
 	}
 	
-	public double getDirection() {
-		return this.direction;
-	}
-	
-	public double getTime() {
-		return this.time;
+	public double getAngle() 
+	{
+		return this.angle;
 	}
 	
 	public boolean equals(Object o)
     {
         LanderObject v = (LanderObject) o;
-    	if((v.time == this.time) && (v.direction == this.direction) && (v.position.equals(position)))
+    	if((v.angle == this.angle) && (v.position.equals(position)))
         {
             return true;
         }

@@ -5,49 +5,37 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.Test;
 
 import src.land.LanderObject;
-import src.peng.Vector2d;
+import src.peng.Vector3d;
 
 public class TestLanderObject {
 
 	@Test
 	void testEquals() {
 		
-		Vector2d posi = new Vector2d(10,10);
-		double time = 20;
-		double direction = 180;
-		LanderObject lander = new LanderObject(posi,time,direction);
-		LanderObject lander2 = new LanderObject(posi,time,direction);
+		Vector3d posi = new Vector3d(10,10,0);
+		double angle = 180;
+		LanderObject lander = new LanderObject(posi,angle);
+		LanderObject lander2 = new LanderObject(posi,angle);
 		
-		assert(lander.equals(lander2));
+		assertEquals(true, lander.equals(lander2));
 	}
 	
-	@Test
-	void testGetTime() {
-		Vector2d posi = new Vector2d(10,10);
-		double time = 20;
-		double direction = 180;
-		LanderObject lander = new LanderObject(posi,time,direction);
-		
-		assertEquals(lander.time,20);
-	}
 	
 	@Test
 	void testGetPosition() {
-		Vector2d posi = new Vector2d(10,10);
-		double time = 20;
-		double direction = 180;
-		LanderObject lander = new LanderObject(posi,time,direction);
+		Vector3d posi = new Vector3d(10,10,0);
+		double angle = 180;
+		LanderObject lander = new LanderObject(posi,angle);
 		
-		assert(lander.position.equals(new Vector2d(10,10)));
+		assertEquals(posi, lander.getPosition());
 	}
 	
 	@Test
-	void testGetDirection() {
-		Vector2d posi = new Vector2d(10,10);
-		double time = 20;
-		double direction = 180;
-		LanderObject lander = new LanderObject(posi,time,direction);
+	void testGetAngle() {
+		Vector3d posi = new Vector3d(10,10,0);
+		double angle = 180;
+		LanderObject lander = new LanderObject(posi,angle);
 		
-		assertEquals(lander.direction,180);
+		assertEquals(angle, lander.getAngle());
 	}
 }
