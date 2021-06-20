@@ -16,11 +16,6 @@ public class LandingController
 	private final double DRAG_COEFFICIENT = 2.1;	// page 1187, from https://pdfs.semanticscholar.org/5410/30f5b4c387a3d5d06fbee8549347d6bddf82.pdf
 	private final double AIR_DENSITY = 5.428; 		// https://www.aero.psu.edu/avia/pubs/LanSch17.pdf, page 3
 	
-	public LandingController() 
-	{
-		
-	}
-	
 	public Vector3d[] plotTrajectory(Vector3d landerLocation, 
 			 						 Vector3d landerVelocity,
 									 double landerMass,
