@@ -36,10 +36,10 @@ public class LandingVisualiser extends JPanel
 	
 	private ArrayList<LanderObject> landerList;
 	
-//	private Timer timer;
-//	private int time;
-//	private int timeInterval = 20;
-//	private int endTime;
+	private Timer timer;
+	private int time;
+	private int timeInterval = 20;
+	private int endTime;
 	
 	private CelestialBody planetToPaint;
 	
@@ -54,17 +54,17 @@ public class LandingVisualiser extends JPanel
 		yOrigin = getHeight() / 2;
 		setBackground(Color.BLACK);
 		setVisible(true);
-		//time = 0;
-//		ActionListener timeEvent = new ActionListener()
-//		{
-//			public void actionPerformed(ActionEvent evt)
-//			{
-//				if(play) {
-//					incrementTime(timeInterval);
-//				}
-//			}
-//		};
-//		timer = new Timer(1, timeEvent);
+		time = 0;
+		ActionListener timeEvent = new ActionListener()
+		{
+			public void actionPerformed(ActionEvent evt)
+			{
+				if(play) {
+					incrementTime(timeInterval);
+				}
+			}
+		};
+		timer = new Timer(1, timeEvent);
 //		timer.start();
 		System.out.println("Finished");
 	}
@@ -77,6 +77,7 @@ public class LandingVisualiser extends JPanel
 		if(landerList != null && planetToPaint != null) {
 			paintPlanet(g);
 			paintTrajectory(g);
+			paintOrbit(g);
 			//paintLander(g);
 		}
 	}
@@ -86,10 +87,9 @@ public class LandingVisualiser extends JPanel
 		for(int i = 0; i < landerList.size(); i++) {
 			int x = xOrigin;
 			int y = yOrigin + yOffset;
-			y -= landerList.get(i).getPosition().getX() / distanceScaling;
-			x -= landerList.get(i).getPosition().getY() / distanceScaling;
-			System.out.println(landerList.get(i).getPosition() + " "  + i);
-			g.fillOval(x,y,2,2);
+			double rx = (landerList.get(i).getPosition().getX() / distanceScaling) - 22;
+			double ry = (landerList.get(i).getPosition().getY() / distanceScaling);
+			g.fillOval(x - (int) ry, y - (int) rx, 2, 2);
 		}
 		
 	}
@@ -102,28 +102,22 @@ public class LandingVisualiser extends JPanel
 		int x = xOrigin;
 		int y = yOrigin + yOffset;
 			
-		//x += (int) landerList[time].getPosition().getX();
-		//y += (int) landerList[time].getPosition().getY();
+		x += (int) landerList.get(time).getPosition().getX();
+		y += (int) landerList.get(time).getPosition().getY();
 			
-		//double degrees = landerList.get(time).getAngle();
-//		double theta = Math.toRadians(degrees);
-//		AffineTransform tx = AffineTransform.getRotateInstance(theta, w/2, h/2);
-//		AffineTransformOp op = new AffineTransformOp(tx, AffineTransformOp.TYPE_BILINEAR);
-//			
-//		g.drawImage(op.filter(image, new BufferedImage(w, h, image.getType())), x-(w/2), y-(h/2), w, h, null);
+		double degrees = landerList.get(time).getAngle();
+		double theta = Math.toRadians(degrees);
+		AffineTransform tx = AffineTransform.getRotateInstance(theta, w/2, h/2);
+		AffineTransformOp op = new AffineTransformOp(tx, AffineTransformOp.TYPE_BILINEAR);
+			
+		g.drawImage(op.filter(image, new BufferedImage(w, h, image.getType())), x-(w/2), y-(h/2), w, h, null);
 	}
 	
 	private void paintPlanet(Graphics2D g) {
-		//int r = (int) planetToPaint.radius;
-		int r = 50;
+		int r = (int) planetToPaint.radius;
+		r /= distanceScaling;
 		int x = xOrigin;
 		int y = yOrigin + yOffset;
-		
-//      x += planetToPaint.location.getX() / landerList.get(time).getPosition().getX();
-//		x += r/2;
-		
-//      y += planetToPaint.location.getY() / landerList.get(time).getPosition().getY();
-//      y += r/2;
 		
 		if(planetToPaint.image != null) {
 			BufferedImage image = ResourceLoader.getImage(planetToPaint.image);
@@ -134,9 +128,18 @@ public class LandingVisualiser extends JPanel
 		}
 	}
 	
+	private void paintOrbit(Graphics2D g) {
+		int x = xOrigin;
+		int y = yOrigin + yOffset;
+		int r = (int) (10000000 / distanceScaling);
+		r += 150;
+		g.setColor(Color.YELLOW);
+		g.drawOval(x - (r/2), y - (r/2), r, r);
+	}
+	
 	public void addObjectList(ArrayList<LanderObject> list) {
 		landerList = list;
-		//endTime = landerList.size();
+		endTime = landerList.size();
 		repaint();
 	}
 	
@@ -145,11 +148,11 @@ public class LandingVisualiser extends JPanel
 		repaint();
 	}
 	
-//	private void incrementTime(int interval) {
-//		if((time + interval < endTime) && (time + interval >= 0)) {
-//			time += interval;
-//			repaint();
-//		}
-//	}
+	private void incrementTime(int interval) {
+		if((time + interval < endTime) && (time + interval >= 0)) {
+			time += interval;
+			repaint();
+		}
+	}
 
 }
