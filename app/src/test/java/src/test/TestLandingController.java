@@ -38,13 +38,13 @@ class TestLandingController
 	{
 		LandingController controller = new LandingController();
 		Vector3d velocity = new Vector3d(5,10,0);
-		Vector3d position = new Vector3d();
-		Vector3d drag = controller.calculateDrag(velocity,position, 1);
+		Vector3d position = new Vector3d(); 
+		Vector3d drag = controller.calculateDrag(velocity,position, 1, 1);			//placeholder radius value
 		Vector3d expectedDrag = new Vector3d(-608.5377,-1217.0754,-0);
 		assertEquals(expectedDrag.getX(),drag.getX(),0.01);
 		assertEquals(expectedDrag.getY(),drag.getY(),0.01);
 		assertEquals(expectedDrag.getZ(),drag.getZ(),0.01);
-	}
+	} 
 
 	/**
 	 * Tests drag for negative velocity
@@ -59,7 +59,7 @@ class TestLandingController
 		LandingController controller = new LandingController();
 		Vector3d velocity = new Vector3d(-5,-10,0);
 		Vector3d position = new Vector3d();
-		Vector3d drag = controller.calculateDrag(velocity,position, 1);
+		Vector3d drag = controller.calculateDrag(velocity,position, 1, 1);
 		Vector3d expectedDrag = new Vector3d(608.5377,1217.0754,0);
 		System.out.println(drag.getX());
 		System.out.println(drag.getY());
@@ -81,7 +81,7 @@ class TestLandingController
 		LandingController controller = new LandingController();
 		Vector3d velocity = new Vector3d(0,0,0);
 		Vector3d position = new Vector3d();
-		Vector3d drag = controller.calculateDrag(velocity,position, 1);
+		Vector3d drag = controller.calculateDrag(velocity,position, 1, 1);
 		Vector3d expectedDrag = new Vector3d(0,0,0);
 		assertEquals(expectedDrag.getX(),drag.getX());
 		assertEquals(expectedDrag.getY(),drag.getY());
@@ -122,11 +122,13 @@ class TestLandingController
 
 	
 	/*
-	 * Partitions:
-	 * Out of the atmosphere's range
-	 * In the atmoshpere's range
-	 * Touching the radius
-	 * On/inside the planet 
+	 * PARTITIONS:
+	 * 	Out of the atmosphere's range
+	 * 	In the atmoshpere's range
+	 * 	Touching the radius
+	 * 	On/inside the planet 
+	 * 	Just above halfway
+	 * 	Just below halfway
 	 */
 	@Test void testAirPresScalingAboveMax() {
 		LandingController control = new LandingController();
@@ -146,7 +148,7 @@ class TestLandingController
 		System.out.println(control.airPressureScaling(position,10));
 	}
 	
-	@Test void testAirPresScalingHalfway() {
+	@Test void testAirPresScalingHalfway() {								//should be 0.75
 		LandingController control = new LandingController();
 		Vector3d position = new Vector3d(0,500000,0);
 		System.out.println(control.airPressureScaling(position,200000));
@@ -272,6 +274,4 @@ class TestLandingController
 //		LandingController lc = new LandingController();
 //		assertEquals(lc.testHeight(v, new Vector3d(0,0,0), r), false);
 //	}
-	
-
 }

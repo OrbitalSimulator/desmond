@@ -24,7 +24,7 @@ public class LandingController
 		
 	public ArrayList<LanderObject> plotTrajectory(Vector3d landerLocation, 
 			 						 Vector3d landerVelocity,
-									 double landerMass,
+									 double landerMass, 
 									 Vector3d planetLocation,
 									 Vector3d planetVelocity,
 									 double planetMass,
@@ -53,7 +53,7 @@ public class LandingController
 		{
 			Logger.logCSV(logFileName, time + "," + currentState.position.get(0).toCSV() + currentState.velocity.get(0).toCSV());
 						
-			Vector3d drag = calculateDrag(currentState.velocity.get(0), currentState.position.get(0), stepSize);
+			Vector3d drag = calculateDrag(currentState.velocity.get(0), currentState.position.get(0), stepSize, planetRadius);
 			currentState.velocity.set(0, currentState.velocity.get(0).sub(drag));
 			currentState = controllerAction(currentState, planetRadius);
 			currentState = solver.step(f, time, currentState, stepSize);
@@ -116,14 +116,14 @@ public class LandingController
 	 * Implementing Fd = Cd * rho * (V^2 * Area)/2 * unitVector
 	 * Represents (respectively): Force of drag = dragCoefficient * airDensity * magnitudeOfVelocity^2 * 1/2 * unitVector  
 	 */
-	public Vector3d calculateDrag(Vector3d velocity, Vector3d position, double stepSize)
+	public Vector3d calculateDrag(Vector3d velocity, Vector3d position, double stepSize, double radius)
 	{
 		if (velocity.getX() == 0 && velocity.getY() == 0)
 			return new Vector3d(0,0,0);
 		
 		double totalArea = getTotalArea();
 		double veloMagnitude = velocity.norm();
-		double drag = DRAG_COEFFICIENT * airPresSeaLevel * ((totalArea * (veloMagnitude * veloMagnitude))/2);
+		double drag = DRAG_COEFFICIENT * airPressureScaling(position, radius) * ((totalArea * (veloMagnitude * veloMagnitude))/2);
 		drag = drag * stepSize;
 		
 		Vector3d direction = velocity.unitVector();
@@ -204,7 +204,7 @@ public class LandingController
 			return airPresSeaLevel;
 		}
 		
-		double scaleOfDistance = realDistance/atmosphereMaxRange;
+		double scaleOfDistance = 1-(realDistance/atmosphereMaxRange);
 		return scaleOfDistance*airPresSeaLevel;
 	}
 }
