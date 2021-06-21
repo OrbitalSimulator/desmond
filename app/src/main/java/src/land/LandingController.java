@@ -12,9 +12,12 @@ import src.solv.Verlet;
 
 public class LandingController 
 {
-	private final double LANDER_AREA = 1.91; 		// Mars InSight lander was 1.56 meters in diameter, pi * radius^2
 	private final double DRAG_COEFFICIENT = 2.1;	// page 1187, from https://pdfs.semanticscholar.org/5410/30f5b4c387a3d5d06fbee8549347d6bddf82.pdf
 	private final double AIR_DENSITY = 5.428; 		// https://www.aero.psu.edu/avia/pubs/LanSch17.pdf, page 3
+	private final double LANDER_AREA = 1.91; 		// Mars InSight lander was 1.56 meters in diameter, pi * radius^2
+	private final double PARACHUTE_AREA = 1000;
+	
+	protected boolean parachuteDeployed = false;
 	
 	public ArrayList<LanderObject> plotTrajectory(Vector3d landerLocation, 
 			 						 Vector3d landerVelocity,
@@ -46,6 +49,10 @@ public class LandingController
 		while(!testHeight(currentState.position.get(0), currentState.position.get(1), planetRadius))
 		{
 			Logger.logCSV("landing_controller", time + "," + currentState.position.get(0).toCSV() + currentState.velocity.get(0).toCSV());
+			
+			//Vector3d drag = calculateDrag(currentState.velocity.get(0));
+			//currentState.velocity.set(0, currentState.velocity.get(0).add(drag));
+			
 			currentState = solver.step(f, time, currentState, stepSize);
 			trajectory.add(new LanderObject(currentState.position.get(0), 0));
 			time = time + stepSize;
@@ -103,7 +110,11 @@ public class LandingController
 		Vector3d vectorDirection = unitVector.mul(-1);						//drag acts in the opposite direction in relation to the velocity.
 		
 		double veloMagnitude = velocity.norm();
-		double constant = DRAG_COEFFICIENT * LANDER_AREA * AIR_DENSITY * veloMagnitude * veloMagnitude * 0.5;
+		double totalArea = LANDER_AREA;
+		if(parachuteDeployed)
+			totalArea = totalArea + PARACHUTE_AREA;
+		
+		double constant = DRAG_COEFFICIENT * totalArea * AIR_DENSITY * veloMagnitude * veloMagnitude * 0.5;
 		
 		Vector3d dragForce = vectorDirection.mul(constant);					//scale the unit vector by the constants we have, to get the actual drag force vector	
 		return dragForce;
@@ -119,5 +130,10 @@ public class LandingController
 			array[i]= input.get(i);
 		}
 		return array;
+	}
+	
+	protected void deployParachute()
+	{
+		parachuteDeployed = true;
 	}
 }
