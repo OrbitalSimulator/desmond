@@ -55,7 +55,7 @@ public class OpenLoopController extends LandingController
 			Vector3d drag = calculateDrag(currentState.velocity.get(0), currentState.position.get(0), stepSize, planetRadius);
 			currentState.velocity.set(0, currentState.velocity.get(0).sub(drag));
 			currentState = solver.step(f, time, currentState, stepSize);
-			
+			 
 			trajectory.add(new LanderObject(currentState.position.get(0), 0)); 
 			time = time + stepSize;
 			

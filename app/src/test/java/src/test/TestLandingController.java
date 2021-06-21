@@ -177,7 +177,7 @@ class TestLandingController
 	{
 		LandingController controller = new LandingController();
 		Vector3d velocity = new Vector3d(5,10,0);
-		Vector3d position = new Vector3d();
+		Vector3d position = new Vector3d(); 
 		Vector3d drag = controller.calculateDrag(velocity,position, 1, 1);			//placeholder radius value
 		Vector3d expectedDrag = new Vector3d(-608.5377,-1217.0754,-0);
 		assertEquals(expectedDrag.getX(),drag.getX(),0.01);

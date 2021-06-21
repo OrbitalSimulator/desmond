@@ -20,7 +20,7 @@ public class LandingController
 	private final double grav = 1.352;				// acceleration due to gravity
 	private final double k = 1.38064852e-23;		// Boltzmann constants
 	private final double m = 27.60867588e-3;		// average molar mass of air molecules
-	
+	 
 	protected double stepSize = 1;
 	protected double deployParachuteHeight = 5000;
 	protected int parachuteState = 0;
