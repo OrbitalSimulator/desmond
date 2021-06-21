@@ -44,7 +44,7 @@ public class ClosedLoopController extends LandingController
 	
 	Logger.logCSV("closedloop_controller", "Time,Pos X, Pos Y, Pos Z, Vel X, Vel Y, Vel Z");
 	double time = 0;
-	double stepSize = 0.1;
+	double stepSize = 1;
 	while(!testHeight(currentState.position.get(0), currentState.position.get(1), planetRadius))
 	{
 		Logger.logCSV("closedloop_controller", time + "," + currentState.position.get(0).toCSV() + currentState.velocity.get(0).toCSV());

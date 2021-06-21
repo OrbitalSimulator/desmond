@@ -4,7 +4,8 @@ import src.peng.Vector3d;
 
 public class LanderObject 
 {
-
+	private final double radius = 1.56;
+	private final double mass = 6e3;
 	private double angle;
 	private Vector3d position;
 	
