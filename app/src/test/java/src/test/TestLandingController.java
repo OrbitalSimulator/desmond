@@ -261,11 +261,13 @@ class TestLandingController
 
 	
 	/*
-	 * Partitions:
-	 * Out of the atmosphere's range
-	 * In the atmoshpere's range
-	 * Touching the radius
-	 * On/inside the planet 
+	 * PARTITIONS:
+	 * 	Out of the atmosphere's range
+	 * 	In the atmoshpere's range
+	 * 	Touching the radius
+	 * 	On/inside the planet 
+	 * 	Just above halfway
+	 * 	Just below halfway
 	 */
 	@Test void testAirPresScalingAboveMax() {
 		LandingController control = new LandingController();
@@ -285,9 +287,21 @@ class TestLandingController
 		System.out.println(control.airPressureScaling(position,10));
 	}
 	
-	@Test void testAirPresScalingHalfway() {
+	@Test void testAirPresScalingHalfway() {								//should be 0.75
 		LandingController control = new LandingController();
 		Vector3d position = new Vector3d(0,500000,0);
+		System.out.println(control.airPressureScaling(position,200000));
+	}
+	
+	@Test void testAirPresScalingHalfOffsetUp() {								//should be less than 0.75
+		LandingController control = new LandingController();
+		Vector3d position = new Vector3d(0,550000,0);
+		System.out.println(control.airPressureScaling(position,200000));
+	}
+	
+	@Test void testAirPresScalingHalfOffsetDown() {								//should be more than 0.75
+		LandingController control = new LandingController();
+		Vector3d position = new Vector3d(0,450000,0);
 		System.out.println(control.airPressureScaling(position,200000));
 	}
 }
