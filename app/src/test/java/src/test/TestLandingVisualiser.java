@@ -5,7 +5,6 @@ import org.junit.jupiter.api.Test;
 
 import java.awt.Dimension;
 import javax.swing.JFrame;
-import src.peng.Vector2d;
 import src.visu.LandingVisualiser;
 
 class TestLandingVisualiser {

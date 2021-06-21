@@ -1,31 +1,23 @@
 package src.visu;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Insets;
-import java.awt.Point;
-import java.awt.Toolkit;
-import java.util.ArrayList;
-
-import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-import src.peng.Vector2d;
 import src.peng.Vector3d;
 import src.univ.CelestialBody;
 
 public class LandingVisualiser extends JPanel
 {
 			
+	private static final long serialVersionUID = 1L;
 	private int xOrigin;
 	private int yOrigin;
 	
 	private double distanceScaling = 1.00;
 	
-	private Vector2d vectorToPaint;
+	private Vector3d vectorToPaint;
 	private CelestialBody planetToPaint;
 	
 	public LandingVisualiser() 
@@ -63,7 +55,7 @@ public class LandingVisualiser extends JPanel
 		
 	}
 	
-	public void addVector(Vector2d vector) {
+	public void addVector(Vector3d vector) {
 		vectorToPaint = vector;
 		repaint();
 	}

@@ -24,12 +24,7 @@ public class LandingController
 	
 	protected boolean parachuteDeployed = false;
 	
-	public LandingController() 
-	{
-		
-	}
-	
-	public Vector3d[] plotTrajectory(Vector3d landerLocation, 
+	public ArrayList<LanderObject> plotTrajectory(Vector3d landerLocation, 
 			 						 Vector3d landerVelocity,
 									 double landerMass,
 									 Vector3d planetLocation,
@@ -51,30 +46,31 @@ public class LandingController
 		ODESolver solver = new Verlet();
 		ODEFunctionInterface f = new NewtonGravityFunction(masses);
 		
-		ArrayList<Vector3d> trajectory = new ArrayList<Vector3d>();
+		ArrayList<LanderObject> trajectory = new ArrayList<LanderObject>();
 		
 		Logger.logCSV("landing_controller", "Time,Pos X, Pos Y, Pos Z, Vel X, Vel Y, Vel Z");
 		double time = 0;
-		double stepSize = 1;
-		while(!impact(currentState.position.get(0), currentState.position.get(1), planetRadius))
+		double stepSize = 0.1;
+		while(!testHeight(currentState.position.get(0), currentState.position.get(1), planetRadius))
 		{
 			Logger.logCSV("landing_controller", time + "," + currentState.position.get(0).toCSV() + currentState.velocity.get(0).toCSV());
 			
 			Vector3d drag = calculateDrag(currentState.velocity.get(0),currentState.position.get(0));
 			currentState.velocity.set(0, currentState.velocity.get(0).add(drag));
+
 			
 			currentState = solver.step(f, time, currentState, stepSize);
-			trajectory.add(currentState.position.get(0));
+			trajectory.add(new LanderObject(currentState.position.get(0), 0));
 			time = time + stepSize;
 		}
 		
-		return toArray(trajectory);
+		return trajectory;
 	}
 	
 	/**
 	 * @return true if the position is within the radius of (0,0,0)
 	 */
-	public boolean impact(Vector3d landerPosition, Vector3d planetPosition, double radius)
+	public boolean testHeight(Vector3d landerPosition, Vector3d planetPosition, double radius)
 	{
 		double distance = landerPosition.dist(planetPosition);
 		distance = Math.abs(distance);
