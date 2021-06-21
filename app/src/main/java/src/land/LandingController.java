@@ -53,12 +53,12 @@ public class LandingController
 		
 		ArrayList<Vector3d> trajectory = new ArrayList<Vector3d>();
 		
-		Logger.logCSV("landing_controllerball2", "Time,Pos X, Pos Y, Pos Z, Vel X, Vel Y, Vel Z");
+		Logger.logCSV("landing_controller", "Time,Pos X, Pos Y, Pos Z, Vel X, Vel Y, Vel Z");
 		double time = 0;
 		double stepSize = 1;
 		while(!impact(currentState.position.get(0), currentState.position.get(1), planetRadius))
 		{
-			Logger.logCSV("landing_controllerball2", time + "," + currentState.position.get(0).toCSV() + currentState.velocity.get(0).toCSV());
+			Logger.logCSV("landing_controller", time + "," + currentState.position.get(0).toCSV() + currentState.velocity.get(0).toCSV());
 			
 			Vector3d drag = calculateDrag(currentState.velocity.get(0),currentState.position.get(0));
 			currentState.velocity.set(0, currentState.velocity.get(0).add(drag));
