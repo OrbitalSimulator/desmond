@@ -1,7 +1,5 @@
 package src.test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
 import org.junit.jupiter.api.Test;
 
 import src.land.OpenLoopController;
@@ -9,21 +7,6 @@ import src.peng.Vector3d;
 
 public class TestOpenLoopController
 {
-
-	/*
-	 * REP. INV.:
-	 * Height should be > radius
-	 * 
-	 * PARTITIONS:						Above				  |	Below
-	 * Left-hand side of planet			point = -ve,0 > height|	point = -ve,0 < height
-	 * Right-hand side of planet		point = +ve,0 > height|	point = +ve,0 < height
-	 * Centre above planet				point = 0,+ve > height| point = 0,+ve < height
-	 * Centre below planet				point = 0,-ve > height|	point = 0,-ve < height
-	 * 
-	 * Special cases:
-	 * Height of point == height, --> false
-	 * Height of point, impact() is true, --> true
-	 */
 
 	@Test
 	void logFallFromOrbit() 
@@ -41,6 +24,22 @@ public class TestOpenLoopController
 		oc.plotTrajectory(landerPos, landerVel, landerMass, titanPos, titanVel, titanMass, titanRadius);
 	}
 	
+	
+	/*
+	 * REP. INV.:
+	 * Height should be > radius
+	 * 
+	 * PARTITIONS:						Above				  |	Below
+	 * Left-hand side of planet			point = -ve,0 > height|	point = -ve,0 < height
+	 * Right-hand side of planet		point = +ve,0 > height|	point = +ve,0 < height
+	 * Centre above planet				point = 0,+ve > height| point = 0,+ve < height
+	 * Centre below planet				point = 0,-ve > height|	point = 0,-ve < height
+	 * 
+	 * Special cases:
+	 * Height of point == height, --> false
+	 * Height of point, impact() is true, --> true
+	 */
+
 //	@Test 
 //	void testAboveHeightRHSide() {
 //		

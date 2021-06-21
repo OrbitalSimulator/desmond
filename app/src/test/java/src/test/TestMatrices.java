@@ -3,7 +3,6 @@ package src.test;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import src.traj.Matrix;
 import src.traj.Matrix2d;
 import src.traj.Matrix3d;
 

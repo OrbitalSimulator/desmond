@@ -1,7 +1,6 @@
 package src.test;
 
 import org.junit.jupiter.api.Test;
-import src.test.Error;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class TestError

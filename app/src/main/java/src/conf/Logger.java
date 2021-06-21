@@ -4,8 +4,6 @@ import java.io.File;
 import java.nio.file.FileSystem;
 import java.nio.file.FileSystems;
 
-import src.conf.FileManager;
-
 import java.io.FileWriter;
 import java.io.IOException;
 

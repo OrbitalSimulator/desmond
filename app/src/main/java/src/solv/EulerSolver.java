@@ -1,7 +1,5 @@
 package src.solv;
 
-import java.lang.Math;
-
 import src.peng.ODEFunctionInterface;
 import src.peng.State;
 import src.peng.StateInterface;

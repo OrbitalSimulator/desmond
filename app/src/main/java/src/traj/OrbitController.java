@@ -44,10 +44,8 @@ public class OrbitController extends GuidanceController
 		CelestialBody temp = universe.U[target][0];
 		Vector3d currentPosition = temp.calculateTargetPoint();
 		trajectory[0] = currentPosition;
-		//TODO Adapt for first state velocity
 		Vector3d currentVelocity = optimumVelocity;
 
-		//TODO Alter finishing condition of loop
 		while(currentStep < settings.noOfSteps)
 		{
 			double currentTime = currentStep * settings.stepSize;
@@ -78,28 +76,14 @@ public class OrbitController extends GuidanceController
 			Vector3d directionVector = calculateProbeLinearDirectionVector(probeNextPosition);
 			directionVector = directionVector.mul(-1);																	//Invert directionalVector
 			impulse = directionVector.mul(scaler);
-			//TODO delete DEBUG
-			if(DEBUG)
-			{
-				System.out.println(" First Case: Outer");
-				System.out.println("Direction Vector: " +directionVector.toString());
-				System.out.println("Impulse: "+ impulse.toString());
-			}
 		}
 		else if(probeOrbitalStatus.equalsIgnoreCase("Inner boundary"))
 		{
 			Vector3d directionVector = calculateProbeLinearDirectionVector(probeNextPosition);
 			impulse = directionVector.mul(scaler);
-			//TODO delete DEBUG
-			if(DEBUG)
-			{
-				System.out.println(" Second case: Inner");
-				System.out.println("Direction Vector: " +directionVector.toString());
-				System.out.println("Impulse: "+ impulse.toString());
-			}
 		}
 
-		if(!probeOrbitalStatus.equalsIgnoreCase("Neutral"))													//Apply dampener
+		if(!probeOrbitalStatus.equalsIgnoreCase("Neutral"))																//Apply dampener
 		{
 			scaler = scaler - scaler/dampener;
 		}
@@ -112,25 +96,16 @@ public class OrbitController extends GuidanceController
 		return probePosition.unitVector();
 	}
 
-	//TODO Logger to obtain route evaluation for logging and determine local maxima.
 	//Values to obtain current orbit:
 	// velocityLowerLimit = 1200.; change = 6000; number of steps = 80000; step size = 12; orbitalHeight = 450e3; Acceptable error = 100e3
 	public double orbitalHillClimbing(Universe universe, int target, SimulationSettings settings)
 	{
 		double velocityLowerLimit = 1200.0;
-
 		double change = 6000;
-
-		double acceptableError = 10e3;
 		double currentError = Double.MAX_VALUE;
-
-		Vector3d[] route = new Vector3d[settings.noOfSteps+1];
 		double orbitalHeight = getOrbitalHeight(universe, target);
-
 		double lowerLimitError = routeEvaluation(velocityLowerLimit, settings, universe, target, orbitalHeight);
-
 		double currentVelocity =  velocityLowerLimit + change;
-
 		int temp = 20;
 
 		while(temp>0)
@@ -162,7 +137,6 @@ public class OrbitController extends GuidanceController
 	{
 		double bestVelocity = 0;
 		double currentVelocity = 9619;
-		Vector3d[] route = new Vector3d[settings.noOfSteps+1];
 		double orbitalHeight = getOrbitalHeight(universe, target);
 		double error = Double.MAX_VALUE;
 

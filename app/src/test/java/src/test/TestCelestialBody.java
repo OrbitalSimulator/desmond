@@ -77,7 +77,7 @@ class TestCelestialBody
 		{
 			double z = buildLaunchTest(new Vector3d(5,5,5)).getZ();
 			double error = 0.001;
-			assertEquals(-1.15, z);
+			assertEquals(-1.15, z, error);
 		}
 		
 		@Test
@@ -85,7 +85,7 @@ class TestCelestialBody
 		{
 			double x = buildLaunchTest(new Vector3d(-5,-5,-5)).getX();
 			double error = 0.001;
-			assertEquals(1.15, x);
+			assertEquals(1.15, x, error);
 		}
 		
 		@Test
@@ -93,7 +93,7 @@ class TestCelestialBody
 		{
 			double y = buildLaunchTest(new Vector3d(-5,-5,-5)).getY();
 			double error = 0.001;
-			assertEquals(1.15, y);
+			assertEquals(1.15, y, error);
 		}
 		
 		@Test
@@ -101,7 +101,7 @@ class TestCelestialBody
 		{
 			double z = buildLaunchTest(new Vector3d(-5,-5,-5)).getZ();
 			double error = 0.001;
-			assertEquals(1.15, z);
+			assertEquals(1.15, z, error);
 		}
 		
 		private Vector3d buildLaunchTest(Vector3d target)
@@ -148,7 +148,6 @@ class TestCelestialBody
 		assertEquals(1.08e+7, cb.timeInMs());
 	}
 
-	//TODO (Travis) Check if accuracy is important for these tests (Confirm epsilon with group member)
 	@Test
 	void testSOI()
 	{

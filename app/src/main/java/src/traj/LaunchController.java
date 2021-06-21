@@ -6,14 +6,12 @@ import src.peng.ODEFunctionInterface;
 import src.peng.State;
 import src.peng.Vector3d;
 import src.solv.ODESolver;
-import src.solv.RungeKutta4th;
 import src.solv.Verlet;
 import src.univ.Universe;
-import src.visu.Visualiser;
 
 public class LaunchController extends GuidanceController
 {
-	private ODESolver solver = new RungeKutta4th();
+	private ODESolver solver = new Verlet();
 
 	public LaunchController(Universe universe, int target, SimulationSettings settings) 
 	{
