@@ -28,7 +28,7 @@ public class LandingController
 	
 	public ArrayList<LanderObject> plotTrajectory(Vector3d landerLocation, 
 			 						 Vector3d landerVelocity,
-									 double landerMass,
+									 double landerMass, 
 									 Vector3d planetLocation,
 									 Vector3d planetVelocity,
 									 double planetMass,

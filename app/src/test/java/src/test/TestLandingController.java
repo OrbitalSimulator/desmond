@@ -183,7 +183,7 @@ class TestLandingController
 		assertEquals(expectedDrag.getX(),drag.getX(),0.01);
 		assertEquals(expectedDrag.getY(),drag.getY(),0.01);
 		assertEquals(expectedDrag.getZ(),drag.getZ(),0.01);
-	}
+	} 
 
 	/**
 	 * Tests drag for negative velocity
