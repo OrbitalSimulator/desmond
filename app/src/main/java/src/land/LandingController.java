@@ -158,7 +158,7 @@ public class LandingController
 	 * 
 	 * if impact() is true, return 1.5 (on surface)
 	 */
-	private double airPressureAt(Vector3d height) {
+	public double airPressureAt(Vector3d height) {
 		
 		double h = height.dist(new Vector3d());
 		double t = generateTemp(h);
@@ -167,7 +167,7 @@ public class LandingController
 		return result;
 	}
 	
-	private double generateTemp(double height) {
+	public double generateTemp(double height) {
 		if (height == 0) {							// if impacted on surface hence temp is given
 			return 94;
 		}

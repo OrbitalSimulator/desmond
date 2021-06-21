@@ -261,6 +261,10 @@ class TestLandingController
 		assertEquals(control.normalise(new Vector3d(100,94,45),new Vector3d(213,432,113)),new Vector3d(-113,-338,-68));
 	}
 
-
+	@Test void testPressureAt() {
+		LandingController control = new LandingController();
+		Vector3d position = new Vector3d(0,2e25,0);
+		System.out.println(control.airPressureAt(position));
+	}
 
 }
