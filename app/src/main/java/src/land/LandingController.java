@@ -198,4 +198,21 @@ public class LandingController
 			return randValue;
 		}
 	}
+	
+	public double airPressureScaling(Vector3d point, double radius) {
+		
+		double atmosphereMaxRange = 600000;
+		double originToPoint = point.dist(new Vector3d());
+		double realDistance = originToPoint - radius;
+		
+		if (realDistance>=atmosphereMaxRange) {
+			return 0;
+		}
+		else if (-radius<realDistance && realDistance<=0) {			//touching or inside the planet
+			return airPresSeaLevel;
+		}
+		
+		double scaleOfDistance = realDistance/atmosphereMaxRange;
+		return scaleOfDistance*airPresSeaLevel;
+	}
 }
