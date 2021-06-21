@@ -17,7 +17,7 @@ class TestLandingController
 		
 		Vector3d landerPos = new Vector3d(1E7,0,100);
 		Vector3d landerVel = new Vector3d(0,0,0);
-		double landerMass = 6e3;
+		double landerMass = 6e5;
 		Vector3d titanPos = new Vector3d(0,0,0);
 		Vector3d titanVel = new Vector3d(0,0,0);
 		double titanMass = 1.34553e23;

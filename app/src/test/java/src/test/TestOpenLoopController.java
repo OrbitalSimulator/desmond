@@ -7,7 +7,8 @@ import org.junit.jupiter.api.Test;
 import src.land.OpenLoopController;
 import src.peng.Vector3d;
 
-public class TestOpenLoopController {
+public class TestOpenLoopController
+{
 
 	/*
 	 * REP. INV.:
