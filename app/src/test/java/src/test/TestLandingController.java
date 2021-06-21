@@ -30,6 +30,27 @@ class TestLandingController
 		}
 	}
 	
+	@Test
+	void logBallFallFromOrbit() 
+	{
+		LandingController lc = new LandingController();
+		
+		Vector3d landerPos = new Vector3d(0,20000,100);
+		Vector3d landerVel = new Vector3d(0,0,0);
+		double landerMass = 1000;
+		Vector3d titanPos = new Vector3d(0,0,0);
+		Vector3d titanVel = new Vector3d(0,0,0);
+		double titanMass = 1e16;
+		double titanRadius = 100;
+
+		Vector3d[] array = lc.plotTrajectory(landerPos, landerVel, landerMass, titanPos, titanVel, titanMass, titanRadius);
+		for(int i = 0;i<array.length;i++)
+		{
+			System.out.println(array[i]);
+		}
+	}
+	
+	
 	/**
 	 * 	Testing Strategy:
 	 *  	|  1 |  2 |  3 |  4 |  5 |  6 |  7 |  8 |  9 | 10 | 11 | 12 | 13 | 14 | 15 | 16 |
@@ -164,7 +185,8 @@ class TestLandingController
 	{
 		LandingController controller = new LandingController();
 		Vector3d velocity = new Vector3d(5,10,0);
-		Vector3d drag = controller.calculateDrag(velocity);
+		Vector3d position = new Vector3d();
+		Vector3d drag = controller.calculateDrag(velocity,position);
 		Vector3d expectedDrag = new Vector3d(-608.5377,-1217.0754,-0);
 		assertEquals(expectedDrag.getX(),drag.getX(),0.01);
 		assertEquals(expectedDrag.getY(),drag.getY(),0.01);
@@ -183,7 +205,8 @@ class TestLandingController
 	{
 		LandingController controller = new LandingController();
 		Vector3d velocity = new Vector3d(-5,-10,0);
-		Vector3d drag = controller.calculateDrag(velocity);
+		Vector3d position = new Vector3d();
+		Vector3d drag = controller.calculateDrag(velocity,position);
 		Vector3d expectedDrag = new Vector3d(608.5377,1217.0754,0);
 		System.out.println(drag.getX());
 		System.out.println(drag.getY());
@@ -204,7 +227,8 @@ class TestLandingController
 	{
 		LandingController controller = new LandingController();
 		Vector3d velocity = new Vector3d(0,0,0);
-		Vector3d drag = controller.calculateDrag(velocity);
+		Vector3d position = new Vector3d();
+		Vector3d drag = controller.calculateDrag(velocity,position);
 		Vector3d expectedDrag = new Vector3d(0,0,0);
 		assertEquals(expectedDrag.getX(),drag.getX());
 		assertEquals(expectedDrag.getY(),drag.getY());

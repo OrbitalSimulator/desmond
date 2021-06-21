@@ -1,5 +1,7 @@
 package src.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import org.junit.jupiter.api.Test;
 
 import src.land.LandingController;
@@ -28,7 +30,7 @@ public class TestOpenLoopController {
 		
 		OpenLoopController controller = new OpenLoopController();
 		Vector3d point = new Vector3d(50000,0,0);
-		assert(!controller.belowHeight(point));
+		assertEquals(!controller.belowHeight(point),true);
 	}
 	
 	@Test 
@@ -36,7 +38,7 @@ public class TestOpenLoopController {
 		
 		OpenLoopController controller = new OpenLoopController();
 		Vector3d point = new Vector3d(-50000,0,0);
-		assert(!controller.belowHeight(point));
+		assertEquals(!controller.belowHeight(point),true);
 	}
 	
 	@Test 
@@ -44,7 +46,7 @@ public class TestOpenLoopController {
 		
 		OpenLoopController controller = new OpenLoopController();
 		Vector3d point = new Vector3d(0,60000,0);
-		assert(!controller.belowHeight(point));
+		assertEquals(!controller.belowHeight(point),true);
 	}
 	
 	@Test 
@@ -52,7 +54,7 @@ public class TestOpenLoopController {
 		
 		OpenLoopController controller = new OpenLoopController();
 		Vector3d point = new Vector3d(0,-60000,0);
-		assert(!controller.belowHeight(point));
+		assertEquals(!controller.belowHeight(point),true);
 	}
 	
 	@Test 
@@ -60,7 +62,7 @@ public class TestOpenLoopController {
 		
 		OpenLoopController controller = new OpenLoopController();
 		Vector3d point = new Vector3d(5000,0,0);
-		assert(controller.belowHeight(point));
+		assertEquals(controller.belowHeight(point),true);
 	}
 	
 	@Test 
@@ -68,7 +70,7 @@ public class TestOpenLoopController {
 		
 		OpenLoopController controller = new OpenLoopController();
 		Vector3d point = new Vector3d(-5000,0,0);
-		assert(controller.belowHeight(point));
+		assertEquals(controller.belowHeight(point),true);
 	}
 	
 	@Test 
@@ -76,7 +78,7 @@ public class TestOpenLoopController {
 		
 		OpenLoopController controller = new OpenLoopController();
 		Vector3d point = new Vector3d(0,6000,0);
-		assert(controller.belowHeight(point));
+		assertEquals(controller.belowHeight(point),true);
 	}
 	
 	@Test 
@@ -84,7 +86,7 @@ public class TestOpenLoopController {
 		
 		OpenLoopController controller = new OpenLoopController();
 		Vector3d point = new Vector3d(0,-6000,0);
-		assert(controller.belowHeight(point));
+		assertEquals(controller.belowHeight(point),true);
 	}
 	
 	@Test
@@ -92,7 +94,7 @@ public class TestOpenLoopController {
 		
 		OpenLoopController controller = new OpenLoopController();
 		Vector3d point = new Vector3d(0,40000,0);
-		assert(!controller.belowHeight(point));
+		assertEquals(!controller.belowHeight(point),true);
 	}
 	
 	@Test
@@ -100,7 +102,7 @@ public class TestOpenLoopController {
 		
 		OpenLoopController controller = new OpenLoopController();
 		Vector3d point = new Vector3d(100,100,0);
-		assert(controller.belowHeight(point));
+		assertEquals(controller.belowHeight(point),true);
 	}
 	
 	@Test
