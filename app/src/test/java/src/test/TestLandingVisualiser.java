@@ -1,6 +1,5 @@
 package src.test;
 
-import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
 
 import java.awt.Dimension;
@@ -48,5 +47,4 @@ class TestLandingVisualiser {
 //			e.printStackTrace();
 //		}
 	}
-
 }

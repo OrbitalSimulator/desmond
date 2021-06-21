@@ -4,7 +4,6 @@ import src.peng.Vector3d;
 
 public class Probe 
 {
-	private final double MAX_THRUST = 3e7;  		// Newtons
 	private final double EXHAUST_VELOCITY = 2e4;	// m/s
 	private final double DRY_MASS = 7.8e4;			// kg
 	private final double LANDER_MASS = 6e3;			// kg

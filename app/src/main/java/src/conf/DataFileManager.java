@@ -100,8 +100,6 @@ public abstract class DataFileManager extends FileManager
 		String image = reader.readLine();
 		String icon = reader.readLine();
 		LocalDateTime startTime = parseDateTime(reader.readLine());
-		LocalDateTime endTime = parseDateTime(reader.readLine());
-		double noOfSteps = Double.valueOf(reader.readLine());
 
 		CelestialBody template = new CelestialBody(new Vector3d(0,0,0),
 												   new Vector3d(0,0,0),

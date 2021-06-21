@@ -25,146 +25,7 @@ class TestLandingController
 		
 		lc.plotTrajectory(landerPos, landerVel, landerMass, titanPos, titanVel, titanMass, titanRadius);
 	}
-	
-	@Test
-	void logBallFallFromOrbit() 
-	{
-		LandingController lc = new LandingController();
 		
-		Vector3d landerPos = new Vector3d(0,20000,100);
-		Vector3d landerVel = new Vector3d(0,0,0);
-		double landerMass = 1000;
-		Vector3d titanPos = new Vector3d(0,0,0);
-		Vector3d titanVel = new Vector3d(0,0,0);
-		double titanMass = 1e16;
-		double titanRadius = 100;
-
-		lc.plotTrajectory(landerPos, landerVel, landerMass, titanPos, titanVel, titanMass, titanRadius);
-	}
-	
-	
-	/**
-	 * 	Testing Strategy:
-	 *  	|  1 |  2 |  3 |  4 |  5 |  6 |  7 |  8 |  9 | 10 | 11 | 12 | 13 | 14 | 15 | 16 |
-	 *  x   | >0 | <0 | >0 | <0 |  0 |  0 |  0 |  0 | >0 | >0 | >0 | >0 | <0 | <0 | <0 | <0 |
-	 *  y   |  0 |  0 |  0 |  0 | >0 | <0 | >0 | <0 | <0 | >0 | <0 | >0 | <0 | >0 | <0 | >0 |
-	 * d<=r |  T |  T |  F |  F |  T |  T |  F |  F |  T |  T |  F |  F |  T |  T |  F |  F |
-	 */
-	// TODO (Jerome) 4hrs
-	@Test void testImpact1()
-	{
-		Vector3d v = new Vector3d(35.0, 0.0, 0.0);
-		double r = 50.0;
-		LandingController lc = new LandingController();
-		assertEquals(lc.testHeight(v, new Vector3d(0,0,0), r), true);
-	}
-	@Test void testImpact2()
-	{
-		Vector3d v = new Vector3d(-20, 0.0, 0.0);
-		double r = 20.0;
-		LandingController lc = new LandingController();
-		assertEquals(lc.testHeight(v, new Vector3d(0,0,0), r), true);
-	}
-	@Test void testImpact3()
-	{
-		Vector3d v = new Vector3d(60.0, 0.0, 0.0);
-		double r = 45.0;
-		LandingController lc = new LandingController();
-		assertEquals(lc.testHeight(v, new Vector3d(0,0,0), r), false);
-	}
-	@Test void testImpact4()
-	{
-		Vector3d v = new Vector3d(-40.0, 0.0, 0.0);
-		double r = 30.0;
-		LandingController lc = new LandingController();
-		assertEquals(lc.testHeight(v, new Vector3d(0,0,0), r), false);
-	}
-	@Test void testImpact5()
-	{
-		Vector3d v = new Vector3d(0.0, 60, 0.0);
-		double r = 60.0;
-		LandingController lc = new LandingController();
-		assertEquals(lc.testHeight(v, new Vector3d(0,0,0), r), true);
-	}
-	@Test void testImpact6()
-	{
-		Vector3d v = new Vector3d(0.0, -20.0, 0.0);
-		double r = 25.0;
-		LandingController lc = new LandingController();
-		assertEquals(lc.testHeight(v, new Vector3d(0,0,0), r), true);
-	}
-	
-	@Test void testImpact7()
-	{
-		Vector3d v = new Vector3d(0.0, 35.0, 0.0);
-		double r = 25.0;
-		LandingController lc = new LandingController();
-		assertEquals(lc.testHeight(v, new Vector3d(0,0,0), r), false);
-	}
-	@Test void testImpact8()
-	{
-		Vector3d v = new Vector3d(0.0, -40.0, 0.0);
-		double r = 30.0;
-		LandingController lc = new LandingController();
-		assertEquals(lc.testHeight(v, new Vector3d(0,0,0), r), false);
-	}
-	@Test void testImpact9()
-	{
-		Vector3d v = new Vector3d(50.0, -30.0, 0.0);
-		double r = 58.30951895;
-		LandingController lc = new LandingController();
-		assertEquals(lc.testHeight(v, new Vector3d(0,0,0), r), true);
-	}
-	@Test void testImpact10()
-	{
-		Vector3d v = new Vector3d(15.0, 20.0, 0.0);
-		double r = 25.0;
-		LandingController lc = new LandingController();
-		assertEquals(lc.testHeight(v, new Vector3d(0,0,0), r), true);
-	}
-	@Test void testImpact11()
-	{
-		Vector3d v = new Vector3d(30.0, -15.0, 0.0);
-		double r = 30.0;
-		LandingController lc = new LandingController();
-		assertEquals(lc.testHeight(v, new Vector3d(0,0,0), r), false);
-	}
-	@Test void testImpact12()
-	{
-		Vector3d v = new Vector3d(31.0, 46.0, 0.0);
-		double r = 40.0;
-		LandingController lc = new LandingController();
-		assertEquals(lc.testHeight(v, new Vector3d(0,0,0), r), false);
-	}
-	@Test void testImpact13()
-	{
-		Vector3d v = new Vector3d(-20.0, -15.0, 0.0);
-		double r = 25.0;
-		LandingController lc = new LandingController();
-		assertEquals(lc.testHeight(v, new Vector3d(0,0,0), r), true);
-	}
-	@Test void testImpact14()
-	{
-		Vector3d v = new Vector3d(-30.0, 20.0, 0.0);
-		double r = 37;
-		LandingController lc = new LandingController();
-		assertEquals(lc.testHeight(v, new Vector3d(0,0,0), r), true);
-	}
-	@Test void testImpact15()
-	{
-		Vector3d v = new Vector3d(-40.0, -30.0, 0.0);
-		double r = 30;
-		LandingController lc = new LandingController();
-		assertEquals(lc.testHeight(v, new Vector3d(0,0,0), r), false);
-	}
-	@Test void testImpact16()
-	{
-		Vector3d v = new Vector3d(-20.0, 60.0, 0.0);
-		double r = 60;
-		LandingController lc = new LandingController();
-		assertEquals(lc.testHeight(v, new Vector3d(0,0,0), r), false);
-	}
-	
 	/**
 	 * Tests drag for positive velocity
 	 * Expected to return a positive drag
@@ -293,15 +154,124 @@ class TestLandingController
 		System.out.println(control.airPressureScaling(position,200000));
 	}
 	
-	@Test void testAirPresScalingHalfOffsetUp() {								//should be less than 0.75
-		LandingController control = new LandingController();
-		Vector3d position = new Vector3d(0,550000,0);
-		System.out.println(control.airPressureScaling(position,200000));
-	}
-	
-	@Test void testAirPresScalingHalfOffsetDown() {								//should be more than 0.75
-		LandingController control = new LandingController();
-		Vector3d position = new Vector3d(0,450000,0);
-		System.out.println(control.airPressureScaling(position,200000));
-	}
+//	/**
+//	 * 	Testing Strategy:
+//	 *  	|  1 |  2 |  3 |  4 |  5 |  6 |  7 |  8 |  9 | 10 | 11 | 12 | 13 | 14 | 15 | 16 |
+//	 *  x   | >0 | <0 | >0 | <0 |  0 |  0 |  0 |  0 | >0 | >0 | >0 | >0 | <0 | <0 | <0 | <0 |
+//	 *  y   |  0 |  0 |  0 |  0 | >0 | <0 | >0 | <0 | <0 | >0 | <0 | >0 | <0 | >0 | <0 | >0 |
+//	 * d<=r |  T |  T |  F |  F |  T |  T |  F |  F |  T |  T |  F |  F |  T |  T |  F |  F |
+//	 */
+//	@Test void testImpact1()
+//	{
+//		Vector3d v = new Vector3d(35.0, 0.0, 0.0);
+//		double r = 50.0;
+//		LandingController lc = new LandingController();
+//		assertEquals(lc.testHeight(v, new Vector3d(0,0,0), r), true);
+//	}
+//	@Test void testImpact2()
+//	{
+//		Vector3d v = new Vector3d(-20, 0.0, 0.0);
+//		double r = 20.0;
+//		LandingController lc = new LandingController();
+//		assertEquals(lc.testHeight(v, new Vector3d(0,0,0), r), true);
+//	}
+//	@Test void testImpact3()
+//	{
+//		Vector3d v = new Vector3d(60.0, 0.0, 0.0);
+//		double r = 45.0;
+//		LandingController lc = new LandingController();
+//		assertEquals(lc.testHeight(v, new Vector3d(0,0,0), r), false);
+//	}
+//	@Test void testImpact4()
+//	{
+//		Vector3d v = new Vector3d(-40.0, 0.0, 0.0);
+//		double r = 30.0;
+//		LandingController lc = new LandingController();
+//		assertEquals(lc.testHeight(v, new Vector3d(0,0,0), r), false);
+//	}
+//	@Test void testImpact5()
+//	{
+//		Vector3d v = new Vector3d(0.0, 60, 0.0);
+//		double r = 60.0;
+//		LandingController lc = new LandingController();
+//		assertEquals(lc.testHeight(v, new Vector3d(0,0,0), r), true);
+//	}
+//	@Test void testImpact6()
+//	{
+//		Vector3d v = new Vector3d(0.0, -20.0, 0.0);
+//		double r = 25.0;
+//		LandingController lc = new LandingController();
+//		assertEquals(lc.testHeight(v, new Vector3d(0,0,0), r), true);
+//	}
+//	
+//	@Test void testImpact7()
+//	{
+//		Vector3d v = new Vector3d(0.0, 35.0, 0.0);
+//		double r = 25.0;
+//		LandingController lc = new LandingController();
+//		assertEquals(lc.testHeight(v, new Vector3d(0,0,0), r), false);
+//	}
+//	@Test void testImpact8()
+//	{
+//		Vector3d v = new Vector3d(0.0, -40.0, 0.0);
+//		double r = 30.0;
+//		LandingController lc = new LandingController();
+//		assertEquals(lc.testHeight(v, new Vector3d(0,0,0), r), false);
+//	}
+//	@Test void testImpact9()
+//	{
+//		Vector3d v = new Vector3d(50.0, -30.0, 0.0);
+//		double r = 58.30951895;
+//		LandingController lc = new LandingController();
+//		assertEquals(lc.testHeight(v, new Vector3d(0,0,0), r), true);
+//	}
+//	@Test void testImpact10()
+//	{
+//		Vector3d v = new Vector3d(15.0, 20.0, 0.0);
+//		double r = 25.0;
+//		LandingController lc = new LandingController();
+//		assertEquals(lc.testHeight(v, new Vector3d(0,0,0), r), true);
+//	}
+//	@Test void testImpact11()
+//	{
+//		Vector3d v = new Vector3d(30.0, -15.0, 0.0);
+//		double r = 30.0;
+//		LandingController lc = new LandingController();
+//		assertEquals(lc.testHeight(v, new Vector3d(0,0,0), r), false);
+//	}
+//	@Test void testImpact12()
+//	{
+//		Vector3d v = new Vector3d(31.0, 46.0, 0.0);
+//		double r = 40.0;
+//		LandingController lc = new LandingController();
+//		assertEquals(lc.testHeight(v, new Vector3d(0,0,0), r), false);
+//	}
+//	@Test void testImpact13()
+//	{
+//		Vector3d v = new Vector3d(-20.0, -15.0, 0.0);
+//		double r = 25.0;
+//		LandingController lc = new LandingController();
+//		assertEquals(lc.testHeight(v, new Vector3d(0,0,0), r), true);
+//	}
+//	@Test void testImpact14()
+//	{
+//		Vector3d v = new Vector3d(-30.0, 20.0, 0.0);
+//		double r = 37;
+//		LandingController lc = new LandingController();
+//		assertEquals(lc.testHeight(v, new Vector3d(0,0,0), r), true);
+//	}
+//	@Test void testImpact15()
+//	{
+//		Vector3d v = new Vector3d(-40.0, -30.0, 0.0);
+//		double r = 30;
+//		LandingController lc = new LandingController();
+//		assertEquals(lc.testHeight(v, new Vector3d(0,0,0), r), false);
+//	}
+//	@Test void testImpact16()
+//	{
+//		Vector3d v = new Vector3d(-20.0, 60.0, 0.0);
+//		double r = 60;
+//		LandingController lc = new LandingController();
+//		assertEquals(lc.testHeight(v, new Vector3d(0,0,0), r), false);
+//	}
 }

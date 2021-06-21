@@ -12,20 +12,16 @@ import src.solv.Verlet;
 
 public class LandingController 
 {
+	protected final double LANDER_AREA = 3.822; 		// Mars InSight lander was 1.56 meters in diameter, pi * radius^2
 	private final double DRAG_COEFFICIENT = 1.1e-4;	// page 1187, from https://pdfs.semanticscholar.org/5410/30f5b4c387a3d5d06fbee8549347d6bddf82.pdf
-	private final double AIR_DENSITY = 5.428; 		// https://www.aero.psu.edu/avia/pubs/LanSch17.pdf, page 3
-	private final double LANDER_AREA = 3.822; 		// Mars InSight lander was 1.56 meters in diameter, pi * radius^2
-	private final double PARACHUTE_AREA = 1000;
 	private final double airPresSeaLevel = 1.5;		// 1.5 bars
 	private final double grav = 1.352;				// acceleration due to gravity
 	private final double k = 1.38064852e-23;		// Boltzmann constants
 	private final double m = 27.60867588e-3;		// average molar mass of air molecules
-	 
-	protected double stepSize = 1;
-	protected double deployParachuteHeight = 5000;
-	protected int parachuteState = 0;
-	protected boolean parachuteDeployed = false;
 	
+	protected double stepSize = 1;	
+	protected String logFileName = "landing_controller";
+		
 	public ArrayList<LanderObject> plotTrajectory(Vector3d landerLocation, 
 			 						 Vector3d landerVelocity,
 									 double landerMass, 
@@ -50,32 +46,41 @@ public class LandingController
 		
 		ArrayList<LanderObject> trajectory = new ArrayList<LanderObject>();
 		
-		Logger.logCSV("landing_controller3", "Time,Pos X, Pos Y, Pos Z, Vel X, Vel Y, Vel Z");
+		Logger.logCSV(logFileName, "Time,Pos X, Pos Y, Pos Z, Vel X, Vel Y, Vel Z");
 		
 		double time = 0;
-		while(!testHeight(currentState.position.get(0), currentState.position.get(1), planetRadius))
+		while(!testHeight(currentState, planetRadius))
 		{
-			Logger.logCSV("landing_controller3", time + "," + currentState.position.get(0).toCSV() + currentState.velocity.get(0).toCSV());
+			Logger.logCSV(logFileName, time + "," + currentState.position.get(0).toCSV() + currentState.velocity.get(0).toCSV());
 						
 			Vector3d drag = calculateDrag(currentState.velocity.get(0), currentState.position.get(0), stepSize, planetRadius);
 			currentState.velocity.set(0, currentState.velocity.get(0).sub(drag));
+			currentState = controllerAction(currentState, planetRadius);
 			currentState = solver.step(f, time, currentState, stepSize);
 			
 			trajectory.add(new LanderObject(currentState.position.get(0), 0));
 			time = time + stepSize;
 			
-			if(time > 1e7)// Safety cutoff
+			if(time > 300000)// Safety cutoff
 				break;
 		}
 		
 		return trajectory;
 	}
 	
+	protected State controllerAction(State currentState, double radius)
+	{
+		return currentState;
+	}
+	
 	/**
 	 * @return true if the position is within the radius of (0,0,0)
 	 */
-	public boolean testHeight(Vector3d landerPosition, Vector3d planetPosition, double radius)
+	public boolean testHeight(State state, double radius)
 	{
+		Vector3d landerPosition = state.position.get(0);
+		Vector3d planetPosition = state.position.get(1);
+		
 		double distance = landerPosition.dist(planetPosition);
 		distance = Math.abs(distance);
 		return distance <= radius;
@@ -116,10 +121,7 @@ public class LandingController
 		if (velocity.getX() == 0 && velocity.getY() == 0)
 			return new Vector3d(0,0,0);
 		
-		double totalArea = LANDER_AREA;
-		if(parachuteDeployed)
-			totalArea = totalArea + getParachuteState();
-		
+		double totalArea = getTotalArea();
 		double veloMagnitude = velocity.norm();
 		double drag = DRAG_COEFFICIENT * airPressureScaling(position, radius) * ((totalArea * (veloMagnitude * veloMagnitude))/2);
 		drag = drag * stepSize;
@@ -140,20 +142,10 @@ public class LandingController
 		return array;
 	}
 	
-	protected void deployParachute()
+	protected double getTotalArea()
 	{
-		parachuteDeployed = true;
-		Logger.logCSV("openloop_controller", "Parachute Deployed!");
+		return LANDER_AREA;
 	}
-	
-	protected double getParachuteState()
-	{
-		if(parachuteState < 100)
-			parachuteState = parachuteState + 5;
-		
-		return (PARACHUTE_AREA/100) * parachuteState;
-	}
-	
 	
 	/*
 	 * Method represents:

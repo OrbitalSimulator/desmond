@@ -11,7 +11,6 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 import src.peng.Vector3d;
-import src.peng.Vector3dInterface;
 import src.univ.CelestialBody;
 
 public abstract class SettingsFileManager extends FileManager

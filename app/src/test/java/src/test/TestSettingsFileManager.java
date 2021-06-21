@@ -6,12 +6,10 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import src.conf.SettingsFileManager;
 import src.conf.SimulationSettings;
-import src.peng.Vector3dInterface;
 import src.peng.Vector3d;
 
 class TestSettingsFileManager 

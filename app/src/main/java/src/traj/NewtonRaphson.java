@@ -8,7 +8,6 @@ import src.peng.Vector3d;
 import src.solv.Verlet;
 import src.univ.CelestialBody;
 import src.univ.Universe;
-import src.visu.Visualiser;
 
 public class NewtonRaphson extends GuidanceController
 {
@@ -18,8 +17,6 @@ public class NewtonRaphson extends GuidanceController
     private int target;
     private Vector3d launchPoint;
     private Vector3d targetPoint;
-    private double launchTime;
-    private double targetTime;
     private double delta = 0.001;
     private Vector3d startingVelocity;
     private double epsilon = 0.1;
@@ -27,7 +24,6 @@ public class NewtonRaphson extends GuidanceController
     private int iteration = 0;
     private Vector3d velocityAtTarget;
 
-    private static final boolean DEBUG = true;
     private static boolean visualize = true;
 
     public NewtonRaphson(Universe universe, int origin, int target, SimulationSettings settings,  Vector3d startingVelocity)
@@ -42,7 +38,6 @@ public class NewtonRaphson extends GuidanceController
         calculateLaunchAndTargetCoordinates();
     }
 
-    //TODO refactor into methods takeStep and planRoute
     public Vector3d[] planRoute(Vector3d initVelocity)
     {
         double[] masses = addMassToEnd(universe.masses, 700);
@@ -78,16 +73,10 @@ public class NewtonRaphson extends GuidanceController
         Vector3d[] trajectory = planRoute(startingVelocity);
         Vector3d closestPoint = calculateClosestPoint(trajectory);
         double distance = closestPointDistanceToTarget(closestPoint);
-        if(DEBUG)
-        {
-            System.out.println("Iteration 0:");
-            System.out.println(startingVelocity.toString());
-            System.out.println("Distance: "+ distance);
-        }
+        
         if(visualize)
-        {
             universe.addTempTrajectory(trajectory);
-        }
+
         iteration++;
 
         while(distance > epsilon)
@@ -100,22 +89,10 @@ public class NewtonRaphson extends GuidanceController
             distance = closestPointDistanceToTarget(closestPoint);
 
             if(visualize)
-            {
                 universe.addTempTrajectory(trajectory);
-            }
-
-            if(DEBUG)
-            {
-                System.out.println("Iteration: " + iteration);
-                System.out.println("Velocity: " + startingVelocity.toString());
-                System.out.println("Distance: " + distance);
-                System.out.println("------");
-            }
 
             if(iteration > iterationLimit)
-            {
                 throw new RuntimeException("Newton Raphson did not converge");
-            }
 
             iteration++;
         }
@@ -196,7 +173,6 @@ public class NewtonRaphson extends GuidanceController
         return trajectory[finalIndex];
     }
 
-    //TODO Method interferes with NR method, therefore will not be used. Possibly to determine probe velcotiy seperate from origin?
     public void calculateRelativeStartingVelocity(Vector3d startingVelocity)
     {
         Vector3d originVelocity = universe.U[origin][0].velocity;
@@ -206,7 +182,6 @@ public class NewtonRaphson extends GuidanceController
 
     private void calculateLaunchAndTargetCoordinates()
     {
-        //TODO Check settings.noSteps doesn't give out of bounds error'
         int targetPointIndex = settings.stepOffset + settings.noOfSteps;
         CelestialBody targetPlanet = universe.U[target][targetPointIndex];
         targetPoint = targetPlanet.calculateTargetPoint();

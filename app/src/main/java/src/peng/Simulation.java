@@ -20,7 +20,6 @@ public class Simulation
 		SimulationSettings settings;
 		try {
 			settings = SettingsFileManager.load();
-			// TODO Add number of steps and calculate each point to return 
 			settings.probeStartPosition = probeStartPosition;
 			settings.probeStartVelocity = probeStartVelocity;
 			

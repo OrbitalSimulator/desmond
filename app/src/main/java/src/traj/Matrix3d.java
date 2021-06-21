@@ -80,7 +80,6 @@ public class Matrix3d extends Matrix
 
         for(int i = 0; i < matrixDimension; i++)
         {
-            //TODO Alter so magic number 2 is not here
             double[] row = new double[2];
             int index = 0;
 

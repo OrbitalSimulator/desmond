@@ -269,10 +269,7 @@ public class EphemerisReader
 
 	
 	private String lookUpIcon(String name)
-	{
-		FileSystem fileSystem = FileSystems.getDefault();
-		String path = fileSystem.getPath("").toAbsolutePath().toString();
-		
+	{	
 		switch(name)
 		{
 			case "Sun": 		
