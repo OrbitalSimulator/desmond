@@ -55,13 +55,15 @@ public class LandingController
 		{
 			Logger.logCSV("landing_controller", time + "," + currentState.position.get(0).toCSV() + currentState.velocity.get(0).toCSV());
 			
-			Vector3d drag = calculateDrag(currentState.velocity.get(0),currentState.position.get(0));
+			Vector3d drag = calculateDrag(currentState.velocity.get(0),currentState.position.get(0), stepSize);
 			currentState.velocity.set(0, currentState.velocity.get(0).add(drag));
-
 			
 			currentState = solver.step(f, time, currentState, stepSize);
 			trajectory.add(new LanderObject(currentState.position.get(0), 0));
 			time = time + stepSize;
+			
+			if(time > 22022)
+				break;
 		}
 		
 		return trajectory;
@@ -107,7 +109,7 @@ public class LandingController
 	 * Implementing Fd = Cd * rho * V^2 * Area * 1/2 * unitVector
 	 * Represents (respectively): Force of drag = dragCoefficient * airDensity * magnitudeOfVelocity^2 * 1/2 * unitVector  
 	 */
-	public Vector3d calculateDrag(Vector3d velocity, Vector3d position)
+	public Vector3d calculateDrag(Vector3d velocity, Vector3d position, double stepSize)
 	{
 		if (velocity.getX() == 0 && velocity.getY() == 0) {
 			return new Vector3d(0,0,0);
@@ -121,6 +123,7 @@ public class LandingController
 			totalArea = totalArea + PARACHUTE_AREA;
 		
 		double constant = DRAG_COEFFICIENT * LANDER_AREA * airPresSeaLevel * veloMagnitude * veloMagnitude * 0.5;
+		constant = constant * stepSize;
 		
 		Vector3d dragForce = vectorDirection.mul(constant);					//scale the unit vector by the constants we have, to get the actual drag force vector	
 		return dragForce;
