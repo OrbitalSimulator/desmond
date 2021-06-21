@@ -12,12 +12,10 @@ import src.solv.Verlet;
 
 public class OpenLoopController extends LandingController
 {
-	private double height = 4000000;
 
 	public OpenLoopController() 
 	{
 		super();
-		
 	}
 
 	public ArrayList<LanderObject> plotTrajectory(Vector3d landerLocation, 
@@ -45,24 +43,30 @@ public class OpenLoopController extends LandingController
 		ArrayList<LanderObject> trajectory = new ArrayList<LanderObject>();
 		
 		Logger.logCSV("openloop_controller", "Time,Pos X, Pos Y, Pos Z, Vel X, Vel Y, Vel Z");
+		
 		double time = 0;
-		double stepSize = 0.1;
 		while(!testHeight(currentState.position.get(0), currentState.position.get(1), planetRadius))
 		{
 			Logger.logCSV("openloop_controller", time + "," + currentState.position.get(0).toCSV() + currentState.velocity.get(0).toCSV());
+			
+			if(!parachuteDeployed && testHeight(currentState.position.get(0), currentState.position.get(1), planetRadius + deployParachuteHeight))
+				deployParachute();
+			
+			Vector3d drag = calculateDrag(currentState.velocity.get(0), currentState.position.get(0), stepSize);
+			currentState.velocity.set(0, currentState.velocity.get(0).sub(drag));
 			currentState = solver.step(f, time, currentState, stepSize);
+			
 			trajectory.add(new LanderObject(currentState.position.get(0), 0));
 			time = time + stepSize;
 			
-			if (testHeight(currentState.position.get(0),planetLocation,height))
-			{
-				Vector3d thrust = new Vector3d(0.17,0,0);
-				currentState.velocity.set(0, currentState.velocity.get(0).add(thrust));
-			}
+			if(time > 1e7)// Safety cutoff
+				break;
 		}
 	
 		return trajectory;
 	}
+	
+	
 	
 
 }

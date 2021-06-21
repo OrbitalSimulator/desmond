@@ -12,16 +12,18 @@ import src.solv.Verlet;
 
 public class LandingController 
 {
-	private final double DRAG_COEFFICIENT = 2.1;	// page 1187, from https://pdfs.semanticscholar.org/5410/30f5b4c387a3d5d06fbee8549347d6bddf82.pdf
+	private final double DRAG_COEFFICIENT = 1.1e-4;	// page 1187, from https://pdfs.semanticscholar.org/5410/30f5b4c387a3d5d06fbee8549347d6bddf82.pdf
 	private final double AIR_DENSITY = 5.428; 		// https://www.aero.psu.edu/avia/pubs/LanSch17.pdf, page 3
-	private final double LANDER_AREA = 1.91; 		// Mars InSight lander was 1.56 meters in diameter, pi * radius^2
+	private final double LANDER_AREA = 3.822; 		// Mars InSight lander was 1.56 meters in diameter, pi * radius^2
 	private final double PARACHUTE_AREA = 1000;
 	private final double airPresSeaLevel = 1.5;		// 1.5 bars
 	private final double grav = 1.352;				// acceleration due to gravity
 	private final double k = 1.38064852e-23;		// Boltzmann constants
-	private final double m = 27.60867588;			// average molar mass of air molecules
+	private final double m = 27.60867588e-3;		// average molar mass of air molecules
 	
-	
+	protected double stepSize = 1;
+	protected double deployParachuteHeight = 5000;
+	protected int parachuteState = 0;
 	protected boolean parachuteDeployed = false;
 	
 	public ArrayList<LanderObject> plotTrajectory(Vector3d landerLocation, 
@@ -49,19 +51,21 @@ public class LandingController
 		ArrayList<LanderObject> trajectory = new ArrayList<LanderObject>();
 		
 		Logger.logCSV("landing_controller", "Time,Pos X, Pos Y, Pos Z, Vel X, Vel Y, Vel Z");
+		
 		double time = 0;
-		double stepSize = 0.1;
 		while(!testHeight(currentState.position.get(0), currentState.position.get(1), planetRadius))
 		{
 			Logger.logCSV("landing_controller", time + "," + currentState.position.get(0).toCSV() + currentState.velocity.get(0).toCSV());
-			
-			Vector3d drag = calculateDrag(currentState.velocity.get(0),currentState.position.get(0));
-			currentState.velocity.set(0, currentState.velocity.get(0).add(drag));
-
-			
+						
+			Vector3d drag = calculateDrag(currentState.velocity.get(0), currentState.position.get(0), stepSize);
+			currentState.velocity.set(0, currentState.velocity.get(0).sub(drag));
 			currentState = solver.step(f, time, currentState, stepSize);
+			
 			trajectory.add(new LanderObject(currentState.position.get(0), 0));
 			time = time + stepSize;
+			
+			if(time > 1e7)// Safety cutoff
+				break;
 		}
 		
 		return trajectory;
@@ -104,26 +108,24 @@ public class LandingController
 	 * @return the force of drag exerted at the current velocity using the final values declared
 	 * in the class
 	 * 
-	 * Implementing Fd = Cd * rho * V^2 * Area * 1/2 * unitVector
+	 * Implementing Fd = Cd * rho * (V^2 * Area)/2 * unitVector
 	 * Represents (respectively): Force of drag = dragCoefficient * airDensity * magnitudeOfVelocity^2 * 1/2 * unitVector  
 	 */
-	public Vector3d calculateDrag(Vector3d velocity, Vector3d position)
+	public Vector3d calculateDrag(Vector3d velocity, Vector3d position, double stepSize)
 	{
-		if (velocity.getX() == 0 && velocity.getY() == 0) {
+		if (velocity.getX() == 0 && velocity.getY() == 0)
 			return new Vector3d(0,0,0);
-		}
-		Vector3d unitVector = velocity.unitVector();
-		Vector3d vectorDirection = unitVector.mul(-1);						//drag acts in the opposite direction in relation to the velocity.
 		
-		double veloMagnitude = velocity.norm();
 		double totalArea = LANDER_AREA;
 		if(parachuteDeployed)
-			totalArea = totalArea + PARACHUTE_AREA;
+			totalArea = totalArea + getParachuteState();
 		
-		double constant = DRAG_COEFFICIENT * LANDER_AREA * airPresSeaLevel * veloMagnitude * veloMagnitude * 0.5;
+		double veloMagnitude = velocity.norm();
+		double drag = DRAG_COEFFICIENT * airPresSeaLevel * ((totalArea * (veloMagnitude * veloMagnitude))/2);
+		drag = drag * stepSize;
 		
-		Vector3d dragForce = vectorDirection.mul(constant);					//scale the unit vector by the constants we have, to get the actual drag force vector	
-		return dragForce;
+		Vector3d direction = velocity.unitVector();
+		return direction.mul(drag);						//scale the unit vector by the constants we have, to get the actual drag force vector	
 	}
 	
 	/** Converts: Arraylist<Vector3d>  ->  Vector3d[] 
@@ -141,7 +143,17 @@ public class LandingController
 	protected void deployParachute()
 	{
 		parachuteDeployed = true;
+		Logger.logCSV("openloop_controller", "Parachute Deployed!");
 	}
+	
+	protected double getParachuteState()
+	{
+		if(parachuteState < 100)
+			parachuteState = parachuteState + 5;
+		
+		return (PARACHUTE_AREA/100) * parachuteState;
+	}
+	
 	
 	/*
 	 * Method represents:

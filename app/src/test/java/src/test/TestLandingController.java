@@ -17,7 +17,7 @@ class TestLandingController
 		
 		Vector3d landerPos = new Vector3d(1E7,0,100);
 		Vector3d landerVel = new Vector3d(0,0,0);
-		double landerMass = 6e3;
+		double landerMass = 6e5;
 		Vector3d titanPos = new Vector3d(0,0,0);
 		Vector3d titanVel = new Vector3d(0,0,0);
 		double titanMass = 1.34553e23;
@@ -178,7 +178,7 @@ class TestLandingController
 		LandingController controller = new LandingController();
 		Vector3d velocity = new Vector3d(5,10,0);
 		Vector3d position = new Vector3d();
-		Vector3d drag = controller.calculateDrag(velocity,position);
+		Vector3d drag = controller.calculateDrag(velocity,position, 1);
 		Vector3d expectedDrag = new Vector3d(-608.5377,-1217.0754,-0);
 		assertEquals(expectedDrag.getX(),drag.getX(),0.01);
 		assertEquals(expectedDrag.getY(),drag.getY(),0.01);
@@ -198,7 +198,7 @@ class TestLandingController
 		LandingController controller = new LandingController();
 		Vector3d velocity = new Vector3d(-5,-10,0);
 		Vector3d position = new Vector3d();
-		Vector3d drag = controller.calculateDrag(velocity,position);
+		Vector3d drag = controller.calculateDrag(velocity,position, 1);
 		Vector3d expectedDrag = new Vector3d(608.5377,1217.0754,0);
 		System.out.println(drag.getX());
 		System.out.println(drag.getY());
@@ -220,7 +220,7 @@ class TestLandingController
 		LandingController controller = new LandingController();
 		Vector3d velocity = new Vector3d(0,0,0);
 		Vector3d position = new Vector3d();
-		Vector3d drag = controller.calculateDrag(velocity,position);
+		Vector3d drag = controller.calculateDrag(velocity,position, 1);
 		Vector3d expectedDrag = new Vector3d(0,0,0);
 		assertEquals(expectedDrag.getX(),drag.getX());
 		assertEquals(expectedDrag.getY(),drag.getY());
