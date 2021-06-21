@@ -5,9 +5,8 @@ import src.peng.Vector3d;
 
 public class ClosedLoopController extends LandingController
 {
-	
+	private final Vector3d MAX_BURN = new Vector3d(10,0,0);
 	private double burnHeight = 500;
-	private Vector3d burn = new Vector3d(5,0,0);
 	
 	public ClosedLoopController() 
 	{
@@ -18,12 +17,26 @@ public class ClosedLoopController extends LandingController
 	@Override
 	protected State controllerAction(State currentState, double planetRadius)
 	{
-		
 		if(testHeight(currentState, planetRadius + burnHeight))
 		{
-				currentState.velocity.set(0, currentState.velocity.get(0).add(burn));
+			double angle = getAngleFromState(currentState);
+			if(	angle < 30)
+			{
+				
+			} 
+			else if (angle > 330)
+			{
+				
+			}
+			
+			currentState.velocity.set(0, currentState.velocity.get(0).add(MAX_BURN));
 		}
 		return currentState;
+	}
+	
+	private double getAngleFromState(State state)
+	{
+		return getAngle(state.velocity.get(0), state.position.get(1), state.position.get(0));
 	}
 	
 	public double getAngle(Vector3d velocity, Vector3d landLocation, Vector3d probeLocation)
@@ -34,6 +47,16 @@ public class ClosedLoopController extends LandingController
 		double cosA = cosineLaw(a,b,c);
 		return cosA;
 	}
+	
+	private Vector3d scaleBurn(Vector3d velocity)
+	{
+		if(Math.abs(velocity.norm()) > Math.abs(MAX_BURN.norm()))
+			return MAX_BURN;
+		
+		double percentage = Math.abs(MAX_BURN.norm()) - Math.abs(velocity.norm());
+		return null;
+	}
+	
 
 	private double cosineLaw(double a, double b, double c)
 	{
