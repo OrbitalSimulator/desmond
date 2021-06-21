@@ -56,8 +56,8 @@ public class OpenLoopController extends LandingController
 			
 			if (testHeight(currentState.position.get(0),planetLocation,height))
 			{
-				Vector3d maxThrust = new Vector3d(0,1000,0);
-				currentState.velocity.get(0).add(maxThrust);
+				Vector3d thrust = new Vector3d(0.17,0,0);
+				currentState.velocity.set(0, currentState.velocity.get(0).add(thrust));
 			}
 		}
 	

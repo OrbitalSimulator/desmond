@@ -22,6 +22,8 @@ class TestLandingController
 		Vector3d titanVel = new Vector3d(0,0,0);
 		double titanMass = 1.34553e23;
 		double titanRadius = 2575.5e3;
+		
+		lc.plotTrajectory(landerPos, landerVel, landerMass, titanPos, titanVel, titanMass, titanRadius);
 	}
 	
 	/**
