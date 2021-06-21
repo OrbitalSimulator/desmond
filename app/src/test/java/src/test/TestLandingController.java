@@ -39,11 +39,7 @@ class TestLandingController
 		double titanMass = 1e16;
 		double titanRadius = 100;
 
-		Vector3d[] array = lc.plotTrajectory(landerPos, landerVel, landerMass, titanPos, titanVel, titanMass, titanRadius);
-		for(int i = 0;i<array.length;i++)
-		{
-			System.out.println(array[i]);
-		}
+		lc.plotTrajectory(landerPos, landerVel, landerMass, titanPos, titanVel, titanMass, titanRadius);
 	}
 	
 	

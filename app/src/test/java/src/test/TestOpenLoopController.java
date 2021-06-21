@@ -23,87 +23,7 @@ public class TestOpenLoopController {
 	 * Height of point == height, --> false
 	 * Height of point, impact() is true, --> true
 	 */
-	
-	@Test 
-	void testAboveHeightRHSide() {
-		
-		OpenLoopController controller = new OpenLoopController();
-		Vector3d point = new Vector3d(50000,0,0);
-		assertEquals(!controller.belowHeight(point),true);
-	}
-	
-	@Test 
-	void testAboveHeightLHSide() {
-		
-		OpenLoopController controller = new OpenLoopController();
-		Vector3d point = new Vector3d(-50000,0,0);
-		assertEquals(!controller.belowHeight(point),true);
-	}
-	
-	@Test 
-	void testAboveHeightCentreTop() {
-		
-		OpenLoopController controller = new OpenLoopController();
-		Vector3d point = new Vector3d(0,60000,0);
-		assertEquals(!controller.belowHeight(point),true);
-	}
-	
-	@Test 
-	void testAboveHeightCentreBottom() {
-		
-		OpenLoopController controller = new OpenLoopController();
-		Vector3d point = new Vector3d(0,-60000,0);
-		assertEquals(!controller.belowHeight(point),true);
-	}
-	
-	@Test 
-	void testBelowHeightRHSide() {
-		
-		OpenLoopController controller = new OpenLoopController();
-		Vector3d point = new Vector3d(5000,0,0);
-		assertEquals(controller.belowHeight(point),true);
-	}
-	
-	@Test 
-	void testBelowHeightLHSide() {
-		
-		OpenLoopController controller = new OpenLoopController();
-		Vector3d point = new Vector3d(-5000,0,0);
-		assertEquals(controller.belowHeight(point),true);
-	}
-	
-	@Test 
-	void testBelowHeightCentreTop() {
-		
-		OpenLoopController controller = new OpenLoopController();
-		Vector3d point = new Vector3d(0,6000,0);
-		assertEquals(controller.belowHeight(point),true);
-	}
-	
-	@Test 
-	void testBelowHeightCentreBottom() {
-		
-		OpenLoopController controller = new OpenLoopController();
-		Vector3d point = new Vector3d(0,-6000,0);
-		assertEquals(controller.belowHeight(point),true);
-	}
-	
-	@Test
-	void testHeightsEqual() {
-		
-		OpenLoopController controller = new OpenLoopController();
-		Vector3d point = new Vector3d(0,40000,0);
-		assertEquals(!controller.belowHeight(point),true);
-	}
-	
-	@Test
-	void testImpactTrue() {
-		
-		OpenLoopController controller = new OpenLoopController();
-		Vector3d point = new Vector3d(100,100,0);
-		assertEquals(controller.belowHeight(point),true);
-	}
-	
+
 	@Test
 	void logFallFromOrbit() 
 	{
@@ -119,4 +39,86 @@ public class TestOpenLoopController {
 		
 		oc.plotTrajectory(landerPos, landerVel, landerMass, titanPos, titanVel, titanMass, titanRadius);
 	}
+	
+//	@Test 
+//	void testAboveHeightRHSide() {
+//		
+//		OpenLoopController controller = new OpenLoopController();
+//		Vector3d point = new Vector3d(50000,0,0);
+//		assertEquals(!controller.belowHeight(point),true);
+//	}
+//	
+//	@Test 
+//	void testAboveHeightLHSide() {
+//		
+//		OpenLoopController controller = new OpenLoopController();
+//		Vector3d point = new Vector3d(-50000,0,0);
+//		assertEquals(!controller.belowHeight(point),true);
+//	}
+//	
+//	@Test 
+//	void testAboveHeightCentreTop() {
+//		
+//		OpenLoopController controller = new OpenLoopController();
+//		Vector3d point = new Vector3d(0,60000,0);
+//		assertEquals(!controller.belowHeight(point),true);
+//	}
+//	
+//	@Test 
+//	void testAboveHeightCentreBottom() {
+//		
+//		OpenLoopController controller = new OpenLoopController();
+//		Vector3d point = new Vector3d(0,-60000,0);
+//		assertEquals(!controller.belowHeight(point),true);
+//	}
+//	
+//	@Test 
+//	void testBelowHeightRHSide() {
+//		
+//		OpenLoopController controller = new OpenLoopController();
+//		Vector3d point = new Vector3d(5000,0,0);
+//		assertEquals(controller.belowHeight(point),true);
+//	}
+//	
+//	@Test 
+//	void testBelowHeightLHSide() {
+//		
+//		OpenLoopController controller = new OpenLoopController();
+//		Vector3d point = new Vector3d(-5000,0,0);
+//		assertEquals(controller.belowHeight(point),true);
+//	}
+//	
+//	@Test 
+//	void testBelowHeightCentreTop() {
+//		
+//		OpenLoopController controller = new OpenLoopController();
+//		Vector3d point = new Vector3d(0,6000,0);
+//		assertEquals(controller.belowHeight(point),true);
+//	}
+//	
+//	@Test 
+//	void testBelowHeightCentreBottom() {
+//		
+//		OpenLoopController controller = new OpenLoopController();
+//		Vector3d point = new Vector3d(0,-6000,0);
+//		assertEquals(controller.belowHeight(point),true);
+//	}
+//	
+//	@Test
+//	void testHeightsEqual() {
+//		
+//		OpenLoopController controller = new OpenLoopController();
+//		Vector3d point = new Vector3d(0,40000,0);
+//		assertEquals(!controller.belowHeight(point),true);
+//	}
+//	
+//	@Test
+//	void testImpactTrue() {
+//		
+//		OpenLoopController controller = new OpenLoopController();
+//		Vector3d point = new Vector3d(100,100,0);
+//		assertEquals(controller.belowHeight(point),true);
+//	}
+	
+
 }
