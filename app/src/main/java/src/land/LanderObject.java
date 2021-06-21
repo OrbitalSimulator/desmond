@@ -33,4 +33,15 @@ public class LanderObject
         }
         return false;
     }
+	
+	public LanderObject rotate(double angleChange, double direction) {
+		double newAngle = this.angle;
+		if (direction == 0) {
+			newAngle = newAngle + angleChange;
+		}
+		else{
+			newAngle = newAngle - angleChange;
+		}
+		return new LanderObject(this.position,newAngle);
+	}
 }
