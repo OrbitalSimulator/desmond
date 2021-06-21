@@ -16,6 +16,11 @@ public class LandingController
 	private final double AIR_DENSITY = 5.428; 		// https://www.aero.psu.edu/avia/pubs/LanSch17.pdf, page 3
 	private final double LANDER_AREA = 1.91; 		// Mars InSight lander was 1.56 meters in diameter, pi * radius^2
 	private final double PARACHUTE_AREA = 1000;
+	private final double airPresSeaLevel = 1.5;		// 1.5 bars
+	private final double grav = 1.352;				// acceleration due to gravity
+	private final double k = 1.38064852e-23;		// Boltzmann constants
+	private final double m = 27.60867588;			// average molar mass of air molecules
+	
 	
 	protected boolean parachuteDeployed = false;
 	
@@ -50,8 +55,9 @@ public class LandingController
 		{
 			Logger.logCSV("landing_controller", time + "," + currentState.position.get(0).toCSV() + currentState.velocity.get(0).toCSV());
 			
-			//Vector3d drag = calculateDrag(currentState.velocity.get(0));
-			//currentState.velocity.set(0, currentState.velocity.get(0).add(drag));
+			Vector3d drag = calculateDrag(currentState.velocity.get(0),currentState.position.get(0));
+			currentState.velocity.set(0, currentState.velocity.get(0).add(drag));
+
 			
 			currentState = solver.step(f, time, currentState, stepSize);
 			trajectory.add(new LanderObject(currentState.position.get(0), 0));
@@ -101,7 +107,7 @@ public class LandingController
 	 * Implementing Fd = Cd * rho * V^2 * Area * 1/2 * unitVector
 	 * Represents (respectively): Force of drag = dragCoefficient * airDensity * magnitudeOfVelocity^2 * 1/2 * unitVector  
 	 */
-	public Vector3d calculateDrag(Vector3d velocity)
+	public Vector3d calculateDrag(Vector3d velocity, Vector3d position)
 	{
 		if (velocity.getX() == 0 && velocity.getY() == 0) {
 			return new Vector3d(0,0,0);
@@ -114,7 +120,7 @@ public class LandingController
 		if(parachuteDeployed)
 			totalArea = totalArea + PARACHUTE_AREA;
 		
-		double constant = DRAG_COEFFICIENT * totalArea * AIR_DENSITY * veloMagnitude * veloMagnitude * 0.5;
+		double constant = DRAG_COEFFICIENT * LANDER_AREA * airPresSeaLevel * veloMagnitude * veloMagnitude * 0.5;
 		
 		Vector3d dragForce = vectorDirection.mul(constant);					//scale the unit vector by the constants we have, to get the actual drag force vector	
 		return dragForce;
@@ -135,5 +141,49 @@ public class LandingController
 	protected void deployParachute()
 	{
 		parachuteDeployed = true;
+	}
+	
+	/*
+	 * Method represents:
+	 * Ph = P0 * e^((-m*g*h)/k*T
+	 * Where:
+	 * Ph is pressure at height, P0 pressure at seal level
+	 * m is mass of one molecule of..., g is gravitational acceleration, h is the height	
+	 * k is Boltzmann's constant, t is the absolute temperature (in kelvin)
+	 * 
+	 * 
+	 * if impact() is true, return 1.5 (on surface)
+	 */
+	public double airPressureAt(Vector3d height) {
+		
+		double h = height.dist(new Vector3d());
+		double t = generateTemp(h);
+		
+		double result = airPresSeaLevel * Math.exp((-m*grav*h)/k*t);
+		return result;
+	}
+	
+	public double generateTemp(double height) {
+		if (height == 0) {							// if impacted on surface hence temp is given
+			return 94;
+		}
+		else if (0<height && height<50000) {
+			long min = (long) 71;
+			long max = (long) 81;
+			double randValue = (double)Math.floor(Math.random()*(max-min+1)+min);
+			return randValue;
+		}
+		else if (height>=50000 && height<200000) {
+			long min = (long) 71;
+			long max = (long) 180;
+			double randValue = (double)Math.floor(Math.random()*(max-min+1)+min);
+			return randValue;
+		}
+		else {
+			long min = (long) 160;
+			long max = (long) 180;
+			double randValue = (double)Math.floor(Math.random()*(max-min+1)+min);
+			return randValue;
+		}
 	}
 }
