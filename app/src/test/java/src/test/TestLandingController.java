@@ -259,4 +259,35 @@ class TestLandingController
 		System.out.println(control.airPressureAt(position));
 	}
 
+	
+	/*
+	 * Partitions:
+	 * Out of the atmosphere's range
+	 * In the atmoshpere's range
+	 * Touching the radius
+	 * On/inside the planet 
+	 */
+	@Test void testAirPresScalingAboveMax() {
+		LandingController control = new LandingController();
+		Vector3d position = new Vector3d(0,2e25,0);
+		System.out.println(control.airPressureScaling(position,1000));
+	}
+	
+	@Test void testAirPresScalingZero() {
+		LandingController control = new LandingController();
+		Vector3d position = new Vector3d(0,10,0);
+		System.out.println(control.airPressureScaling(position,10));
+	}
+	
+	@Test void testAirPresScalingBelowZero() {
+		LandingController control = new LandingController();
+		Vector3d position = new Vector3d(0,9,0);
+		System.out.println(control.airPressureScaling(position,10));
+	}
+	
+	@Test void testAirPresScalingHalfway() {
+		LandingController control = new LandingController();
+		Vector3d position = new Vector3d(0,500000,0);
+		System.out.println(control.airPressureScaling(position,200000));
+	}
 }
