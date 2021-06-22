@@ -23,7 +23,7 @@ class TestLandingVisualiser {
 //			LandingController lc = new LandingController();
 //	        
 //	        Vector3d landerPos = new Vector3d(1E7,0,0);
-//	        Vector3d landerVel = new Vector3d(0,300,0);
+//	        Vector3d landerVel = new Vector3d(0,700,0);
 //	        double landerMass = 6e3;
 //	        Vector3d titanPos = new Vector3d(0,0,0);
 //	        Vector3d titanVel = new Vector3d(0,0,0);
@@ -37,7 +37,7 @@ class TestLandingVisualiser {
 //			testWindow.add(landingVisualiser);
 //			testWindow.setSize(new Dimension(900, 600));
 //			testWindow.setVisible(true);
-//			landingVisualiser.addPlanet(new CelestialBody(new Vector3d(0.0, 700.0, 0.0), new Vector3d(0.0,0.0,0.0), 10.0, 1000.0, "floor", "titanScaled.png", "", LocalDateTime.now()));
+//			landingVisualiser.addPlanet(new CelestialBody(new Vector3d(0.0, 700.0, 0.0), new Vector3d(0.0,0.0,0.0), 10.0, 2575500, "floor", "titanScaled.png", "", LocalDateTime.now()));
 //			
 //			landingVisualiser.addObjectList(trajectory);
 //			Thread.sleep(1000);
