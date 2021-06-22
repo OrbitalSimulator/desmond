@@ -11,12 +11,6 @@ import org.junit.jupiter.api.Test;
 import src.peng.Vector3d;
 import src.univ.CelestialBody;
 
-/**
- * Group 22
- * Test class for CelestialBody
- * @author L.Debnath
- * @date 14 Mar 21
- */
 class TestCelestialBody 
 {	
 	LocalTime t1 = LocalTime.parse("00:01");

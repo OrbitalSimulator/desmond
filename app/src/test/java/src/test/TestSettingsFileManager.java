@@ -53,61 +53,61 @@ class TestSettingsFileManager
 
 	@Test
 	void loadProbePosition(){
-                SimulationSettings settings = loadSettings();
-                assertEquals(new Vector3d(1,2,3), settings.probeStartPosition);
+		SimulationSettings settings = loadSettings();
+		assertEquals(new Vector3d(1,2,3), settings.probeStartPosition);
 	}
 
 	@Test
 	void loadProbeVelocity(){
-                SimulationSettings settings = loadSettings();
-                assertEquals(new Vector3d(4,5,6), settings.probeStartVelocity);
+		SimulationSettings settings = loadSettings();
+		assertEquals(new Vector3d(4,5,6), settings.probeStartVelocity);
 	}
 
 	@Test
 	void loadCelestialBodyLocation(){
-                SimulationSettings settings = loadSettings();
-                assertEquals(new Vector3d(6.047855986424127e+06,-6.801800047868888e+10,-5.702742359714534e+09), settings.celestialBodies[1].location);
+		SimulationSettings settings = loadSettings();
+		assertEquals(new Vector3d(6.047855986424127e+06,-6.801800047868888e+10,-5.702742359714534e+09), settings.celestialBodies[1].location);
 	}
 
 	@Test
 	void loadCelestialBodyVelocity(){
-                SimulationSettings settings = loadSettings();
-                assertEquals(new Vector3d(3.892585189044652e+04, 2.978342247012996e+03,-3.327964151414740e+03), settings.celestialBodies[1].velocity);
+		SimulationSettings settings = loadSettings();
+		assertEquals(new Vector3d(3.892585189044652e+04, 2.978342247012996e+03,-3.327964151414740e+03), settings.celestialBodies[1].velocity);
 	}
 
 	@Test
 	void loadCelestialBodyMass(){
-                SimulationSettings settings = loadSettings();
-                assertEquals(3.302e23, settings.celestialBodies[1].mass);
-        }
+		SimulationSettings settings = loadSettings();
+		assertEquals(3.302e23, settings.celestialBodies[1].mass);
+	}
 
-        @Test
+	@Test
 	void loadCelestialBodyRadius(){
-                SimulationSettings settings = loadSettings();
-                assertEquals(2440e3, settings.celestialBodies[1].radius);
-        }
-	
+		SimulationSettings settings = loadSettings();
+		assertEquals(2440e3, settings.celestialBodies[1].radius);
+	}
+
 	@Test
 	void loadCelestialBodyImage(){
-                SimulationSettings settings = loadSettings();
-                assertEquals("mercuryScaled.png", settings.celestialBodies[1].image);
-        }
+		SimulationSettings settings = loadSettings();
+		assertEquals("mercuryScaled.png", settings.celestialBodies[1].image);
+	}
 
-        @Test
+	@Test
 	void loadCelestialBodyIcon(){
-                SimulationSettings settings = loadSettings();
-                assertEquals("mercuryIcon.png", settings.celestialBodies[1].icon);
-        }
+		SimulationSettings settings = loadSettings();
+		assertEquals("mercuryIcon.png", settings.celestialBodies[1].icon);
+	}
 
-        @Test
+	@Test
 	void loadCelestialBodyTime(){
-                SimulationSettings settings = loadSettings();
-                LocalTime cbTime = LocalTime.parse("00:00:00");
+		SimulationSettings settings = loadSettings();
+		LocalTime cbTime = LocalTime.parse("00:00:00");
 		LocalDate cbDate = LocalDate.parse("2021-04-01");
 		LocalDateTime cbDateTime = LocalDateTime.of(cbDate, cbTime);
-                assertEquals(cbDateTime, settings.celestialBodies[1].time);
-        }
-	
+		assertEquals(cbDateTime, settings.celestialBodies[1].time);
+	}
+
 	private SimulationSettings loadSettings()
 	{ 
 		try 

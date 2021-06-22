@@ -121,7 +121,6 @@ public class TestVector3d
         assertEquals(6.708203932499369,a.norm());
     }
     @Test
-        // Add two vectors
     void testAddVector()
     {
         Vector3d q = a.add(b);
@@ -130,7 +129,6 @@ public class TestVector3d
         assertEquals(-9, q.getZ());
     }
     @Test
-        // Subtract two vectors
     void testSubtractVector()
     {
         Vector3d q = a.sub(b);
@@ -139,13 +137,11 @@ public class TestVector3d
         assertEquals(1, q.getZ());
     }
     @Test
-        // Dot product test
     void testDotProduct()
     {
         assertEquals(1,a.dotProduct(b));
     }
     @Test
-        // Unit vector test
     void testUnitVector()
     {
         Vector3d q = a.unitVector();
@@ -154,7 +150,6 @@ public class TestVector3d
         assertEquals(-0.5962847939999439, q.getZ());
     }
     @Test
-        // Scalar multiple test
     void testScalarMultiple()
     {
         Vector3d q = a.mul(5);
@@ -163,21 +158,18 @@ public class TestVector3d
         assertEquals(-20, q.getZ());
     }
     @Test
-        // Distance between two vectors test
     void testDistance()
     {
         assertEquals(9, a.dist(b));
     }
+    
     @Test
     void testEquals()
     {
-        /*Initialize*/
         Vector3d trial1 = new Vector3d(1, 2, 3);
         Vector3d trial2 = new Vector3d(1, 2, 3);
-        /*Test*/
         assertEquals(true, trial1.equals(trial2));
     }
-
 }
 
 

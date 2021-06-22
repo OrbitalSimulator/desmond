@@ -1,29 +1,20 @@
 package src.visu;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Insets;
-import java.awt.Point;
-import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.geom.AffineTransform;
 import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
-import java.nio.file.FileSystem;
-import java.nio.file.FileSystems;
 import java.util.ArrayList;
 
-import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
 import src.land.LanderObject;
 import src.misc.ResourceLoader;
-import src.peng.Vector3d;
 import src.univ.CelestialBody;
 
 public class LandingVisualiser extends JPanel

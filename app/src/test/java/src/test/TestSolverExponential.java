@@ -25,8 +25,7 @@ public class TestSolverExponential
     private double step = 0.001;
     
     private int numberOfSteps = 2;
-    
-    private static final boolean DEBUG = true;
+  
 
     /*Test utilizes the y-value within the velocity field of a state. To represent the exponential function.
      *The position field can be ignored as within the solver this field is manipulated with by the velocity field
@@ -44,12 +43,6 @@ public class TestSolverExponential
         /*Solver test with 0.2 sec time step*/
         double time = 0;
         State nextState = solver.step(exponentialFunction, time, currentState, step);
-        if(DEBUG)
-        {
-            System.out.println("Start State" + currentState.toString());
-            System.out.println("Next State" + nextState.toString());
-            System.out.println("Actual value: "+ Math.exp(time + step));
-        }
 
         /*Test: Exponential function at time 0.1*/
         assertTrue(withinRange(nextState.velocity.get(0).getY(), Math.exp(time + step)));
@@ -106,14 +99,8 @@ public class TestSolverExponential
             Logger.logCSV(fileName, String.valueOf(time) + " ," + String.valueOf(currentValue) + " ," + String.valueOf(actualValue) + " ," + String.valueOf(relativeError));
 
         	State nextState = solver.step(exponentialFunction, time, currentState, step);
-            if(DEBUG)
-            {
-                System.out.println("Start State" + currentState.toString());
-                System.out.println("Next State" + nextState.toString());
-                System.out.println("Actual value: "+ Math.exp(time + step));
-            }
-           
-            //assertTrue(withinRange(nextState.velocity.get(0).getY(), Math.exp(time + step)));
+          
+            assertTrue(withinRange(nextState.velocity.get(0).getY(), Math.exp(time + step)));
 
             currentState = nextState;
             time += step;
@@ -133,14 +120,14 @@ public class TestSolverExponential
     //This included velocity field y-value holding value of e^(0)
     private State createStartState()
     {
-        ArrayList<Vector3d> velocity = new ArrayList<Vector3d>();                                                       //Current state velocity
+        ArrayList<Vector3d> velocity = new ArrayList<Vector3d>();                                                  
         Vector3d startValue = new Vector3d(0, Math.exp(0),0);
         velocity.add(startValue);
 
-        ArrayList<Vector3d> position = new ArrayList<Vector3d>();                                                       //Current state position
+        ArrayList<Vector3d> position = new ArrayList<Vector3d>();                                                       
         position.add(new Vector3d());
 
-        return new State(velocity, position, 0);                                                                   //Generate state at time 0.
+        return new State(velocity, position, 0);                                                                   
     }
 
 }
