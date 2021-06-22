@@ -32,7 +32,7 @@ public class TestOrbit
             double[] errorLog = oc.getErrorCollection();
             double[] velocityLog = oc.getVelocityCollection();
             Logger.logCSV(fileName, loggingHeaders);
-
+            
             for(int i = 0; i < errorLog.length; i++)
             {
                 String currentIterationData = String.valueOf(errorLog[i]) + ", " + String.valueOf(velocityLog[i]);
@@ -40,7 +40,7 @@ public class TestOrbit
             }
 
         }
-        catch(IOException e){
+        catch(Exception e){
             e.printStackTrace();
         }
     }
