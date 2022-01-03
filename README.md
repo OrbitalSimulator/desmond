@@ -29,6 +29,9 @@ Additionally the test package holds all JUnit testing and Logging classes in thr
 	test: JUnit 5 tests
 	
       
+## ScreenShots
+![desmond_1.png](https://github.com/group22DKE/desmond/blob/master/desmond_1.png)
 
+![desmond_2.png](https://github.com/group22DKE/desmond/blob/master/desmond_2.png)
     
     
